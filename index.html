@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Line Laughs</title>
+    <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <section id="splash" class="screen active" aria-label="Welcome" role="button" tabindex="0">
+        <h1 class="splash-title">Line Laughs</h1>
+        <p class="splash-hint">Tap to continue</p>
+      </section>
+
+      <section id="line-time" class="screen" aria-label="Line wait time">
+        <div>
+          <p class="line-time-prompt">How long is your line?</p>
+          <div class="line-time-input-wrap">
+            <label class="visually-hidden" for="minutes-input">Minutes</label>
+            <input
+              id="minutes-input"
+              class="line-time-input"
+              type="number"
+              inputmode="numeric"
+              min="1"
+              max="999"
+              placeholder="Minutes…"
+              autocomplete="off"
+            />
+          </div>
+          <div class="line-time-actions">
+            <button type="button" class="btn-primary" id="line-time-submit" disabled>
+              Continue
+            </button>
+          </div>
+        </div>
+        <div class="coaster-wrap coaster-root" aria-hidden="true" data-coaster-mode="idle">
+          <svg class="coaster-svg" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fill="currentColor"
+              d="M0 100 Q40 100 60 85 Q90 60 120 75 Q150 90 180 55 Q210 20 250 40 Q290 60 310 45 Q340 25 380 35 L400 30 L400 120 L0 120 Z"
+            />
+            <path
+              class="coaster-rail-path"
+              fill="none"
+              stroke="currentColor"
+              stroke-opacity="0.2"
+              stroke-width="2"
+              d="M0 100 Q40 100 60 85 Q90 60 120 75 Q150 90 180 55 Q210 20 250 40 Q290 60 310 45 Q340 25 380 35 L400 30"
+            />
+            <g class="coaster-car" transform="translate(0,100)">
+              <g class="coaster-car-body">
+                <rect x="-11" y="-20" width="22" height="14" rx="2" fill="currentColor" />
+                <circle cx="-4" cy="0" r="4" fill="currentColor" />
+                <circle cx="9" cy="0" r="4" fill="currentColor" />
+              </g>
+            </g>
+          </svg>
+        </div>
+      </section>
+
+      <section id="games" class="screen" aria-label="Choose a game">
+        <h2 class="games-heading">Choose your game</h2>
+        <div class="games-grid" role="group" aria-label="Games">
+          <button type="button" class="game-tile" data-game="charades">Charades</button>
+          <button type="button" class="game-tile" data-game="imposter">Imposter</button>
+          <button type="button" class="game-tile" data-game="trivia">Trivia</button>
+          <button type="button" class="game-tile" data-game="telestrations">Telestrations</button>
+          <button type="button" class="game-tile" data-game="conversation">
+            Conversation topics
+          </button>
+          <button type="button" class="game-tile" data-game="uno">Uno</button>
+        </div>
+        <div class="coaster-wrap coaster-root" aria-hidden="true" data-coaster-mode="timer">
+          <svg class="coaster-svg" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fill="currentColor"
+              d="M0 100 Q40 100 60 85 Q90 60 120 75 Q150 90 180 55 Q210 20 250 40 Q290 60 310 45 Q340 25 380 35 L400 30 L400 120 L0 120 Z"
+            />
+            <path
+              class="coaster-rail-path"
+              fill="none"
+              stroke="currentColor"
+              stroke-opacity="0.2"
+              stroke-width="2"
+              d="M0 100 Q40 100 60 85 Q90 60 120 75 Q150 90 180 55 Q210 20 250 40 Q290 60 310 45 Q340 25 380 35 L400 30"
+            />
+            <g class="coaster-car" transform="translate(0,100)">
+              <g class="coaster-car-body">
+                <rect x="-11" y="-20" width="22" height="14" rx="2" fill="currentColor" />
+                <circle cx="-4" cy="0" r="4" fill="currentColor" />
+                <circle cx="9" cy="0" r="4" fill="currentColor" />
+              </g>
+            </g>
+          </svg>
+        </div>
+      </section>
+    </div>
+
+    <nav id="bottom-nav" class="bottom-nav" aria-label="Main">
+      <button type="button" id="nav-home">Home</button>
+      <button type="button" id="nav-new-game">New game</button>
+      <button type="button" id="nav-new-category">New category</button>
+      <span class="nav-timer" id="nav-timer" role="status" aria-live="polite">—:—</span>
+    </nav>
+
+    <script>
+      (function () {
+        var splash = document.getElementById("splash");
+        var lineTime = document.getElementById("line-time");
+        var games = document.getElementById("games");
+        var bottomNav = document.getElementById("bottom-nav");
+        var minutesInput = document.getElementById("minutes-input");
+        var lineTimeSubmit = document.getElementById("line-time-submit");
+        var navHome = document.getElementById("nav-home");
+        var navNewGame = document.getElementById("nav-new-game");
+        var navNewCategory = document.getElementById("nav-new-category");
+        var navTimer = document.getElementById("nav-timer");
+
+        var totalSeconds = 0;
+        var remainingSeconds = 0;
+        var timerId = null;
+        var lineEndTime = 0;
+        var lineComplete = false;
+
+        function showScreen(el) {
+          [splash, lineTime, games].forEach(function (s) {
+            s.classList.toggle("active", s === el);
+          });
+          var navOn = bottomNav.classList.contains("visible");
+          games.classList.toggle("with-bottom-nav", el === games && navOn);
+        }
+
+        function formatTime(sec) {
+          if (sec <= 0) return "0:00";
+          var m = Math.floor(sec / 60);
+          var s = sec % 60;
+          return m + ":" + (s < 10 ? "0" : "") + s;
+        }
+
+        function updateTimerLabel() {
+          navTimer.textContent = formatTime(remainingSeconds) + " left";
+        }
+
+        function stopTimer(resetLine) {
+          if (timerId) {
+            clearInterval(timerId);
+            timerId = null;
+          }
+          if (resetLine !== false) {
+            lineEndTime = 0;
+            lineComplete = false;
+          }
+        }
+
+        function syncLineFromClock() {
+          if (totalSeconds <= 0) return;
+          if (lineEndTime <= 0 && !lineComplete) return;
+          var now = Date.now();
+          var rem = Math.max(0, Math.ceil((lineEndTime - now) / 1000));
+          if (rem !== remainingSeconds) {
+            remainingSeconds = rem;
+            updateTimerLabel();
+          }
+          updateCoasters();
+          if (rem <= 0) {
+            remainingSeconds = 0;
+            lineComplete = true;
+            updateTimerLabel();
+            stopTimer(false);
+            updateCoasters();
+          }
+        }
+
+        function startTimer() {
+          stopTimer(true);
+          lineEndTime = Date.now() + totalSeconds * 1000;
+          remainingSeconds = totalSeconds;
+          updateTimerLabel();
+          syncLineFromClock();
+          timerId = setInterval(syncLineFromClock, 200);
+        }
+
+        function coasterProgress() {
+          if (lineComplete) return 1;
+          if (totalSeconds <= 0 || lineEndTime <= 0) return 0;
+          var t = 1 - (lineEndTime - Date.now()) / (totalSeconds * 1000);
+          return Math.min(1, Math.max(0, t));
+        }
+
+        function updateCoasters() {
+          var pTimer = coasterProgress();
+          document.querySelectorAll(".coaster-root").forEach(function (root) {
+            var mode = root.getAttribute("data-coaster-mode");
+            var progress = mode === "timer" ? pTimer : 0;
+            var rail = root.querySelector(".coaster-rail-path");
+            var car = root.querySelector(".coaster-car");
+            var body = root.querySelector(".coaster-car-body");
+            if (!rail || !car) return;
+            var len = rail.getTotalLength();
+            if (!len) return;
+            var dist = progress * len;
+            var pt = rail.getPointAtLength(dist);
+            var ahead = Math.min(dist + 4, len);
+            var pt2 = rail.getPointAtLength(ahead);
+            var ang = (Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180) / Math.PI;
+            car.setAttribute("transform", "translate(" + pt.x + "," + pt.y + ") rotate(" + ang + ")");
+            if (body) {
+              var bobSec;
+              if (mode === "idle") {
+                bobSec = 2.5;
+              } else if (lineComplete) {
+                bobSec = 2.85;
+              } else if (totalSeconds > 0 && lineEndTime > 0) {
+                var fracRem = Math.max(0, (lineEndTime - Date.now()) / (totalSeconds * 1000));
+                bobSec = Math.max(0.42, 0.48 + fracRem * 2.35);
+              } else {
+                bobSec = 2.2;
+              }
+              body.style.animationDuration = bobSec + "s";
+            }
+          });
+        }
+
+        function setBottomNavVisible(on) {
+          bottomNav.classList.toggle("visible", on);
+          if (games.classList.contains("active")) {
+            games.classList.toggle("with-bottom-nav", on);
+          }
+        }
+
+        function goSplash() {
+          stopTimer(true);
+          setBottomNavVisible(false);
+          showScreen(splash);
+          updateCoasters();
+        }
+
+        function goLineTime() {
+          setBottomNavVisible(false);
+          showScreen(lineTime);
+          minutesInput.focus();
+          updateCoasters();
+        }
+
+        function goGames() {
+          setBottomNavVisible(true);
+          showScreen(games);
+          updateCoasters();
+        }
+
+        function syncSubmitEnabled() {
+          var v = parseInt(minutesInput.value, 10);
+          lineTimeSubmit.disabled = !(Number.isFinite(v) && v > 0);
+        }
+
+        function advanceFromSplash() {
+          goLineTime();
+        }
+
+        splash.addEventListener("click", advanceFromSplash);
+        splash.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            advanceFromSplash();
+          }
+        });
+
+        minutesInput.addEventListener("input", syncSubmitEnabled);
+
+        lineTimeSubmit.addEventListener("click", function () {
+          var v = parseInt(minutesInput.value, 10);
+          if (!Number.isFinite(v) || v <= 0) return;
+          totalSeconds = Math.min(v, 999) * 60;
+          goGames();
+          startTimer();
+        });
+
+        navHome.addEventListener("click", goSplash);
+
+        navNewGame.addEventListener("click", function () {
+          goGames();
+          if (totalSeconds > 0) startTimer();
+          else {
+            updateTimerLabel();
+            updateCoasters();
+          }
+        });
+
+        navNewCategory.addEventListener("click", function () {
+          goGames();
+        });
+
+        syncSubmitEnabled();
+        updateTimerLabel();
+        updateCoasters();
+      })();
+    </script>
+  </body>
+</html>
