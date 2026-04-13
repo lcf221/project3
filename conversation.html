@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Conversation topics — Line Laughs</title>
+    <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="conversation-body">
+    <div id="app" class="conversation-app">
+      <section id="conv-main" class="fb-screen active" aria-label="Conversation topics">
+        <div class="fb-card fb-card--celebrate">
+          <p class="fb-kicker">Line Laughs</p>
+          <h1 class="fb-title">Conversation topics</h1>
+          <p class="fb-deck">A random prompt to get people talking. Read it out, then hit next when you’re ready for another.</p>
+          <p id="conv-topic" class="conv-topic" role="status"></p>
+          <button type="button" class="btn-primary fb-btn-pill" id="conv-next">Next topic</button>
+        </div>
+      </section>
+    </div>
+
+    <nav class="bottom-nav visible" aria-label="Main">
+      <a class="bottom-nav-link" href="index.html">Home</a>
+      <a class="bottom-nav-link" href="conversation.html">New game</a>
+      <a class="bottom-nav-link" href="choose-game.html">New category</a>
+      <span class="nav-timer" id="nav-timer" role="status" aria-live="polite">—:—</span>
+    </nav>
+
+    <script src="timer-nav.js"></script>
+    <script>
+      (function () {
+        var TOPICS = [
+          "What’s something small that made your week better?",
+          "If you could learn any skill instantly, what would it be?",
+          "What’s a place you’d visit again in a heartbeat?",
+          "What’s your favorite way to waste a free hour?",
+          "Who’s someone you’re grateful for lately—and why?",
+          "What’s a food you never get tired of?",
+          "What’s a movie or show you could rewatch forever?",
+          "What’s the best advice you’ve ever been given?",
+          "If you didn’t have to work tomorrow, what would you do first?",
+          "What’s a hobby you wish you had more time for?",
+          "What’s a song that instantly lifts your mood?",
+          "What’s something you’re proud of from the last year?",
+          "What’s a tradition you love—family, friend, or solo?",
+          "What’s the best trip you’ve ever taken?",
+          "What’s a book, game, or podcast you’d recommend to anyone?",
+          "What’s your ideal morning—realistic or fantasy?",
+          "What’s a fear you’ve gotten over (or are working on)?",
+          "What’s something you’re looking forward to?",
+          "If you could have dinner with anyone living, who would it be?",
+          "What’s a random skill you have that surprises people?",
+          "What’s your comfort show or comfort food?",
+          "What’s a goal you’re working toward right now?",
+          "What’s your favorite season—and what do you love about it?",
+          "What’s a compliment you still remember?",
+          "What’s something you’d like to be better at?",
+          "If you could live in any fictional world for a week, where?",
+          "What’s a childhood memory that still makes you smile?",
+          "What’s your favorite way to spend time with friends?",
+          "What’s something new you tried recently?",
+          "What’s a pet peeve you’re willing to admit?",
+          "What’s the best gift you’ve ever received?",
+          "What’s a place you’ve never been but want to go?",
+          "What’s your go-to karaoke or road-trip song?",
+          "What’s something you believe now that you didn’t five years ago?",
+          "What’s a simple pleasure you never skip?",
+          "What’s a lesson you learned the hard way?",
+          "If you could switch jobs for a day with anyone, who?",
+          "What’s your favorite way to recharge after a long day?",
+          "What’s a topic you could talk about for an hour?",
+          "What’s something you’re curious about right now?",
+          "What’s your favorite holiday or long weekend—and why?",
+          "What’s a talent you wish you had?",
+          "What’s the best thing about the line you’re in right now?",
+          "What’s a snack you always pack for a long wait?",
+          "What’s a random fact you love to share?",
+          "What’s something kind someone did for you recently?",
+          "What’s your dream “no responsibilities” day?",
+          "What’s a smell that instantly transports you somewhere?",
+          "What’s a game you’d play with anyone in this line?",
+          "What’s something you’re nerdy about?",
+          "What’s a motto or quote you try to live by?",
+          "What’s a restaurant or café you’d take an out-of-town friend to?",
+          "What’s a risk you’re glad you took?",
+          "What’s your favorite way to celebrate small wins?",
+          "What’s a question you wish people asked you more?",
+          "What’s something you’re saving up for—time, money, or energy?",
+          "What’s a friendship that changed you?",
+          "What’s a place you feel most at home?",
+          "What’s a trend you’re happy to see come back?",
+          "What’s something you want to try before the year ends?",
+          "What’s a funny story from your last family gathering?",
+          "What’s a skill you’d teach in a five-minute workshop?",
+          "What’s your favorite thing about the person to your left?",
+        ];
+
+        var order = [];
+        var idx = 0;
+
+        function shuffle(arr) {
+          var a = arr.slice();
+          var i;
+          for (i = a.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+          }
+          return a;
+        }
+
+        function refill() {
+          order = shuffle(TOPICS.slice());
+          idx = 0;
+        }
+
+        function nextTopic() {
+          if (order.length === 0 || idx >= order.length) {
+            refill();
+          }
+          document.getElementById("conv-topic").textContent = order[idx];
+          idx++;
+        }
+
+        document.getElementById("conv-next").addEventListener("click", nextTopic);
+
+        refill();
+        nextTopic();
+      })();
+    </script>
+  </body>
+</html>

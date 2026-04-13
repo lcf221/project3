@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Imposter — Line Laughs</title>
+    <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="imposter-body">
+    <div id="app" class="imposter-app">
+      <!-- 1. Player count -->
+      <section id="imp-count" class="fb-screen active" aria-label="Player count">
+        <div class="fb-card">
+          <p class="fb-kicker">Imposter · Party game</p>
+          <h1 class="fb-title">Who’s playing?</h1>
+          <p class="fb-deck">
+            One player is the Imposter. Everyone else shares a secret word. Need 4+ players.
+          </p>
+          <label class="fb-label" for="imp-player-count">How many players?</label>
+          <input
+            id="imp-player-count"
+            class="fb-input"
+            type="number"
+            inputmode="numeric"
+            min="4"
+            max="24"
+            value="6"
+          />
+          <button type="button" class="btn-primary fb-btn-pill" id="imp-count-next">Next</button>
+        </div>
+      </section>
+
+      <!-- 2. Names -->
+      <section id="imp-names" class="fb-screen" aria-label="Player names">
+        <div class="fb-card">
+          <p class="fb-kicker">Setup · Names</p>
+          <h1 class="fb-title">Circle order</h1>
+          <p class="fb-deck">Enter names in the order you’ll play—same order for clues and voting.</p>
+          <h2 class="fb-subtitle">Players</h2>
+          <div id="imp-names-fields" class="fb-names-fields"></div>
+          <button type="button" class="btn-primary fb-btn-pill" id="imp-names-next">Next</button>
+        </div>
+      </section>
+
+      <!-- 3. Rounds + word bank -->
+      <section id="imp-word" class="fb-screen" aria-label="Game settings">
+        <div class="fb-card">
+          <p class="fb-kicker">Setup · Rounds</p>
+          <h1 class="fb-title">Word bank</h1>
+          <p class="fb-deck">
+            The game picks a secret word at random. Civilians see the word; the Imposter only sees a written hint about it.
+          </p>
+          <label class="fb-label" for="imp-rounds">Rounds (one word per player each)</label>
+          <select id="imp-rounds" class="fb-input">
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+          </select>
+          <label class="fb-check-row" for="imp-decoy-bank">
+            <input type="checkbox" id="imp-decoy-bank" />
+            <span>Also show a random wrong word on the Imposter’s card (they still get the hint about the real word)</span>
+          </label>
+          <button type="button" class="btn-primary fb-btn-pill" id="imp-word-next">Draw word &amp; continue</button>
+        </div>
+      </section>
+
+      <!-- 4. Ready -->
+      <section id="imp-ready" class="fb-screen" aria-label="Ready">
+        <div class="fb-card fb-card--ready">
+          <p class="fb-kicker">How it plays</p>
+          <h1 class="fb-title">Rules</h1>
+          <p class="fb-deck" id="imp-ready-body"></p>
+          <button type="button" class="btn-primary fb-btn-pill" id="imp-ready-btn">Reveal roles</button>
+        </div>
+      </section>
+
+      <!-- 5. Pass — role reveal -->
+      <section id="imp-pass-reveal" class="fb-screen" aria-label="Pass phone">
+        <div class="fb-card fb-card--pass">
+          <p class="fb-kicker">Pass the phone</p>
+          <h1 class="fb-title">Your card</h1>
+          <p class="fb-pass-banner">Give the phone to <strong id="imp-pass-reveal-name"></strong></p>
+          <p class="fb-deck">Look at your card, then tap below. Don’t show anyone.</p>
+          <button type="button" class="btn-primary fb-btn-pill" id="imp-reveal-see">Show my card</button>
+        </div>
+      </section>
+
+      <!-- 6. Role card -->
+      <section id="imp-card-reveal" class="fb-screen" aria-label="Your role">
+        <div class="fb-card fb-card--play">
+          <p class="fb-kicker" id="imp-card-kicker"></p>
+          <div id="imp-role-card" class="fishbowl-word-card">
+            <span class="fishbowl-word-card__shine" aria-hidden="true"></span>
+            <span id="imp-role-text" class="fishbowl-word-text"></span>
+          </div>
+          <p class="fb-deck" id="imp-role-hint"></p>
+          <button type="button" class="btn-primary fb-btn-pill" id="imp-reveal-done">Got it</button>
+        </div>
+      </section>
+
+      <!-- 7. Pass — round turn -->
+      <section id="imp-pass-round" class="fb-screen" aria-label="Your turn">
+        <div class="fb-card fb-card--pass">
+          <p class="fb-kicker" id="imp-round-kicker"></p>
+          <h1 class="fb-title" id="imp-round-title"></h1>
+          <p class="fb-pass-banner">Phone to <strong id="imp-pass-round-name"></strong></p>
+          <p class="fb-deck" id="imp-round-hint"></p>
+          <button type="button" class="btn-primary fb-btn-pill" id="imp-round-say">We said our word</button>
+        </div>
+      </section>
+
+      <!-- 8. Pass — vote -->
+      <section id="imp-pass-vote" class="fb-screen" aria-label="Vote">
+        <div class="fb-card fb-card--pass">
+          <p class="fb-kicker">Vote</p>
+          <h1 class="fb-title">Who’s the Imposter?</h1>
+          <p class="fb-pass-banner"><strong id="imp-pass-vote-name"></strong> — your vote</p>
+          <p class="fb-deck">Pick who you think is faking it.</p>
+          <button type="button" class="btn-primary fb-btn-pill" id="imp-vote-open">Choose</button>
+        </div>
+      </section>
+
+      <!-- 9. Vote pick -->
+      <section id="imp-vote" class="fb-screen" aria-label="Pick a player">
+        <div class="fb-card">
+          <p class="fb-kicker">Vote</p>
+          <h1 class="fb-title">Tap one name</h1>
+          <div id="imp-vote-list" class="fb-pick-list"></div>
+        </div>
+      </section>
+
+      <!-- 10. Tally -->
+      <section id="imp-tally" class="fb-screen" aria-label="Votes">
+        <div class="fb-card fb-card--celebrate">
+          <p class="fb-kicker">The vote</p>
+          <h1 class="fb-title">Results</h1>
+          <p class="fb-scoreboard" id="imp-tally-text"></p>
+          <p class="fb-deck" id="imp-tally-lead"></p>
+          <button type="button" class="btn-primary fb-btn-pill" id="imp-tally-next">Continue</button>
+        </div>
+      </section>
+
+      <!-- 11. Imposter guess -->
+      <section id="imp-guess" class="fb-screen" aria-label="Imposter guess">
+        <div class="fb-card">
+          <p class="fb-kicker">Last chance</p>
+          <h1 class="fb-title">Imposter’s guess</h1>
+          <p class="fb-pass-banner">Pass to <strong id="imp-guess-name"></strong></p>
+          <p class="fb-deck">If you get the secret word right, you steal the win.</p>
+          <label class="fb-label" for="imp-guess-input">Your guess</label>
+          <input id="imp-guess-input" class="fb-input fb-input-dark" type="text" autocomplete="off" />
+          <button type="button" class="btn-primary fb-btn-pill" id="imp-guess-submit">Lock in guess</button>
+        </div>
+      </section>
+
+      <!-- 12. Final -->
+      <section id="imp-final" class="fb-screen" aria-label="Game over">
+        <div class="fb-card fb-card--celebrate">
+          <p class="fb-kicker">Game over</p>
+          <h1 class="fb-title" id="imp-final-title"></h1>
+          <p class="fb-deck fb-deck--big" id="imp-final-body"></p>
+          <p class="fb-scoreboard" id="imp-final-reveal"></p>
+          <a href="imposter.html" class="btn-primary fb-btn-pill">Play again</a>
+        </div>
+      </section>
+    </div>
+
+    <nav class="bottom-nav visible" aria-label="Main">
+      <a class="bottom-nav-link" href="index.html">Home</a>
+      <a class="bottom-nav-link" href="imposter.html">New game</a>
+      <a class="bottom-nav-link" href="choose-game.html">New category</a>
+      <span class="nav-timer" id="nav-timer" role="status" aria-live="polite">—:—</span>
+    </nav>
+
+    <script src="timer-nav.js"></script>
+    <script>
+      (function () {
+        /** Random secret each game — each entry has a hint only the Imposter sees */
+        var WORD_BANK = [
+          { word: "Lighthouse", hint: "Coastal tower that warns ships with a bright beam" },
+          { word: "Campfire", hint: "Outdoor flames people sit around at night" },
+          { word: "Volcano", hint: "Mountain that can erupt lava" },
+          { word: "Telescope", hint: "Tool for seeing faraway stars and planets" },
+          { word: "Submarine", hint: "Vessel that travels deep underwater" },
+          { word: "Carousel", hint: "Spinning ride with painted horses at a fair" },
+          { word: "Waterfall", hint: "River dropping straight down a cliff" },
+          { word: "Skyscraper", hint: "Very tall city building with many floors" },
+          { word: "Sandcastle", hint: "Beach sculpture made from wet sand" },
+          { word: "Birthday cake", hint: "Dessert with candles you blow out once a year" },
+          { word: "Snow globe", hint: "Small glass dome that shakes up fake flakes" },
+          { word: "Jellyfish", hint: "Soft, stinging creature that drifts in the ocean" },
+          { word: "Pinball", hint: "Arcade game with flippers and a silver ball" },
+          { word: "Karaoke", hint: "Singing popular songs into a mic with backing tracks" },
+          { word: "Camping", hint: "Sleeping in a tent out in nature" },
+          { word: "Surfboard", hint: "Flat board for riding ocean waves" },
+          { word: "Library", hint: "Quiet public place full of books to borrow" },
+          { word: "Trampoline", hint: "Bouncy sheet you jump high on in the backyard" },
+          { word: "Hot air balloon", hint: "Huge basket lifted by heated air" },
+          { word: "Treasure map", hint: "X marks the spot for buried loot" },
+          { word: "Penguin", hint: "Tuxedo bird that waddles on ice" },
+          { word: "Dragon", hint: "Mythical fire-breathing beast with wings" },
+          { word: "Spaceship", hint: "Vehicle for traveling through outer space" },
+          { word: "Wizard", hint: "Robe-wearing spellcaster with a staff or wand" },
+          { word: "Detective", hint: "Investigator who solves crimes and clues" },
+          { word: "Pirate ship", hint: "Sailing vessel with a skull flag and cannons" },
+          { word: "Castle", hint: "Stone fortress with towers and a moat" },
+          { word: "Rainbow", hint: "Colorful arc in the sky after rain" },
+          { word: "Thunderstorm", hint: "Heavy rain with lightning and thunder" },
+          { word: "Aurora", hint: "Glowing curtains of light near the poles" },
+          { word: "Desert", hint: "Dry land of sand and almost no rain" },
+          { word: "Jungle", hint: "Thick tropical forest with vines and animals" },
+          { word: "Glacier", hint: "Slow-moving river of ice on a mountain" },
+          { word: "Coral reef", hint: "Colorful underwater ecosystem built by tiny animals" },
+          { word: "Farmers market", hint: "Outdoor stalls selling fresh produce and food" },
+          { word: "Roller coaster", hint: "Fast ride with steep drops and loops" },
+          { word: "Circus", hint: "Big tent show with clowns and acrobats" },
+          { word: "Magic show", hint: "Performance with tricks and illusions" },
+          { word: "Bakery", hint: "Shop that sells bread, pastries, and cakes" },
+          { word: "Pizza oven", hint: "Very hot box for baking thin crust pies" },
+          { word: "Coffee shop", hint: "Café where people work and sip espresso" },
+          { word: "Road trip", hint: "Long drive for fun, not commuting" },
+          { word: "Airport", hint: "Where planes take off and you go through security" },
+          { word: "Train station", hint: "Platform where locomotives pick up passengers" },
+          { word: "Helicopter", hint: "Aircraft with spinning blades on top" },
+          { word: "Motorcycle", hint: "Two-wheeled vehicle with a loud engine" },
+          { word: "Skateboard", hint: "Deck with wheels for tricks and pavement" },
+          { word: "Basketball", hint: "Indoor court sport shooting into a hoop" },
+          { word: "Soccer", hint: "World sport played with feet and a netted goal" },
+          { word: "Bowling", hint: "Rolling a ball to knock down ten pins" },
+          { word: "Chess", hint: "Strategy board game with king and queen pieces" },
+          { word: "Piano", hint: "Large keyboard instrument with black and white keys" },
+          { word: "Guitar", hint: "Stringed instrument you strum or pick" },
+          { word: "Microphone", hint: "Device that amplifies your voice on stage" },
+          { word: "Headphones", hint: "Wearable speakers for private listening" },
+          { word: "Smartphone", hint: "Pocket computer you tap and scroll" },
+          { word: "Video game", hint: "Interactive play on a screen with a controller" },
+          { word: "Camping tent", hint: "Portable fabric shelter for sleeping outside" },
+          { word: "Sleeping bag", hint: "Zipped blanket for staying warm on the ground" },
+          { word: "Backpack", hint: "Bag with straps you carry on your shoulders" },
+          { word: "Binoculars", hint: "Twin lenses for seeing birds far away" },
+          { word: "Compass", hint: "Tool that always points north" },
+          { word: "Lantern", hint: "Portable light you carry in the dark" },
+          { word: "Fireworks", hint: "Explosive lights in the night sky on holidays" },
+          { word: "Confetti", hint: "Tiny paper tossed in celebration" },
+          { word: "Balloon", hint: "Rubber sack filled with air or helium" },
+          { word: "Piñata", hint: "Paper animal you hit until candy falls out" },
+          { word: "Haunted house", hint: "Spooky attraction with jump scares" },
+          { word: "Zombie", hint: "Undead monster that shuffles and moans" },
+          { word: "Superhero", hint: "Caped figure with powers who saves the day" },
+          { word: "Robot", hint: "Metal machine that can move or think automatically" },
+          { word: "Alien", hint: "Being from another planet" },
+          { word: "Dinosaur", hint: "Extinct giant reptile from long ago" },
+          { word: "Unicorn", hint: "Horse with a single spiral horn" },
+          { word: "Mermaid", hint: "Half person, half fish from folklore" },
+          { word: "Knight", hint: "Armored rider with a sword and shield" },
+          { word: "Spacesuit", hint: "Puffy outfit for walking in vacuum" },
+          { word: "Laboratory", hint: "Room with beakers and scientific experiments" },
+          { word: "Hospital", hint: "Building where doctors treat the sick" },
+          { word: "School bus", hint: "Yellow vehicle that picks up kids" },
+          { word: "Playground", hint: "Outdoor area with swings and slides" },
+          { word: "Treehouse", hint: "Small shack built high in branches" },
+          { word: "Greenhouse", hint: "Glass building for growing plants warm year-round" },
+          { word: "Aquarium", hint: "Building with tanks of fish and sea life" },
+          { word: "Zoo", hint: "Park where wild animals live in enclosures" },
+          { word: "Safari", hint: "Trip to watch lions and elephants in the wild" },
+          { word: "Water park", hint: "Place with giant slides and wave pools" },
+          { word: "Ice rink", hint: "Smooth frozen surface for skating" },
+          { word: "Movie theater", hint: "Dark room with a huge screen and popcorn" },
+          { word: "Concert", hint: "Live music performance in front of a crowd" },
+          { word: "Wedding", hint: "Ceremony where two people marry" },
+          { word: "Baby shower", hint: "Party before a newborn arrives" },
+          { word: "Thanksgiving", hint: "U.S. holiday with turkey and family dinner" },
+          { word: "Fire drill", hint: "Practice leaving a building when alarms sound" },
+          { word: "Time machine", hint: "Fiction device for visiting past or future" },
+          { word: "Invisibility", hint: "Power to not be seen at all" },
+          { word: "Lightning", hint: "Sudden electric flash during a storm" },
+          { word: "Tornado", hint: "Spinning funnel of wind that destroys" },
+          { word: "Earthquake", hint: "Ground shaking from shifting rock below" },
+          { word: "Meteor", hint: "Bright streak when a space rock burns in the sky" },
+          { word: "Black hole", hint: "Cosmic object where light cannot escape" },
+          { word: "Satellite", hint: "Object orbiting Earth for TV or GPS" },
+          { word: "Moon landing", hint: "Historic first steps on another world" },
+        ];
+
+        var players = [];
+        var secretWord = "";
+        var secretHint = "";
+        var decoyWord = "";
+        var numRounds = 3;
+        var imposterIndex = 0;
+        var revealIndex = 0;
+        var roundNum = 1;
+        var turnIndex = 0;
+        var voterIndex = 0;
+        var votes = [];
+        var imposterCaught = false;
+
+        function $(id) {
+          return document.getElementById(id);
+        }
+
+        function showScreen(id) {
+          document.querySelectorAll(".fb-screen").forEach(function (el) {
+            el.classList.toggle("active", el.id === id);
+          });
+        }
+
+        function buildNameFields(n) {
+          var wrap = $("imp-names-fields");
+          wrap.innerHTML = "";
+          var i;
+          for (i = 0; i < n; i++) {
+            var lab = document.createElement("label");
+            lab.className = "fb-label";
+            lab.setAttribute("for", "imp-name-" + i);
+            lab.textContent = "Player " + (i + 1);
+            var inp = document.createElement("input");
+            inp.id = "imp-name-" + i;
+            inp.className = "fb-input fb-input-dark";
+            inp.type = "text";
+            inp.autocomplete = "name";
+            inp.placeholder = "Name";
+            wrap.appendChild(lab);
+            wrap.appendChild(inp);
+          }
+        }
+
+        function readNames() {
+          var fields = document.querySelectorAll("#imp-names-fields input.fb-input");
+          var list = [];
+          var i;
+          for (i = 0; i < fields.length; i++) {
+            var v = fields[i].value.trim();
+            if (!v) {
+              alert("Enter every name.");
+              return null;
+            }
+            list.push({ name: v });
+          }
+          return list;
+        }
+
+        function randomImposter() {
+          return Math.floor(Math.random() * players.length);
+        }
+
+        function norm(s) {
+          return String(s || "")
+            .trim()
+            .toLowerCase();
+        }
+
+        function pickBankEntry(excludeNorm) {
+          var e;
+          var tries = 0;
+          do {
+            e = WORD_BANK[Math.floor(Math.random() * WORD_BANK.length)];
+            tries++;
+          } while (excludeNorm && norm(e.word) === excludeNorm && tries < 80);
+          return e;
+        }
+
+        function assignWordsFromBank(useDecoyForImposter) {
+          var main = pickBankEntry(null);
+          secretWord = main.word;
+          secretHint = main.hint;
+          if (useDecoyForImposter) {
+            decoyWord = pickBankEntry(norm(secretWord)).word;
+          } else {
+            decoyWord = "";
+          }
+        }
+
+        function showReady() {
+          $("imp-ready-body").innerHTML =
+            "Words come from the bank—civilians see the real word; the Imposter only sees a <strong>hint</strong> about it. " +
+            "Each round, every player says <strong>one word</strong>—" +
+            numRounds +
+            " rounds—then everyone votes. " +
+            "<strong>Civilians</strong> catch the Imposter; the <strong>Imposter</strong> can steal the win at the end.";
+          showScreen("imp-ready");
+        }
+
+        function startRevealPass() {
+          revealIndex = 0;
+          showRevealPass();
+        }
+
+        function showRevealPass() {
+          $("imp-pass-reveal-name").textContent = players[revealIndex].name;
+          showScreen("imp-pass-reveal");
+        }
+
+        function showRevealCard() {
+          var roleText = $("imp-role-text");
+          var isImposter = revealIndex === imposterIndex;
+          roleText.classList.remove("imp-hint-text");
+          if (isImposter) {
+            $("imp-card-kicker").textContent = "Imposter";
+            if (decoyWord) {
+              roleText.textContent = decoyWord;
+              $("imp-role-hint").innerHTML =
+                "<strong>Hint about the real word:</strong> " +
+                secretHint +
+                " · The big word on your card is <em>not</em> what everyone else has—blend in.";
+            } else {
+              roleText.classList.add("imp-hint-text");
+              roleText.textContent = secretHint;
+              $("imp-role-hint").textContent =
+                "You don’t know the exact word—only this hint. Listen to the table and give a clue that fits.";
+            }
+          } else {
+            $("imp-card-kicker").textContent = "Your word";
+            roleText.textContent = secretWord;
+            $("imp-role-hint").textContent =
+              "Remember it. Don’t say it out loud when it’s your turn—only your clue word.";
+          }
+          showScreen("imp-card-reveal");
+        }
+
+        function afterRevealDone() {
+          revealIndex++;
+          if (revealIndex < players.length) {
+            showRevealPass();
+          } else {
+            roundNum = 1;
+            turnIndex = 0;
+            showRoundPass();
+          }
+        }
+
+        function showRoundPass() {
+          $("imp-round-kicker").textContent = "Round " + roundNum + " of " + numRounds;
+          $("imp-round-title").textContent = "One word each";
+          $("imp-pass-round-name").textContent = players[turnIndex].name;
+          $("imp-round-hint").textContent =
+            "Say a single word that fits your card—then pass the phone.";
+          showScreen("imp-pass-round");
+        }
+
+        function afterRoundSay() {
+          turnIndex++;
+          if (turnIndex < players.length) {
+            showRoundPass();
+          } else {
+            turnIndex = 0;
+            roundNum++;
+            if (roundNum <= numRounds) {
+              showRoundPass();
+            } else {
+              voterIndex = 0;
+              votes = new Array(players.length);
+              showVotePass();
+            }
+          }
+        }
+
+        function showVotePass() {
+          $("imp-pass-vote-name").textContent = players[voterIndex].name;
+          showScreen("imp-pass-vote");
+        }
+
+        function openVotePick() {
+          var me = players[voterIndex].name;
+          var list = $("imp-vote-list");
+          list.innerHTML = "";
+          var i;
+          for (i = 0; i < players.length; i++) {
+            var nm = players[i].name;
+            if (nm === me) continue;
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "btn-secondary fb-btn-pill";
+            btn.textContent = nm;
+            btn.addEventListener(
+              "click",
+              function (name) {
+                return function () {
+                  votes[voterIndex] = name;
+                  voterIndex++;
+                  if (voterIndex < players.length) {
+                    showVotePass();
+                  } else {
+                    showTally();
+                  }
+                };
+              }(nm)
+            );
+            list.appendChild(btn);
+          }
+          showScreen("imp-vote");
+        }
+
+        function tallyVotes() {
+          var counts = {};
+          var i;
+          for (i = 0; i < players.length; i++) {
+            counts[players[i].name] = 0;
+          }
+          for (i = 0; i < votes.length; i++) {
+            var t = votes[i];
+            if (t && counts[t] !== undefined) counts[t]++;
+          }
+          return counts;
+        }
+
+        function showTally() {
+          var counts = tallyVotes();
+          var imposterName = players[imposterIndex].name;
+          var lines = [];
+          var maxV = 0;
+          var name;
+          for (name in counts) {
+            if (counts[name] > maxV) maxV = counts[name];
+          }
+          var leaders = [];
+          for (name in counts) {
+            if (counts[name] === maxV) leaders.push(name);
+          }
+          imposterCaught = leaders.length === 1 && leaders[0] === imposterName;
+
+          for (name in counts) {
+            lines.push(name + ": " + counts[name]);
+          }
+          $("imp-tally-text").textContent = lines.join(" · ");
+          $("imp-tally-lead").textContent = imposterCaught
+            ? "Top vote: " + imposterName + " — caught!"
+            : leaders.length > 1
+              ? "Tie at the top—Imposter wasn’t singled out."
+              : "Top vote wasn’t the Imposter.";
+          showScreen("imp-tally");
+        }
+
+        function afterTally() {
+          if (imposterCaught) {
+            $("imp-final-title").textContent = "Civilians win";
+            $("imp-final-body").textContent = "You voted out the Imposter.";
+            $("imp-final-reveal").textContent = "Secret word: " + secretWord;
+            showScreen("imp-final");
+          } else {
+            $("imp-guess-name").textContent = players[imposterIndex].name;
+            $("imp-guess-input").value = "";
+            showScreen("imp-guess");
+          }
+        }
+
+        function finalizeGuess(guessRight) {
+          $("imp-final-reveal").textContent = "Secret word: " + secretWord + " · Imposter was " + players[imposterIndex].name;
+          if (guessRight) {
+            $("imp-final-title").textContent = "Imposter wins";
+            $("imp-final-body").textContent = "They guessed the word and stole the game.";
+          } else {
+            $("imp-final-title").textContent = "Civilians win";
+            $("imp-final-body").textContent = "Wrong guess—honest players take it.";
+          }
+          showScreen("imp-final");
+        }
+
+        $("imp-count-next").addEventListener("click", function () {
+          var n = parseInt($("imp-player-count").value, 10);
+          if (!Number.isFinite(n) || n < 4) {
+            alert("Need at least 4 players.");
+            return;
+          }
+          buildNameFields(n);
+          showScreen("imp-names");
+        });
+
+        $("imp-names-next").addEventListener("click", function () {
+          var list = readNames();
+          if (!list) return;
+          players = list;
+          showScreen("imp-word");
+        });
+
+        $("imp-word-next").addEventListener("click", function () {
+          if (!WORD_BANK.length) {
+            alert("Word bank is empty.");
+            return;
+          }
+          numRounds = parseInt($("imp-rounds").value, 10) || 3;
+          assignWordsFromBank($("imp-decoy-bank").checked);
+          imposterIndex = randomImposter();
+          showReady();
+        });
+
+        $("imp-ready-btn").addEventListener("click", startRevealPass);
+
+        $("imp-reveal-see").addEventListener("click", showRevealCard);
+
+        $("imp-reveal-done").addEventListener("click", afterRevealDone);
+
+        $("imp-round-say").addEventListener("click", afterRoundSay);
+
+        $("imp-vote-open").addEventListener("click", openVotePick);
+
+        $("imp-tally-next").addEventListener("click", afterTally);
+
+        $("imp-guess-submit").addEventListener("click", function () {
+          var g = $("imp-guess-input").value;
+          var guessRight = norm(g) === norm(secretWord);
+          finalizeGuess(guessRight);
+        });
+      })();
+    </script>
+  </body>
+</html>

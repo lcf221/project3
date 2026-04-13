@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Wild Words — Line Laughs</title>
+    <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="wild-words-body">
+    <div id="app" class="wild-words-app">
+      <section id="ww-count" class="fb-screen active" aria-label="Player count">
+        <div class="fb-card">
+          <p class="fb-kicker">Wild Words · Party game</p>
+          <h1 class="fb-title">Who’s playing?</h1>
+          <p class="fb-deck">Pass one phone. Type a real English word that uses your letters in order before the bomb goes off. Last player with lives wins.</p>
+          <label class="fb-label" for="ww-player-count">How many players?</label>
+          <input
+            id="ww-player-count"
+            class="fb-input"
+            type="number"
+            inputmode="numeric"
+            min="2"
+            max="24"
+            value="4"
+          />
+          <button type="button" class="btn-primary fb-btn-pill" id="ww-count-next">Next</button>
+        </div>
+      </section>
+
+      <section id="ww-names" class="fb-screen" aria-label="Names">
+        <div class="fb-card">
+          <p class="fb-kicker">Setup · Order</p>
+          <h1 class="fb-title">Turn order</h1>
+          <p class="fb-deck">Names in the order you’ll pass the phone.</p>
+          <h2 class="fb-subtitle">Players</h2>
+          <div id="ww-names-fields" class="fb-names-fields"></div>
+          <button type="button" class="btn-primary fb-btn-pill" id="ww-names-next">Next</button>
+        </div>
+      </section>
+
+      <section id="ww-setup" class="fb-screen" aria-label="Settings">
+        <div class="fb-card">
+          <p class="fb-kicker">Room settings</p>
+          <h1 class="fb-title">Lives &amp; timer</h1>
+          <label class="fb-label" for="ww-lives">Lives each</label>
+          <select id="ww-lives" class="fb-input">
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+          </select>
+          <label class="fb-label" for="ww-timer-max">Starting bomb time (seconds)</label>
+          <select id="ww-timer-max" class="fb-input">
+            <option value="60">60</option>
+            <option value="45">45</option>
+            <option value="30">30</option>
+            <option value="15">15</option>
+          </select>
+          <p class="fb-deck">Timer shortens as the game goes on (minimum 15s). Skull bombs are tougher.</p>
+          <button type="button" class="btn-primary fb-btn-pill" id="ww-setup-next">Start</button>
+        </div>
+      </section>
+
+      <section id="ww-ready" class="fb-screen" aria-label="Ready">
+        <div class="fb-card fb-card--ready">
+          <p class="fb-kicker">Rules</p>
+          <h1 class="fb-title">Wild Words</h1>
+          <p class="fb-deck" id="ww-ready-body"></p>
+          <button type="button" class="btn-primary fb-btn-pill" id="ww-ready-btn">Begin</button>
+        </div>
+      </section>
+
+      <section id="ww-pass" class="fb-screen" aria-label="Pass">
+        <div class="fb-card fb-card--pass">
+          <p class="fb-kicker" id="ww-pass-kicker"></p>
+          <h1 class="fb-title">Pass the phone</h1>
+          <p class="fb-pass-banner">Give it to <strong id="ww-pass-name"></strong></p>
+          <p class="fb-scoreboard" id="ww-pass-lives"></p>
+          <p class="fb-deck">Don’t peek at the letters until it’s your turn.</p>
+          <button type="button" class="btn-primary fb-btn-pill" id="ww-pass-go">Show my turn</button>
+        </div>
+      </section>
+
+      <section id="ww-play" class="fb-screen" aria-label="Your turn">
+        <div class="fb-card fb-card--play">
+          <p class="fb-kicker" id="ww-play-kicker"></p>
+          <p id="ww-skull-msg" class="ww-skull-banner" hidden>Skull bomb — harsher letters &amp; timer</p>
+          <div class="fb-timer-wrap">
+            <div id="ww-timer" class="fb-timer" role="timer" aria-live="polite">0</div>
+            <span class="fb-timer-label">seconds left</span>
+          </div>
+          <p class="fb-pass-banner">Your letters (in order):</p>
+          <p id="ww-letters" class="ww-letters" aria-live="polite"></p>
+          <p class="fb-deck" id="ww-play-hint"></p>
+          <label class="fb-label" for="ww-word-input">Your word</label>
+          <input id="ww-word-input" class="fb-input fb-input-dark" type="text" autocomplete="off" autocapitalize="off" spellcheck="true" />
+          <button type="button" class="btn-primary fb-btn-pill" id="ww-submit">Submit</button>
+        </div>
+      </section>
+
+      <section id="ww-over" class="fb-screen" aria-label="Game over">
+        <div class="fb-card fb-card--celebrate">
+          <p class="fb-kicker">Wild Words</p>
+          <h1 class="fb-title" id="ww-over-title"></h1>
+          <p class="fb-deck fb-deck--big" id="ww-over-body"></p>
+          <a href="wild-words.html" class="btn-primary fb-btn-pill">Play again</a>
+        </div>
+      </section>
+    </div>
+
+    <nav class="bottom-nav visible" aria-label="Main">
+      <a class="bottom-nav-link" href="index.html">Home</a>
+      <a class="bottom-nav-link" href="wild-words.html">New game</a>
+      <a class="bottom-nav-link" href="choose-game.html">New category</a>
+      <span class="nav-timer" id="nav-timer" role="status" aria-live="polite">—:—</span>
+    </nav>
+
+    <script src="timer-nav.js"></script>
+    <script>
+      (function () {
+        var BIGRAMS = [
+          "er",
+          "th",
+          "an",
+          "in",
+          "re",
+          "on",
+          "at",
+          "en",
+          "ed",
+          "es",
+          "or",
+          "te",
+          "of",
+          "to",
+          "it",
+          "is",
+          "al",
+          "le",
+          "ri",
+          "me",
+          "ow",
+          "ea",
+          "ch",
+          "un",
+          "ge",
+          "ly",
+          "ir",
+          "us",
+          "tr",
+          "ar",
+        ];
+        var TRIGRAMS = [
+          "ear",
+          "ing",
+          "str",
+          "are",
+          "ate",
+          "ent",
+          "est",
+          "ion",
+          "for",
+          "her",
+          "ere",
+          "ver",
+          "all",
+          "ter",
+          "out",
+          "man",
+          "one",
+          "had",
+          "ice",
+          "ace",
+          "ame",
+          "ire",
+          "ure",
+          "ant",
+          "int",
+          "age",
+          "own",
+          "red",
+          "old",
+          "way",
+          "day",
+          "may",
+          "say",
+          "pay",
+          "lay",
+          "try",
+          "cry",
+          "fly",
+          "sky",
+          "dry",
+          "why",
+          "who",
+          "how",
+          "now",
+          "new",
+          "few",
+          "due",
+          "sue",
+          "use",
+          "run",
+          "sun",
+          "fun",
+          "cut",
+          "but",
+          "hot",
+          "not",
+          "lot",
+          "pot",
+          "dot",
+          "got",
+          "set",
+          "bet",
+          "net",
+          "let",
+          "pet",
+          "met",
+          "get",
+          "ten",
+          "hen",
+          "pen",
+          "men",
+          "end",
+          "land",
+          "hand",
+          "wind",
+          "find",
+          "kind",
+          "mind",
+          "gold",
+          "hold",
+          "cold",
+          "bold",
+          "told",
+          "sold",
+          "word",
+          "work",
+          "warm",
+          "form",
+          "farm",
+          "harm",
+          "firm",
+          "term",
+          "team",
+          "beam",
+          "dream",
+          "clean",
+          "green",
+          "speak",
+          "break",
+          "steak",
+          "cream",
+          "scream",
+          "bread",
+          "great",
+          "treat",
+          "sweet",
+          "sleep",
+          "sheep",
+          "steep",
+          "creep",
+          "greed",
+          "breed",
+          "speed",
+          "heart",
+          "start",
+          "smart",
+          "chart",
+          "light",
+          "fight",
+          "night",
+          "might",
+          "right",
+          "sight",
+          "party",
+        ];
+        var BIGRAMS_HARD = ["qu", "ph", "wh", "kn", "gh", "ck", "wr", "rh", "ps", "bt"];
+        var TRIGRAMS_HARD = ["str", "ght", "tch", "ugh", "eigh", "sch", "scr", "spr", "thr", "squ"];
+
+        var WW_COMMON = new Set(
+          "a an as at be by do go if in is it me no of on or so to up us we am are was were been had has have has had will can may could would should their they them this that these those from with into word words the and for not but you all any her his our out day get got how man new now old one see set sit six ten two way who why yes yet zip zoo act add age ago aid aim air all and any ape apt arc are ark arm art ash ask ate awe axe bad bag ban bar bat bay bed bee beg bet bid big bin bit bog bow box boy bud bug bum bun bus but buy cad cam can cap car cat cob cod cog cop cot cow cub cup cur cut dam day den dew did die dig dim din dip dog dot dry dug dye ear eat eel egg elf elk elm emu end era eve eye far fat fed fee fen few fig fin fir fit fix fly fog fox fry fun gap gas gay get gig gin gnu got gum gun gut gym had ham has hat hawk hay hem hen her him hip his hit hob hog hop hot how hub hum hut ice icy ill ink ion ire irk its ivy jam jar jaw jay jet jig job jog jot joy jug jun key kid kin kit lab lad lag lam law lay led leg let lid lie lip lit log lot low mad man map mat may men met mid mix mob mod mom mop mud mug mum nap net new nib nil nip nod nor not now nut oak oar odd off oft oil old one opt orb ore our out owe owl own pad pal pan pap par pat paw pay pea pen per pet pew pic pig pin pit ply pod pop pot pro pry pub pun pup pur put rag ram ran rap rat raw ray red ref rem rep rev rib rid rig rim rip rob rod roe rot row rub rue rug rum run rut sad sag sap sat saw say sea set sew she shy sin sip sir sit six ski sky sly sob sod son sow soy spa spy sub sue sum sun sup tab tag tan tap tar tat tax tea ten the thy tic tie tin tip toe ton too top tot tow toy try tub tug two urn use van vat vet via vie vim vow wad wag war was wax way web wed wee wet who why wig win wit woe wok won woo wow yak yap yaw yen yes yet yew yin yip yod yon you zap zed zen zip zoo aback abase abate abbey abbot abhor abide abled abode abort about above abuse abyss ached aches acorn acres acted actor acute adage adapt added adept admit adobe adopt adore adorn adult aegis afire afoot after again agate agent agile aging agony agree ahead aider aides aisle alarm album alert algae alibi alien alike alive allay alley allot allow alloy aloft alone along aloud alpha altar alter amass amaze amber amble amend amiss amity among ample amuse angel anger angle angry angst anime ankle annex annul anode antic anvil aorta apart aphid apple apply apron aptly arbor ardor arena argue arise armed armor aroma arose array arrow arson artsy ascot ashen aside askew asset atoll attic audio audit augur aunts aura auto avail avert avoid await awake award aware awful awoke axial axiom axion azure bacon badge badly bagel baggy baker balmy banal bands barge baron basal basic basin basis batch bathe baton batty bawdy bayou beach beady beard beast beats beech beefy befit began begat beget begin begun beige being belay belch belie belle belly below bench beret berry berth beset betel bevel bezel bible bicep biddy bigot biker bilge billy binge biome biota birch birth bison black blade blame bland blank blare blast blaze bleak bleat blend bless blimp blind blink bliss blitz bloat block bloke blond blood bloom blown bluer bluff blunt blurb blurt blush board boast bobby bogey boggy bogus boing boise bolas boldy boney bonny bonus booby booed books boost booth booty booze bored boron bossy botch bough bound bowed boxer brace braid brain brake brand brash brass brave bravo bread break breed briar brick bride brief brine bring brink briny brisk broad broil broke brood brook broom broth brown brunt brush brute buddy budge buggy bugle build built bulge bulky bully bunch bunny burly burnt burst bused buses bushy butch butte buxom buyer bylaw cabal cabin cable cache cacti caddy cadet cagey cairn camel cameo canal candy canny canoe canon caper caput carat cargo carol carry carve caste catch cater catty caulk cause cavil cease cedar cello chafe chaff chain chair chalk champ chant chaos chard charm chart chase chasm cheap cheat check cheek cheer chess chest chide chief child chili chill chime china chirp chock choir choke chord chore chose chuck chump chunk churn chute cider cigar cinch circa cirque cited cites civic civil clack claim clamp clang clank clash clasp class clean clear clerk click cliff climb cling clink cloak clock clone close cloth cloud clout clove clown cluck clued clump clung coach coast cobra cocoa colon color comet comfy comic comma conch condo conic copse coral corer corky corny couch cough could count coupe court coven cover covet cower crack craft cramp crane crank crash crass crate crave crawl crazed crazy creak cream credo creed creek creep creme crest crick cried crime crimp crisp croak crock crook cross croup crowd crown crude cruel crumb crush crust crypt cubed cubic cuddy cuff curio curly curry curse curve cycle cynic daddy daily dairy daisy dance dandy datum daunt dealt death debug decaf decal decay decor decoy decry defer deign deity delay delta demon demur dense depot depth derby deter detox devil diary dicey digit diner dingy dirty disco ditch ditto ditty diver dizzy dodge dodgy dogma doing dolly donor donut dopey doubt dough dowdy dowel downy dowry dozen draft drain drama drank drape drawl drawn dread dream dress dried drier drift drill drink drive droit droll drone drool droop dross drown druid drunk dryly duchy dully dummy dumpy dunce dusky dusty dutch dwarf dwell dwelt dying eager eagle early earth easel eaten eater eaves ebbed eerie egret eight eject elate elder elect elegy elfin elide elite elope elude email embed ember emcee empty enact ended enemy enjoy ennui enter entry envoy epoch epoxy equal equip erase erect erode error erupt essay ester ether ethic ethos etude evade event every evict evoke exact exalt excel exert exile exist expel extra exult eying fable faced facet faint fairy faith false fancy fared farms fatal fatty fault fauna favor feast fecal feign fella felon femur fence feral ferry fetal fetch fetid fetus fever fewer fiber field fiend fiery fifth fifty fight filch filet filly filmy filth final finch finer first fishy fitly five fixer fizzy fjord flack flail flair flake flaky flame flank flare flash flask flat flaunt flavor fleck fleet flesh flick flier fling flint flirt float flock flood floor flora floss flour flout flown fluff fluid fluke flume flung flunk flush flute flyby focal focus foggy foist folio folly foray force forge forgo fork forky forma forte forth forty forum found fount fourth foxes foyer frail frame frank fraud freak freed freer fresh friar fried frill frisk fritz frock frond front frost froth frown froze fruit fudge fugue fully fumed fundy funky funny furry fussy fuzzy gable gaily gamer games gamut gassy gaudy gauge gaunt gauze gavel gayer gayly gazed gazer gecko geeky geese genie genre ghost giant giddy gipsy girly girth given giver glade gland glare glass glaze gleam glean glide glint globe gloom glory gloss glove glyph gnash gnome godly going gold good gooey goofy goose gorge gourd grace grade graft grain grand grant grape graph grasp grass grate grave gravy graze great greed green greet grief grill grime grimy grind gripe grits groan groin groom groove gross group grout grove growl grown gruel gruff grunt guard guess guest guide guild guile guilt guise gulch gully gumbo gummy guppy gusto gusty habit hairy halve handy happy hardy harpy harsh haste hasty hatch hated hater haunt haute haven havoc hawk hayes hazel heady heard heart heath heave heavy hedge hefty heist helix hello hence heron hilly hinge hippo hippy hitch hoard hobby hoist holly homer honey honor hoody hoofs hooks horny horse hotel hotly hound house hovel hover howdy hubby human humid humor humph humus hunch hunky hurry husky hydra hyper icily icing ideal idiom idiot idler igloo image imbue impel imply inane inbox incur index inept inert infer ingot inked inlay inlet inner input inter intro ionic irate irked irony islet issue itchy ivory jaunt jazz jazzy jelly jerky jetty jewel jiffy joint joist joker jolly joust judge juice juicy jumbo jumpy junta juror kabob kaput karma kayak kebab khaki kinky kiosk kitty knave knead kneel knelt knife knock knoll known koala krill label labor laden ladle lager lanky lapel lapse large larva laser lasso latch later latex lathe latin latte laugh layer leafy leant leapt learn lease leash least leave ledge leech leery legal leggy lemon lemur leper level lever libel light liked liken lilac limbo limit linen liner lingo lipid lithe liver livid llama loamy loath lobby local locus lodge lofty logic login loopy loose lorry loser lotus louse lousy lover lower lowly loyal lucid lucky lumen lump lunar lunch lunge lupus lurch lurid lusty lying lymph lyric macho macro madam madly mafia magic magma maize major maker mambo mamma mammo mania manic manly manna manor maple march marry marsh mason match matey mauve maxim maybe mayor mealy meant meaty mecca medal media medic meek meet melon mercy merge merit merry metal meter metro micro midge midst might milky mimic mince miner minim minor minty minus mirth miser missy mocha modal model modem mogul moist molar moldy money month moody moose moral moron morph mossy motel motif motor motto mound mount mourn mouse mouth mover movie mower mucky mucus muddy mulct mummy munch mural murky mushy music musky musty myrrh nadir naive nanny nasal nasty natal naval navel needy neigh neon nerdy nerve never newer newly nicer niche nifty night ninja ninny ninth noble nobly noise noisy nomad noose north nosey notch novel nudge nurse nutty nylon nymph oaken obese occur ocean octal octet odder oddly offal offer often oiled olden olive ombre omega onion onset opera opine optic orbit order organ other otter ought ounce outdo outer outgo ovary overt owner oxide ozone paddy pagan paint paley palm paler panda panel panic pansy paper parka party pasta paste patch patio patsy patty pause payee payer peace peach pearl pecan pedal penal penny perch peril perky pesky petal petty phase phone phony photo piano picky piece piety piggy pilot pinch piney pinky pitch pithy pivot pixel pixie place plaid plain plait plane plank plant plate plaza plead pleat plied plier pluck plumb plume plump plunk plush poesy point poise poker polar polio polka polyp pooch poppy porch poser posit posse pouch pound pour pouty power prank prawn preen press price prick pride prime print prior prism privy prize probe prone proof props prose proud prove prowl proxy prude prune psych puffy pulpy pulse punch pupal pupil puppy puree purer purge purse pushy putty pygmy quack quail quake qualm quart quash quasi queen queer quell query quest queue quick quiet quill quilt quirk quirt quite quota quote rabid racer radar radii radio rainy raise rally ralph ramen ranch randy range rapid rarer raspy ratio ratty raven razor reach react ready realm rearm rebar rebel rebus rebut recap recur redid redo refer refit regal rehab reign relax relay relic remit renal renew repay repel reply rerun reset resin retch retro retry reuse revel revue rhino rhyme rider ridge rifle right rigid rigor rinse ripen risen rival river rivet roach roast robin robot rocky rodeo roger rogue roomy roost rotor rouge rough round rouse route rover rowdy rower royal ruddy ruder rugby ruler rumba rummy rural rusty sable sadly safer saint salad salve salon salsa salty salve salvo sandy saner sappy sassy satin satyr sauce saucy sauna saute savor savvy scale scalp scaly scamp scant scare scarf scary scene scent scoop scoot scope score scorn scour scout scrap scree screw scrub scuba sedan seedy segue seize semen sense sepia serif serum serve setup seven sever sewer shack shade shady shaft shake shale shall shame shank shape shard share shark sharp shave shawl shear sheds sheen sheep sheer sheet shelf shell shied shift shine shiny shirt shoal shock shoed shoot shore short shout shove shown showy shred shrew shrub shrug shuck shunt shush shyly siege sieve sight sigma silky silly since sinew singe singly sinus siren sissy sixth sixty skate skier skiff skill skimp skirt skulk skull skunk slack slain slang slant slash slate slave sleek sleep sleet slept slice slick slide slime slimy sling slink sloop slope slosh sloth slung slunk slurp slush slyly smack small smart smash smear smell smelt smile smirk smite smith smock smoke smoky smote snack snafu snags snail snake snaky snare snarl sneak sneer snide sniff snipe snoop snore snort snout snowy snuck snuff soapy sober soggy solar solid solve sonar sonic sooth sooty sorry sound south sower space spade spank spare spark spasm spawn speak spear speck speed spell spend spent sperm spice spicy spied spiel spike spine spiny spire spite splat split spoil spoke spoof spook spool spoon spore sport spout spray spree sprig sprue spume spunk spurn spurt squad squat squib stack staff stage stain stair stake stale stalk stall stamp stand stank stare stark start stash state stave stead steak steal steam steel steep steer stein stern stick stiff still stilt sting stink stint stock stoic stoke stole stomp stone stony stood stool stoop store stork storm story stout stove strap straw stray strip stuck study stuff stump stung stunk stunt style suave sugar suite sulky sully sumac sunny super surer surge surly sushi swami swamp swarm swash swath swear sweat sweep sweet swell swept swift swill swine swing swirl swish swoon swoop sword swore sworn swung synod syrup tabby table taboo tacit tacky taffy taint taken taker talon tamer tangy taper tapir tardy taste tasty tatty taunt tawny teach teary tease teddy teeth tempo tenet tenor tense tenth tepee tepid terra terse testy thank theft their theme there these thick thief thigh thing think third thong thorn those three threw thrice thrive throat throw thumb thump tiara tidal tiger tight timid titan titer title toast today toddy token tonal tongs tonic tooth topaz topic torch torso torto total totem touch tough towel tower toxic trace track tract trade trail train trait tramp trash trawl tread treat trend triad trial tribe trice trick tried tripe trite troll troop troth trout truce truck truer truly trump trunk truss trust truth tryst tubal tuber tulip tumid tuner tunic turbo tutor twang tweak tweed twice twirl twist twixt tying udder ulcer ultra umbra uncle uncut under undid undue unfed unify union unite unity until upper upset urban urine usage usher using usual usurp utter vague valet valid valor value valve vapid vapor vault vaunt vegan venom venue verge verse verve vicar video vigil vigor villa vinyl viola viper viral virus visit visor vista vital vivid vixen vocal vodka vogue voice voila vomit voter vouch vowel vying wacky wafer wager wagon waist waive waken waltz warty waste watch water waver waxen weary weave wedge weedy weigh weird welch welsh wench whack whale wharf wheat wheel whelp where which whiff while whine whiny whirl white whole whoop whose wicky widen wider widow width wield wight willy wimpy wince winch windy wiser wispy witch witty woken woman women woody wooed wooer wooly woozy wordy world worry worse worst worth would wound woven wrack wrath wreak wreck wrest wring wrist write wrong wrote wrung yacht yearn yeast yield young youth zebra zesty zonal".split(
+            /\s+/
+          )
+        );
+
+        var dictCache = new Map();
+        var players = [];
+        var livesEach = 3;
+        var timerMaxStart = 60;
+        var turnCount = 0;
+        var currentIndex = 0;
+        var letters = "";
+        var isSkull = false;
+        var usedWords = new Set();
+        var timerId = null;
+        var timeLeft = 0;
+
+        function $(id) {
+          return document.getElementById(id);
+        }
+
+        function showScreen(id) {
+          document.querySelectorAll(".fb-screen").forEach(function (el) {
+            el.classList.toggle("active", el.id === id);
+          });
+        }
+
+        function clearTimer() {
+          if (timerId) {
+            clearInterval(timerId);
+            timerId = null;
+          }
+        }
+
+        function norm(s) {
+          return String(s || "")
+            .trim()
+            .toLowerCase();
+        }
+
+        function lettersInOrder(word, seq) {
+          word = norm(word);
+          seq = norm(seq);
+          if (!seq.length) return false;
+          var i = 0;
+          var j;
+          for (j = 0; j < word.length; j++) {
+            if (word.charAt(j) === seq.charAt(i)) {
+              i++;
+              if (i === seq.length) return true;
+            }
+          }
+          return false;
+        }
+
+        function pickLetters(skull) {
+          var poolB = skull ? BIGRAMS_HARD : BIGRAMS;
+          var poolT = skull ? TRIGRAMS_HARD : TRIGRAMS;
+          if (Math.random() < 0.42) {
+            return poolB[Math.floor(Math.random() * poolB.length)];
+          }
+          return poolT[Math.floor(Math.random() * poolT.length)];
+        }
+
+        function aliveIndices() {
+          var a = [];
+          var i;
+          for (i = 0; i < players.length; i++) {
+            if (players[i].lives > 0) a.push(i);
+          }
+          return a;
+        }
+
+        function aliveCount() {
+          return aliveIndices().length;
+        }
+
+        function secondsForTurn() {
+          var base = Math.max(15, timerMaxStart - Math.floor(turnCount * 1.25));
+          if (isSkull) {
+            base = Math.max(15, Math.floor(base * 0.72));
+          }
+          return base;
+        }
+
+        function rollSkull() {
+          return Math.random() < 0.18;
+        }
+
+        function validateDictionary(word) {
+          return new Promise(function (resolve) {
+            var w = norm(word);
+            if (w.length < 3) {
+              resolve(false);
+              return;
+            }
+            if (!/^[a-z]+$/i.test(w)) {
+              resolve(false);
+              return;
+            }
+            if (WW_COMMON.has(w)) {
+              resolve(true);
+              return;
+            }
+            if (dictCache.has(w)) {
+              resolve(dictCache.get(w));
+              return;
+            }
+            fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + encodeURIComponent(w))
+              .then(function (r) {
+                var ok = r.ok;
+                dictCache.set(w, ok);
+                resolve(ok);
+              })
+              .catch(function () {
+                resolve(false);
+              });
+          });
+        }
+
+        function buildNameFields(n) {
+          var wrap = $("ww-names-fields");
+          wrap.innerHTML = "";
+          var i;
+          for (i = 0; i < n; i++) {
+            var lab = document.createElement("label");
+            lab.className = "fb-label";
+            lab.setAttribute("for", "ww-name-" + i);
+            lab.textContent = "Player " + (i + 1);
+            var inp = document.createElement("input");
+            inp.id = "ww-name-" + i;
+            inp.className = "fb-input fb-input-dark";
+            inp.type = "text";
+            inp.autocomplete = "name";
+            inp.placeholder = "Name";
+            wrap.appendChild(lab);
+            wrap.appendChild(inp);
+          }
+        }
+
+        function readNamesStrings() {
+          var fields = document.querySelectorAll("#ww-names-fields input.fb-input");
+          var list = [];
+          var i;
+          for (i = 0; i < fields.length; i++) {
+            var v = fields[i].value.trim();
+            if (!v) {
+              alert("Enter every name.");
+              return null;
+            }
+            list.push(v);
+          }
+          return list;
+        }
+
+        function livesSummary() {
+          var parts = [];
+          var i;
+          for (i = 0; i < players.length; i++) {
+            parts.push(players[i].name + ": " + players[i].lives + " ♥");
+          }
+          return parts.join(" · ");
+        }
+
+        function ensureCurrentAlive() {
+          var alive = aliveIndices();
+          if (alive.length === 0) return;
+          if (alive.indexOf(currentIndex) === -1) {
+            currentIndex = alive[0];
+          }
+        }
+
+        function nextAliveAfter(i) {
+          var alive = aliveIndices();
+          if (alive.length === 0) return -1;
+          if (alive.length === 1) return alive[0];
+          var pos = alive.indexOf(i);
+          if (pos === -1) {
+            var j;
+            for (j = 0; j < alive.length; j++) {
+              if (alive[j] > i) return alive[j];
+            }
+            return alive[0];
+          }
+          return alive[(pos + 1) % alive.length];
+        }
+
+        function showPass() {
+          ensureCurrentAlive();
+          if (aliveCount() <= 1) {
+            showWin();
+            return;
+          }
+          $("ww-pass-kicker").textContent = "Turn " + (turnCount + 1);
+          $("ww-pass-name").textContent = players[currentIndex].name;
+          $("ww-pass-lives").textContent = livesSummary();
+          showScreen("ww-pass");
+        }
+
+        function startTurn() {
+          clearTimer();
+          isSkull = rollSkull();
+          letters = pickLetters(isSkull);
+          timeLeft = secondsForTurn();
+          $("ww-timer").textContent = String(timeLeft);
+          $("ww-timer").classList.toggle("ww-bomb--skull", isSkull);
+          $("ww-skull-msg").hidden = !isSkull;
+          $("ww-play-kicker").textContent = players[currentIndex].name + " — go!";
+          $("ww-letters").textContent = letters.toUpperCase();
+          $("ww-play-hint").textContent = isSkull
+            ? "Skull round: tougher letters and less time. Timeout costs extra."
+            : "Letters must appear left to right in your word (not necessarily together).";
+          $("ww-word-input").value = "";
+          $("ww-submit").disabled = false;
+          showScreen("ww-play");
+          timerId = setInterval(function () {
+            timeLeft--;
+            $("ww-timer").textContent = String(Math.max(0, timeLeft));
+            if (timeLeft <= 0) {
+              clearTimer();
+              onTimeout();
+            }
+          }, 1000);
+        }
+
+        function onTimeout() {
+          clearTimer();
+          var loss = isSkull ? Math.min(2, players[currentIndex].lives) : 1;
+          players[currentIndex].lives -= loss;
+          if (players[currentIndex].lives < 0) players[currentIndex].lives = 0;
+          turnCount++;
+          if (aliveCount() <= 1) {
+            showWin();
+            return;
+          }
+          currentIndex = nextAliveAfter(currentIndex);
+          showPass();
+        }
+
+        function showWin() {
+          var alive = aliveIndices();
+          if (alive.length === 1) {
+            $("ww-over-title").textContent = players[alive[0]].name + " wins!";
+            $("ww-over-body").textContent = "Last one standing.";
+          } else {
+            $("ww-over-title").textContent = "Game over";
+            $("ww-over-body").textContent = "Something went odd—no single winner.";
+          }
+          showScreen("ww-over");
+        }
+
+        function advanceSuccess() {
+          clearTimer();
+          turnCount++;
+          currentIndex = nextAliveAfter(currentIndex);
+          showPass();
+        }
+
+        $("ww-count-next").addEventListener("click", function () {
+          var n = parseInt($("ww-player-count").value, 10);
+          if (!Number.isFinite(n) || n < 2) {
+            alert("Need at least 2 players.");
+            return;
+          }
+          buildNameFields(n);
+          showScreen("ww-names");
+        });
+
+        $("ww-names-next").addEventListener("click", function () {
+          var list = readNamesStrings();
+          if (!list) return;
+          players = list.map(function (name) {
+            return { name: name, lives: 3 };
+          });
+          showScreen("ww-setup");
+        });
+
+        $("ww-setup-next").addEventListener("click", function () {
+          livesEach = parseInt($("ww-lives").value, 10) || 3;
+          var i;
+          for (i = 0; i < players.length; i++) {
+            players[i].lives = livesEach;
+          }
+          timerMaxStart = parseInt($("ww-timer-max").value, 10) || 60;
+          $("ww-ready-body").innerHTML =
+            "Each turn you get <strong>2–3 letters</strong>. Type a <strong>real English word</strong> that contains them <strong>in order</strong>. " +
+            "No word twice. The <strong>bomb</strong> ticks down—timeout costs a life (two on a <strong>skull bomb</strong>). " +
+            "Timer gets faster over time. Last player with lives wins.";
+          showScreen("ww-ready");
+        });
+
+        $("ww-ready-btn").addEventListener("click", function () {
+          usedWords = new Set();
+          dictCache = new Map();
+          turnCount = 0;
+          currentIndex = 0;
+          showPass();
+        });
+
+        $("ww-pass-go").addEventListener("click", startTurn);
+
+        $("ww-submit").addEventListener("click", function () {
+          var raw = $("ww-word-input").value;
+          var w = norm(raw);
+          if (!w) {
+            alert("Type a word.");
+            return;
+          }
+          if (usedWords.has(w)) {
+            alert("That word was already used this game.");
+            return;
+          }
+          if (!lettersInOrder(w, letters)) {
+            alert('Your word must include the letters "' + letters.toUpperCase() + '" in order.');
+            return;
+          }
+          $("ww-submit").disabled = true;
+          validateDictionary(w).then(function (ok) {
+            $("ww-submit").disabled = false;
+            if (!ok) {
+              alert("We couldn’t verify that word in the dictionary. Try another.");
+              return;
+            }
+            usedWords.add(w);
+            advanceSuccess();
+          });
+        });
+
+        $("ww-word-input").addEventListener("keydown", function (e) {
+          if (e.key === "Enter") $("ww-submit").click();
+        });
+      })();
+    </script>
+  </body>
+</html>

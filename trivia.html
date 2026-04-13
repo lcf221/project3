@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Trivia — Line Laughs</title>
+    <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="trivia-body">
+    <div id="app" class="trivia-app">
+      <section id="tr-count" class="fb-screen active" aria-label="Player count">
+        <div class="fb-card">
+          <p class="fb-kicker">Trivia · Party game</p>
+          <h1 class="fb-title">Who’s playing?</h1>
+          <p class="fb-deck">Multiple choice—four answers. Everyone sees the same question in turn before the next one. Need 2+ players.</p>
+          <label class="fb-label" for="tr-player-count">How many players?</label>
+          <input
+            id="tr-player-count"
+            class="fb-input"
+            type="number"
+            inputmode="numeric"
+            min="2"
+            max="24"
+            value="4"
+          />
+          <button type="button" class="btn-primary fb-btn-pill" id="tr-count-next">Next</button>
+        </div>
+      </section>
+
+      <section id="tr-names" class="fb-screen" aria-label="Player names">
+        <div class="fb-card">
+          <p class="fb-kicker">Setup · Names</p>
+          <h1 class="fb-title">Order</h1>
+          <p class="fb-deck">Names in the order you’ll pass the phone—same order each round.</p>
+          <h2 class="fb-subtitle">Players</h2>
+          <div id="tr-names-fields" class="fb-names-fields"></div>
+          <button type="button" class="btn-primary fb-btn-pill" id="tr-names-next">Next</button>
+        </div>
+      </section>
+
+      <section id="tr-setup" class="fb-screen" aria-label="Length">
+        <div class="fb-card">
+          <p class="fb-kicker">Setup · Length</p>
+          <h1 class="fb-title">How many questions?</h1>
+          <p class="fb-deck">Each question is passed around—every player answers the same one before you move on.</p>
+          <label class="fb-label" for="tr-num-questions">Questions (full circle each)</label>
+          <select id="tr-num-questions" class="fb-input">
+            <option value="3">3</option>
+            <option value="5" selected>5</option>
+            <option value="8">8</option>
+            <option value="10">10</option>
+            <option value="12">12</option>
+          </select>
+          <button type="button" class="btn-primary fb-btn-pill" id="tr-setup-next">Start game</button>
+        </div>
+      </section>
+
+      <section id="tr-ready" class="fb-screen" aria-label="Ready">
+        <div class="fb-card fb-card--ready">
+          <p class="fb-kicker">Pass &amp; play</p>
+          <h1 class="fb-title">Rules</h1>
+          <p class="fb-deck" id="tr-ready-body"></p>
+          <button type="button" class="btn-primary fb-btn-pill" id="tr-ready-btn">Begin</button>
+        </div>
+      </section>
+
+      <section id="tr-pass" class="fb-screen" aria-label="Pass phone">
+        <div class="fb-card fb-card--pass">
+          <p class="fb-kicker" id="tr-pass-kicker"></p>
+          <h1 class="fb-title">Pass the phone</h1>
+          <p class="fb-pass-banner">Give it to <strong id="tr-pass-name"></strong></p>
+          <p class="fb-deck" id="tr-pass-hint"></p>
+          <button type="button" class="btn-primary fb-btn-pill" id="tr-pass-show">Show question</button>
+        </div>
+      </section>
+
+      <section id="tr-play" class="fb-screen" aria-label="Question">
+        <div class="fb-card fb-card--play">
+          <p class="fb-kicker" id="tr-play-kicker"></p>
+          <p class="fb-pass-banner">Only <strong id="tr-play-name"></strong> taps an answer</p>
+          <p class="fb-question-text" id="tr-q-text"></p>
+          <div id="tr-mc-btns" class="fb-mc-grid"></div>
+          <p class="fb-deck" id="tr-feedback" hidden></p>
+          <button type="button" class="btn-primary fb-btn-pill" id="tr-play-next" hidden>Continue</button>
+        </div>
+      </section>
+
+      <section id="tr-results" class="fb-screen" aria-label="Results">
+        <div class="fb-card fb-card--celebrate">
+          <p class="fb-kicker">Final</p>
+          <h1 class="fb-title">Scores</h1>
+          <p class="fb-scoreboard" id="tr-scores"></p>
+          <p class="fb-deck fb-deck--big" id="tr-winner"></p>
+          <a href="trivia.html" class="btn-primary fb-btn-pill">Play again</a>
+        </div>
+      </section>
+    </div>
+
+    <nav class="bottom-nav visible" aria-label="Main">
+      <a class="bottom-nav-link" href="index.html">Home</a>
+      <a class="bottom-nav-link" href="trivia.html">New game</a>
+      <a class="bottom-nav-link" href="choose-game.html">New category</a>
+      <span class="nav-timer" id="nav-timer" role="status" aria-live="polite">—:—</span>
+    </nav>
+
+    <script src="timer-nav.js"></script>
+    <script>
+      (function () {
+        var QUESTIONS = [
+          { q: "What is the capital of Mongolia?", o: ["Astana", "Ulaanbaatar", "Tashkent", "Bishkek"], c: 1 },
+          { q: "Which element has atomic number 79?", o: ["Silver", "Gold", "Mercury", "Platinum"], c: 1 },
+          { q: "In what year did the Berlin Wall fall?", o: ["1987", "1989", "1991", "1993"], c: 1 },
+          { q: "Who composed The Four Seasons?", o: ["Bach", "Mozart", "Vivaldi", "Handel"], c: 2 },
+          { q: "What is the derivative of x² with respect to x?", o: ["x", "2x", "x²", "2"], c: 1 },
+          { q: "Which country has the most time zones (including territories)?", o: ["Russia", "USA", "France", "Canada"], c: 2 },
+          { q: "What is the speed of light in vacuum (approx.)?", o: ["3×10⁶ m/s", "3×10⁸ m/s", "3×10¹⁰ m/s", "300 m/s"], c: 1 },
+          { q: "The Peloponnesian War was fought between which city-states?", o: ["Athens & Sparta", "Rome & Carthage", "Thebes & Corinth", "Athens & Thebes"], c: 0 },
+          { q: "What does HTTP stand for?", o: ["HyperText Transfer Protocol", "High Transfer Text Protocol", "Hyperlink Text Transport", "Host Text Transfer Process"], c: 0 },
+          { q: "Which blood type is the universal donor (for red cells)?", o: ["A", "B", "AB", "O negative"], c: 3 },
+          { q: "Who wrote Crime and Punishment?", o: ["Tolstoy", "Dostoevsky", "Chekhov", "Turgenev"], c: 1 },
+          { q: "What is the largest moon of Saturn?", o: ["Europa", "Titan", "Ganymede", "Triton"], c: 1 },
+          { q: "In DNA, which base pairs with guanine?", o: ["Adenine", "Thymine", "Cytosine", "Uracil"], c: 2 },
+          { q: "What is 17²?", o: ["269", "289", "299", "279"], c: 1 },
+          { q: "Which country was formerly known as Persia?", o: ["Iraq", "Iran", "Turkey", "Afghanistan"], c: 1 },
+          { q: "What is the SI unit of electrical resistance?", o: ["Volt", "Ampere", "Ohm", "Watt"], c: 2 },
+          { q: "Who painted The Starry Night?", o: ["Monet", "Van Gogh", "Cézanne", "Gauguin"], c: 1 },
+          { q: "What is the hardest mineral on the Mohs scale?", o: ["Corundum", "Topaz", "Diamond", "Quartz"], c: 2 },
+          { q: "Which treaty ended World War I for Germany?", o: ["Treaty of Paris", "Treaty of Versailles", "Treaty of Tordesillas", "Treaty of Ghent"], c: 1 },
+          { q: "What is the capital of Kazakhstan?", o: ["Almaty", "Astana", "Tashkent", "Baku"], c: 1 },
+          { q: "How many chromosomes do humans typically have?", o: ["23", "46", "44", "48"], c: 1 },
+          { q: "Which gas do humans add most from burning fossil fuels, driving recent climate change?", o: ["Methane", "Nitrous oxide", "Carbon dioxide", "Ozone"], c: 2 },
+          { q: "Who wrote 1984?", o: ["Huxley", "Orwell", "Bradbury", "Atwood"], c: 1 },
+          { q: "What is the value of π (pi) to two decimal places?", o: ["3.12", "3.14", "3.16", "3.41"], c: 1 },
+          { q: "Which ocean is the deepest trench (Mariana) in?", o: ["Atlantic", "Indian", "Arctic", "Pacific"], c: 3 },
+          { q: "What is the term for animals active at dawn and dusk?", o: ["Nocturnal", "Diurnal", "Crepuscular", "Matutinal"], c: 2 },
+          { q: "In which year did the Chernobyl disaster occur?", o: ["1984", "1986", "1988", "1990"], c: 1 },
+          { q: "What is the smallest country in the world by area?", o: ["Monaco", "Vatican City", "San Marino", "Liechtenstein"], c: 1 },
+          { q: "Which planet has the strongest magnetic field?", o: ["Earth", "Jupiter", "Saturn", "Neptune"], c: 1 },
+          { q: "What does E=mc² mean the “c” represents?", o: ["Charge", "Speed of light", "Constant of gravity", "Capacitance"], c: 1 },
+          { q: "Who wrote The Art of War?", o: ["Confucius", "Sun Tzu", "Lao Tzu", "Mencius"], c: 1 },
+          { q: "What is the capital of Canada?", o: ["Toronto", "Montreal", "Ottawa", "Vancouver"], c: 2 },
+          { q: "Which language family does Hungarian belong to?", o: ["Slavic", "Romance", "Uralic", "Germanic"], c: 2 },
+          { q: "What is the powerhouse of the animal cell?", o: ["Nucleus", "Ribosome", "Mitochondria", "Golgi apparatus"], c: 2 },
+          { q: "How many degrees in a full circle?", o: ["180", "270", "360", "400"], c: 2 },
+          { q: "Which composer was deaf in his later years?", o: ["Mozart", "Beethoven", "Haydn", "Schubert"], c: 1 },
+          { q: "What is the longest mountain range on Earth?", o: ["Himalayas", "Andes", "Rockies", "Alps"], c: 1 },
+          { q: "In computing, what does CPU stand for?", o: ["Central Processing Unit", "Computer Personal Unit", "Core Program Utility", "Cached Processing Utility"], c: 0 },
+          { q: "Which vitamin deficiency causes scurvy?", o: ["A", "B1", "C", "D"], c: 2 },
+          { q: "What is the cube root of 27?", o: ["2", "3", "4", "9"], c: 1 },
+          { q: "Who painted Guernica?", o: ["Dalí", "Picasso", "Miró", "Gris"], c: 1 },
+          { q: "What is the capital of Australia?", o: ["Sydney", "Melbourne", "Canberra", "Brisbane"], c: 2 },
+          { q: "Which particle has a negative charge?", o: ["Proton", "Neutron", "Electron", "Photon"], c: 2 },
+          { q: "The Battle of Waterloo (1815) ended whose rule as French Emperor?", o: ["Louis XIV", "Napoleon", "Robespierre", "Louis Napoleon"], c: 1 },
+          { q: "What is the largest desert that is mostly sand?", o: ["Gobi", "Sahara", "Kalahari", "Arabian"], c: 1 },
+          { q: "Which Shakespeare play features Prospero and Caliban?", o: ["Hamlet", "The Tempest", "Macbeth", "King Lear"], c: 1 },
+          { q: "What is log₁₀(100)?", o: ["1", "2", "10", "100"], c: 1 },
+          { q: "Which country invented paper (traditionally credited)?", o: ["Egypt", "China", "India", "Greece"], c: 1 },
+          { q: "What is the chemical formula for table salt?", o: ["NaCl", "KCl", "HCl", "CaCl₂"], c: 0 },
+          { q: "How many symphonies did Beethoven complete?", o: ["7", "8", "9", "10"], c: 2 },
+        ];
+
+        var players = [];
+        var scores = [];
+        var numQuestions = 5;
+        var deck = [];
+        var qIndex = 0;
+        var playerInQuestion = 0;
+        var totalQ = 0;
+        var answered = false;
+
+        function $(id) {
+          return document.getElementById(id);
+        }
+
+        function showScreen(id) {
+          document.querySelectorAll(".fb-screen").forEach(function (el) {
+            el.classList.toggle("active", el.id === id);
+          });
+        }
+
+        function shuffle(arr) {
+          var a = arr.slice();
+          var i;
+          for (i = a.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+          }
+          return a;
+        }
+
+        function buildNameFields(n) {
+          var wrap = $("tr-names-fields");
+          wrap.innerHTML = "";
+          var i;
+          for (i = 0; i < n; i++) {
+            var lab = document.createElement("label");
+            lab.className = "fb-label";
+            lab.setAttribute("for", "tr-name-" + i);
+            lab.textContent = "Player " + (i + 1);
+            var inp = document.createElement("input");
+            inp.id = "tr-name-" + i;
+            inp.className = "fb-input fb-input-dark";
+            inp.type = "text";
+            inp.autocomplete = "name";
+            inp.placeholder = "Name";
+            wrap.appendChild(lab);
+            wrap.appendChild(inp);
+          }
+        }
+
+        function readNames() {
+          var fields = document.querySelectorAll("#tr-names-fields input.fb-input");
+          var list = [];
+          var i;
+          for (i = 0; i < fields.length; i++) {
+            var v = fields[i].value.trim();
+            if (!v) {
+              alert("Enter every name.");
+              return null;
+            }
+            list.push(v);
+          }
+          return list;
+        }
+
+        function activePlayerName() {
+          return players[playerInQuestion];
+        }
+
+        function buildDeck() {
+          var pool = shuffle(QUESTIONS);
+          deck = pool.slice(0, Math.min(numQuestions, pool.length));
+          totalQ = deck.length;
+          if (totalQ === 0) {
+            alert("No questions available.");
+            return false;
+          }
+          scores = players.map(function () {
+            return 0;
+          });
+          qIndex = 0;
+          playerInQuestion = 0;
+          return true;
+        }
+
+        function showPass() {
+          if (qIndex >= totalQ) {
+            showResults();
+            return;
+          }
+          $("tr-pass-kicker").textContent = "Question " + (qIndex + 1) + " of " + totalQ;
+          $("tr-pass-name").textContent = activePlayerName();
+          $("tr-pass-hint").textContent =
+            playerInQuestion === 0
+              ? "Only they see the question first—no peeking."
+              : "Same question as everyone else—pass the phone. Don’t share answers.";
+          showScreen("tr-pass");
+        }
+
+        function renderQuestion() {
+          answered = false;
+          var item = deck[qIndex];
+          $("tr-play-kicker").textContent =
+            "Question " + (qIndex + 1) + " of " + totalQ + " · Turn " + (playerInQuestion + 1) + " of " + players.length;
+          $("tr-play-name").textContent = activePlayerName();
+          $("tr-q-text").textContent = item.q;
+          $("tr-feedback").hidden = true;
+          $("tr-feedback").textContent = "";
+          $("tr-play-next").hidden = true;
+
+          var grid = $("tr-mc-btns");
+          grid.innerHTML = "";
+          var i;
+          for (i = 0; i < 4; i++) {
+            (function (idx) {
+              var btn = document.createElement("button");
+              btn.type = "button";
+              btn.className = "btn-secondary fb-btn-pill fb-mc-btn";
+              btn.textContent = item.o[idx];
+              btn.addEventListener("click", function () {
+                onPick(idx);
+              });
+              grid.appendChild(btn);
+            })(i);
+          }
+          showScreen("tr-play");
+        }
+
+        function onPick(choice) {
+          if (answered) return;
+          answered = true;
+          var item = deck[qIndex];
+          var correct = item.c === choice;
+          if (correct) scores[playerInQuestion]++;
+
+          var buttons = $("tr-mc-btns").querySelectorAll(".fb-mc-btn");
+          var i;
+          for (i = 0; i < 4; i++) {
+            buttons[i].disabled = true;
+            if (i === item.c) buttons[i].classList.add("is-correct");
+            if (i === choice && i !== item.c) buttons[i].classList.add("is-wrong", "is-picked");
+          }
+
+          $("tr-feedback").hidden = false;
+          $("tr-feedback").innerHTML = correct
+            ? "<strong>Correct!</strong> +1 point"
+            : "<strong>Not quite.</strong> The answer was: " + item.o[item.c];
+          $("tr-play-next").hidden = false;
+        }
+
+        function showResults() {
+          var lines = [];
+          var i;
+          var best = -1;
+          for (i = 0; i < players.length; i++) {
+            lines.push(players[i] + ": " + scores[i]);
+            if (scores[i] > best) best = scores[i];
+          }
+          $("tr-scores").textContent = lines.join(" · ");
+
+          var winners = [];
+          for (i = 0; i < players.length; i++) {
+            if (scores[i] === best) winners.push(players[i]);
+          }
+          $("tr-winner").textContent =
+            winners.length === 1
+              ? winners[0] + " wins!"
+              : "Tie: " + winners.join(", ");
+          showScreen("tr-results");
+        }
+
+        $("tr-count-next").addEventListener("click", function () {
+          var n = parseInt($("tr-player-count").value, 10);
+          if (!Number.isFinite(n) || n < 2) {
+            alert("Need at least 2 players.");
+            return;
+          }
+          buildNameFields(n);
+          showScreen("tr-names");
+        });
+
+        $("tr-names-next").addEventListener("click", function () {
+          var list = readNames();
+          if (!list) return;
+          players = list;
+          showScreen("tr-setup");
+        });
+
+        $("tr-setup-next").addEventListener("click", function () {
+          numQuestions = parseInt($("tr-num-questions").value, 10) || 5;
+          if (!buildDeck()) return;
+          $("tr-ready-body").textContent =
+            totalQ +
+            " questions. For each one, the phone goes around the circle—everyone gets the same question before the next. Only the player holding the phone answers. Correct answers score a point.";
+          showScreen("tr-ready");
+        });
+
+        $("tr-ready-btn").addEventListener("click", function () {
+          showPass();
+        });
+
+        $("tr-pass-show").addEventListener("click", renderQuestion);
+
+        $("tr-play-next").addEventListener("click", function () {
+          playerInQuestion++;
+          if (playerInQuestion < players.length) {
+            showPass();
+          } else {
+            playerInQuestion = 0;
+            qIndex++;
+            if (qIndex >= totalQ) {
+              showResults();
+            } else {
+              showPass();
+            }
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
