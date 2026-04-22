@@ -1,16 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="tk-mokoko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Imposter — Line Laughs</title>
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="imposter-body">
     <div id="app" class="imposter-app">
+      <section id="game-brand-splash" class="fb-screen game-brand active" data-next="imp-count" tabindex="0" aria-label="Imposter, tap to continue">
+        <div class="game-brand__inner">
+          <div class="game-brand__frame" aria-hidden="true">
+            <img class="game-brand__icon" src="assets/game_icons/imposter.jpg" alt="" width="512" height="512" decoding="async" />
+          </div>
+          <p class="game-brand__name">Imposter</p>
+          <p class="game-brand__tag">Line Laughs</p>
+          <button type="button" class="btn-primary fb-btn-pill game-brand__btn" id="game-brand-continue" data-next="imp-count">
+            Continue
+          </button>
+        </div>
+      </section>
+
       <!-- 1. Player count -->
-      <section id="imp-count" class="fb-screen active" aria-label="Player count">
+      <section id="imp-count" class="fb-screen" aria-label="Player count">
         <div class="fb-card">
           <p class="fb-kicker">Imposter · Party game</p>
           <h1 class="fb-title">Who’s playing?</h1>
@@ -167,13 +182,31 @@
     </div>
 
     <nav class="bottom-nav visible" aria-label="Main">
-      <a class="bottom-nav-link" href="index.html">Home</a>
-      <a class="bottom-nav-link" href="imposter.html">New game</a>
-      <a class="bottom-nav-link" href="choose-game.html">New category</a>
-      <span class="nav-timer" id="nav-timer" role="status" aria-live="polite">—:—</span>
+      <a href="index.html" class="bottom-nav-icon" aria-label="Line Laughs home">
+        <img src="assets/navigation/Home.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <a href="choose-game.html" class="bottom-nav-icon" aria-label="Pick a game">
+        <img src="assets/navigation/new%20game.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <a href="imposter.html" class="bottom-nav-icon" aria-label="Restart Imposter">
+        <img src="assets/navigation/restart.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <div class="nav-timer-block" role="status" aria-live="polite">
+        <img
+          class="nav-timer__icon"
+          src="assets/navigation/timer.png"
+          alt=""
+          width="48"
+          height="48"
+          decoding="async"
+          aria-hidden="true"
+        />
+        <span class="nav-timer" id="nav-timer">—:—</span>
+      </div>
     </nav>
 
     <script src="timer-nav.js"></script>
+    <script src="game-brand.js"></script>
     <script>
       (function () {
         /** Random secret each game — each entry has a hint only the Imposter sees */

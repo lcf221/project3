@@ -1,5 +1,13 @@
 /* Line Laughs — layout & theme */
 
+@font-face {
+  font-family: "Myfont";
+  src: url("assets/fonts/Myfont-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* iPhone 14 / 15 class (logical points): 390 × 844 */
   --iphone-width: 390px;
@@ -15,7 +23,13 @@
   --tile-conversation: #d9e87a;
   --tile-wild-words: #a8e6f4;
   --nav-bg: rgba(255, 255, 255, 0.92);
-  --font-support: "sofia-pro-soft", sans-serif;
+  /* Line Laughs title / coaster palette */
+  --line-laughs-orange: #ffa500;
+  --line-laughs-green: #b2d16d;
+  --line-laughs-purple: #6d72d1;
+  --line-laughs-coral: #ec7c79;
+  /* UI copy: Myfont (all caps) with Mokoko as fallback; Typekit still loads for fallback + legacy */
+  --font-support: "Myfont", "mokoko", serif;
 }
 
 *,
@@ -27,6 +41,7 @@
 html {
   margin: 0;
   min-height: 100%;
+  font-family: var(--font-support);
 }
 
 body {
@@ -43,6 +58,17 @@ body {
   color: var(--ink);
   background: #98cfe9;
   -webkit-tap-highlight-color: transparent;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Form controls often ignore inherited body font (esp. iOS / Safari) */
+button,
+input,
+select,
+textarea,
+optgroup {
+  font-family: inherit;
 }
 
 #app {
@@ -56,6 +82,7 @@ body {
   margin: 0 auto;
   position: relative;
   background: var(--bg-sky);
+  font-family: var(--font-support);
   padding-top: env(safe-area-inset-top, 0);
   padding-bottom: env(safe-area-inset-bottom, 0);
   padding-left: env(safe-area-inset-left, 0);
@@ -93,6 +120,11 @@ body {
   align-items: center;
   text-align: center;
   cursor: pointer;
+  background-color: var(--bg-sky);
+  background-image: url("assets/home/home.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #splash:focus-visible {
@@ -101,31 +133,51 @@ body {
 }
 
 .splash-title {
-  font-family: "comba", sans-serif;
-  font-weight: 700;
+  font-family: var(--font-support);
+  font-weight: 400;
   font-style: normal;
-  font-size: clamp(2rem, 8vw, 2.75rem);
-  letter-spacing: 0.02em;
+  font-size: clamp(2.15rem, 8.5vw, 3rem);
+  letter-spacing: 0.04em;
   line-height: 1.15;
   text-transform: uppercase;
   margin: 0;
   user-select: none;
+  transform: translateY(-6.65rem);
 }
 
-.splash-hint {
-  margin-top: 2rem;
-  font-family: var(--font-support);
-  font-weight: 400;
-  font-style: normal;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  opacity: 0.55;
+/* Deeper hues so letters read on the photo without a panel */
+.splash-title__c1 {
+  color: color-mix(in srgb, var(--line-laughs-orange) 70%, var(--ink) 30%);
+}
+
+.splash-title__c2 {
+  color: color-mix(in srgb, var(--line-laughs-green) 62%, var(--ink) 38%);
+}
+
+.splash-title__c3 {
+  color: color-mix(in srgb, var(--line-laughs-purple) 72%, var(--ink) 28%);
+}
+
+.splash-title__c4 {
+  color: color-mix(in srgb, var(--line-laughs-coral) 68%, var(--ink) 32%);
 }
 
 /* Line time */
 #line-time {
-  padding-top: 2rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: var(--bg-sky);
+  background-image: url("assets/home/time.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#line-time .line-time-stack {
+  width: 100%;
+  max-width: 26.5rem;
+  margin: 0 auto;
 }
 
 .coaster-wrap {
@@ -134,7 +186,40 @@ body {
   margin-right: -1.25rem;
   width: calc(100% + 2.5rem);
   pointer-events: none;
-  color: var(--ink);
+}
+
+/* Solid colors — pink main track, purple car, vertical supports alternate green / orange */
+.coaster-root .coaster-ground-line {
+  stroke: color-mix(in srgb, var(--bg-sky) 70%, var(--line-laughs-purple) 30%);
+  stroke-opacity: 0.52;
+}
+
+.coaster-root .coaster-supports line {
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.coaster-mini .coaster-supports line {
+  stroke-width: 3.35;
+}
+
+.coaster-root .coaster-supports line:nth-child(odd) {
+  stroke: var(--line-laughs-green);
+  stroke-opacity: 0.88;
+}
+
+.coaster-root .coaster-supports line:nth-child(even) {
+  stroke: var(--line-laughs-orange);
+  stroke-opacity: 0.88;
+}
+
+.coaster-root .coaster-rail-path {
+  stroke: var(--line-laughs-coral);
+}
+
+.coaster-root .coaster-car-body rect,
+.coaster-root .coaster-car-body circle {
+  fill: var(--line-laughs-purple);
 }
 
 .coaster-svg {
@@ -159,6 +244,46 @@ body {
   }
 }
 
+/* Compact line timer coaster on game pages (fixed above bottom nav) */
+.coaster-mini-wrap {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(3.35rem + env(safe-area-inset-bottom, 0px));
+  width: 100%;
+  max-width: var(--iphone-width);
+  z-index: 45;
+  pointer-events: none;
+  padding: 0 0.35rem;
+}
+
+.coaster-mini.coaster-wrap {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  opacity: 0.94;
+}
+
+.coaster-mini .coaster-svg {
+  max-height: 52px;
+}
+
+.coaster-mini .coaster-rail-path {
+  stroke-width: 5;
+}
+
+.coaster-mini .coaster-ground-line {
+  stroke-width: 1;
+}
+
+body.has-coaster-mini .fb-screen {
+  padding-bottom: calc(5.75rem + 3rem + env(safe-area-inset-bottom, 0));
+}
+
+body.has-coaster-mini .game-screen {
+  padding-bottom: calc(5.5rem + 3rem + env(safe-area-inset-bottom, 0));
+}
+
 .line-time-prompt {
   background: var(--box-dark);
   color: var(--box-text);
@@ -167,18 +292,18 @@ body {
   font-style: normal;
   text-align: center;
   text-transform: uppercase;
-  font-size: clamp(0.85rem, 3.5vw, 1rem);
+  font-size: clamp(0.95rem, 3.8vw, 1.12rem);
   letter-spacing: 0.04em;
-  padding: 1rem 1.25rem;
+  padding: 1.25rem 1.5rem;
   margin: 0 auto;
   max-width: 100%;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 .line-time-input-wrap {
   background: var(--box-dark);
-  margin-top: 0.75rem;
-  padding: 0.85rem 1rem;
+  margin-top: 0.85rem;
+  padding: 1.05rem 1.35rem;
 }
 
 .line-time-input {
@@ -189,7 +314,7 @@ body {
   font-family: var(--font-support);
   font-weight: 400;
   font-style: normal;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   outline: none;
 }
 
@@ -199,7 +324,12 @@ body {
 }
 
 .line-time-actions {
-  margin-top: 1.5rem;
+  margin-top: 1.65rem;
+}
+
+#line-time .btn-primary {
+  padding: 1.15rem 1.35rem;
+  font-size: 1.02rem;
 }
 
 .btn-primary {
@@ -256,20 +386,99 @@ a.btn-primary {
   aspect-ratio: 1;
   border: none;
   border-radius: 4px;
-  font-family: var(--font-support);
-  font-weight: 400;
-  font-style: normal;
-  font-size: clamp(0.8rem, 3.2vw, 0.95rem);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: var(--ink);
   cursor: pointer;
-  padding: 0.5rem;
-  line-height: 1.2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  padding: 0;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(15, 23, 41, 0.12);
+  transition: box-shadow 0.32s ease;
+}
+
+/* Soft highlight sweep — no “floating card” motion */
+.game-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.08) 40%,
+    transparent 68%
+  );
+  opacity: 0;
+  transition: opacity 0.32s ease;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: soft-light;
+}
+
+.game-tile__icon {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  transform: scale(1);
+  filter: brightness(1);
+  transition: transform 0.45s ease-out, filter 0.32s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .game-tile:hover {
+    box-shadow: 0 10px 28px rgba(15, 23, 41, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+  }
+
+  .game-tile:hover::after {
+    opacity: 1;
+  }
+
+  .game-tile:hover .game-tile__icon {
+    transform: scale(1.05);
+    filter: brightness(1.05);
+  }
+}
+
+.game-tile:active {
+  box-shadow: 0 4px 16px rgba(15, 23, 41, 0.13), inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  transition-duration: 0.1s;
+}
+
+.game-tile:active::after {
+  opacity: 0.5;
+}
+
+.game-tile:active .game-tile__icon {
+  transform: scale(1.02);
+  filter: brightness(0.97);
+  transition-duration: 0.1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-tile,
+  .game-tile__icon,
+  .game-tile::after {
+    transition: none;
+  }
+
+  .game-tile:hover,
+  .game-tile:active {
+    box-shadow: 0 2px 8px rgba(15, 23, 41, 0.12);
+  }
+
+  .game-tile:hover::after,
+  .game-tile:active::after {
+    opacity: 0;
+  }
+
+  .game-tile:hover .game-tile__icon,
+  .game-tile:active .game-tile__icon {
+    transform: none;
+    filter: none;
+  }
 }
 
 .game-tile[data-game="charades"],
@@ -355,8 +564,7 @@ a.game-tile {
 
 .charades-card.is-placeholder {
   font-size: clamp(0.9rem, 3vw, 1rem);
-  text-transform: none;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   line-height: 1.4;
 }
 
@@ -609,6 +817,81 @@ a.game-tile {
 #app.wild-words-app > .fb-screen {
   position: relative;
   z-index: 1;
+}
+
+/* Full-screen game icon before setup (matches choose-game tiles) */
+.game-brand {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.game-brand__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 24rem;
+  padding: 0.25rem 0 0.5rem;
+}
+
+.game-brand__frame {
+  position: relative;
+  width: min(78vw, 280px);
+  aspect-ratio: 1;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(15, 23, 41, 0.12);
+}
+
+.game-brand__icon {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+
+.game-brand__name {
+  font-family: var(--font-support);
+  font-weight: 700;
+  font-size: clamp(1.45rem, 5vw, 1.9rem);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 1.1rem 0 0.35rem;
+  color: var(--fb-ink);
+  text-align: center;
+}
+
+.game-brand__tag {
+  font-family: var(--font-support);
+  font-weight: 400;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: color-mix(in srgb, #6b4420 70%, var(--game-accent));
+  margin: 0 0 1.25rem;
+}
+
+.game-brand .btn-primary {
+  margin-top: 0;
+  max-width: 16rem;
+}
+
+/* Tap anywhere on the splash to continue (see game-brand.js) */
+#game-brand-splash {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  outline: none;
+}
+
+#game-brand-splash:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
 }
 
 .fb-screen {
@@ -988,11 +1271,10 @@ a.game-tile {
 }
 
 #app.imposter-app .fishbowl-word-text.imp-hint-text {
-  text-transform: none;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   font-size: clamp(1.15rem, 3.8vw, 1.55rem);
   line-height: 1.35;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .fb-round-hint {
@@ -1108,8 +1390,7 @@ a.game-tile {
 }
 
 .fb-mc-btn {
-  text-transform: none;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   font-size: clamp(0.88rem, 2.9vw, 0.98rem);
   line-height: 1.3;
   min-height: 3.35rem;
@@ -1218,7 +1499,7 @@ a.game-tile {
 
 .conv-topic {
   font-family: var(--font-support);
-  font-weight: 600;
+  font-weight: 700;
   font-size: clamp(1.28rem, 4.3vw, 1.7rem);
   line-height: 1.5;
   text-align: center;
@@ -1260,7 +1541,7 @@ a.game-tile {
   box-shadow: 0 8px 28px rgba(197, 48, 48, 0.2), inset 0 -3px 0 rgba(116, 42, 42, 0.08);
 }
 
-/* Bottom navigation */
+/* Bottom navigation — four even columns: home, new game, restart, timer */
 .bottom-nav {
   position: fixed;
   left: 50%;
@@ -1269,69 +1550,105 @@ a.game-tile {
   width: 100%;
   max-width: var(--iphone-width);
   display: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: center;
-  justify-content: space-between;
-  gap: 0.35rem;
-  padding: 0.65rem 0.85rem calc(0.65rem + env(safe-area-inset-bottom, 0));
+  justify-items: center;
+  gap: 0.2rem;
+  padding: 0.55rem 0.5rem calc(0.55rem + env(safe-area-inset-bottom, 0));
   background: var(--nav-bg);
   border-top: 2px solid var(--ink);
   z-index: 50;
 }
 
 .bottom-nav.visible {
+  display: grid;
+}
+
+.bottom-nav-icon {
   display: flex;
-}
-
-.bottom-nav button {
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 3.25rem;
+  padding: 0.28rem;
   border: none;
   background: transparent;
-  font-family: var(--font-support);
-  font-weight: 400;
-  font-style: normal;
-  font-size: clamp(0.55rem, 2.8vw, 0.7rem);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: var(--ink);
-  cursor: pointer;
-  padding: 0.35rem 0.2rem;
-  flex: 0 1 auto;
-  white-space: nowrap;
-}
-
-.bottom-nav button:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
-}
-
-.bottom-nav a.bottom-nav-link {
-  border: none;
-  background: transparent;
-  font-family: var(--font-support);
-  font-weight: 400;
-  font-style: normal;
-  font-size: clamp(0.55rem, 2.8vw, 0.7rem);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: var(--ink);
-  cursor: pointer;
-  padding: 0.35rem 0.2rem;
-  flex: 0 1 auto;
-  white-space: nowrap;
+  color: inherit;
   text-decoration: none;
+  border-radius: 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.bottom-nav a.bottom-nav-link:focus-visible {
+.bottom-nav-icon img {
+  display: block;
+  height: 1.85rem;
+  width: auto;
+  max-width: 2.35rem;
+  object-fit: contain;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bottom-nav-icon:hover {
+    background: rgba(15, 23, 41, 0.08);
+    box-shadow: 0 3px 10px rgba(15, 23, 41, 0.12);
+    transform: scale(1.08);
+  }
+}
+
+.bottom-nav-icon:active {
+  transform: scale(0.96);
+  background: rgba(15, 23, 41, 0.06);
+  transition-duration: 0.1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav-icon {
+    transition: none;
+  }
+
+  .bottom-nav-icon:hover,
+  .bottom-nav-icon:active {
+    transform: none;
+  }
+}
+
+.bottom-nav-icon:focus-visible {
   outline: 2px solid var(--ink);
-  outline-offset: 2px;
+  outline-offset: 3px;
+}
+
+.nav-timer-block {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0 0.1rem;
+}
+
+.nav-timer-block .nav-timer__icon {
+  display: block;
+  height: 1.55rem;
+  width: auto;
+  max-width: 1.95rem;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .bottom-nav .nav-timer {
   font-family: var(--font-support);
-  font-weight: 400;
+  font-weight: 700;
   font-style: normal;
+  font-size: clamp(0.6rem, 2.9vw, 0.75rem);
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
   cursor: default;
   flex: 0 0 auto;
+  white-space: nowrap;
+  line-height: 1;
 }
 
 .bottom-nav .nav-timer:focus {

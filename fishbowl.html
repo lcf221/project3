@@ -1,179 +1,251 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="tk-mokoko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Fishbowl — Line Laughs</title>
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="fishbowl.css" />
   </head>
   <body class="fishbowl-body">
     <div id="app" class="fishbowl-app">
+      <!-- 0. Full-bleed game splash -->
+      <section
+        id="game-brand-splash"
+        class="fb-screen fb-splash active"
+        data-next="fb-count"
+        tabindex="0"
+        aria-label="Fishbowl, tap to continue"
+      >
+        <img
+          class="fb-splash-hero"
+          src="assets/gamesplash/fishbowl.png"
+          alt=""
+          width="1170"
+          height="2532"
+          decoding="async"
+        />
+        <span class="fb-orange-btn fb-splash-cta" id="game-brand-continue" data-next="fb-count" aria-hidden="true">CONTINUE</span>
+      </section>
+
       <!-- 1. Player count -->
-      <section id="fb-count" class="fb-screen active" aria-label="Player count">
-        <div class="fb-card">
-          <p class="fb-kicker">Fishbowl · Party game</p>
-          <h1 class="fb-title">Who’s playing?</h1>
-          <p class="fb-deck">
-            Describe → Charades → one word. Same clues, harder each round. Need 4+ players; 6–10 is ideal.
-          </p>
-          <label class="fb-label" for="fb-player-count">How many players?</label>
+      <section id="fb-count" class="fb-screen fb-screen--water" aria-label="Player count">
+        <div class="fb-fishbowl-ui">
+          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+          <p class="fb-fb-sub">4+ PLAYERS</p>
+          <h2 class="fb-fb-h1">HOW MANY PLAYERS?</h2>
           <input
             id="fb-player-count"
-            class="fb-input"
+            class="fb-dark-field"
             type="number"
             inputmode="numeric"
             min="4"
             max="24"
             value="6"
+            placeholder="TYPE HERE"
+            aria-label="How many players"
           />
-          <button type="button" class="btn-primary fb-btn-pill" id="fb-count-next">Let’s go</button>
+          <button type="button" class="fb-orange-btn" id="fb-count-next">SUBMIT</button>
+        </div>
+        <div class="fb-char-grid-9" aria-hidden="true">
+          <img src="assets/fishbowl/characters/fishbowl1.svg" alt="" width="200" height="200" />
+          <img src="assets/fishbowl/characters/fishbowl2.svg" alt="" width="200" height="200" />
+          <img src="assets/fishbowl/characters/fishbowl3.svg" alt="" width="200" height="200" />
+          <img src="assets/fishbowl/characters/fishbowl4.svg" alt="" width="200" height="200" />
+          <img src="assets/fishbowl/characters/fishbowl5.svg" alt="" width="200" height="200" />
+          <img src="assets/fishbowl/characters/fishbowl6.svg" alt="" width="200" height="200" />
+          <img src="assets/fishbowl/characters/fishbowl7.svg" alt="" width="200" height="200" />
+          <img src="assets/fishbowl/characters/fishbowl8.svg" alt="" width="200" height="200" />
+          <img src="assets/fishbowl/characters/fishbowl9.svg" alt="" width="200" height="200" />
         </div>
       </section>
 
       <!-- 2. Names -->
-      <section id="fb-names" class="fb-screen" aria-label="Player names">
-        <div class="fb-card">
-          <p class="fb-kicker">Setup · Step 1</p>
-          <h1 class="fb-title">Name your crew</h1>
-          <p class="fb-deck">Go in circle order—we’ll use it for teams next.</p>
-          <h2 class="fb-subtitle">Players</h2>
+      <section id="fb-names" class="fb-screen fb-screen--water" aria-label="Player names">
+        <div class="fb-fishbowl-ui">
+          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+          <h2 class="fb-fb-h1">PLAYERS: PUT IN CIRCLE ORDER</h2>
           <div id="fb-names-fields" class="fb-names-fields"></div>
-          <button type="button" class="btn-primary fb-btn-pill" id="fb-names-next">Next</button>
+          <button type="button" class="fb-orange-btn" id="fb-names-next">SUBMIT</button>
         </div>
       </section>
 
       <!-- 3. Teams -->
-      <section id="fb-teams" class="fb-screen" aria-label="Teams">
-        <div class="fb-card">
-          <p class="fb-kicker">Setup · Step 2</p>
-          <h1 class="fb-title">Split the room</h1>
-          <p class="fb-deck">Odd seats: Team A. Even seats: Team B.</p>
-          <div class="fb-team-columns">
-            <div class="fb-team-box fb-team-box--a">
-              <h2 class="fb-team-title">Team A</h2>
-              <ul id="fb-team-a" class="fb-team-list"></ul>
+      <section id="fb-teams" class="fb-screen fb-screen--water" aria-label="Teams">
+        <div class="fb-fishbowl-ui">
+          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+          <div class="fb-teams-two">
+            <div class="fb-team-slab">
+              <h3>TEAM A</h3>
+              <div id="fb-team-a" class="fb-team-fish-grid"></div>
             </div>
-            <div class="fb-team-box fb-team-box--b">
-              <h2 class="fb-team-title">Team B</h2>
-              <ul id="fb-team-b" class="fb-team-list"></ul>
+            <div class="fb-team-slab">
+              <h3>TEAM B</h3>
+              <div id="fb-team-b" class="fb-team-fish-grid"></div>
             </div>
           </div>
-          <button type="button" class="btn-primary fb-btn-pill" id="fb-teams-next">Looks good</button>
+          <button type="button" class="fb-orange-btn" id="fb-teams-next">CONTINUE</button>
         </div>
       </section>
 
       <!-- 4. Nouns per player -->
-      <section id="fb-nouns" class="fb-screen" aria-label="Enter nouns">
-        <div class="fb-card">
-          <p class="fb-kicker">Setup · Step 3</p>
-          <h1 class="fb-title">Stock the bowl</h1>
-          <p id="fb-nouns-pass" class="fb-pass-banner">
-            Pass the phone to <strong id="fb-nouns-player-name"></strong>
-          </p>
-          <p class="fb-deck">One person, one place, one thing—each slip goes in the bowl.</p>
-          <h2 class="fb-subtitle">Your three nouns</h2>
-          <label class="fb-label" for="fb-noun-person">Person</label>
-          <input id="fb-noun-person" class="fb-input fb-input-dark" type="text" autocomplete="off" />
-          <label class="fb-label" for="fb-noun-place">Place</label>
-          <input id="fb-noun-place" class="fb-input fb-input-dark" type="text" autocomplete="off" />
-          <label class="fb-label" for="fb-noun-thing">Thing</label>
-          <input id="fb-noun-thing" class="fb-input fb-input-dark" type="text" autocomplete="off" />
-          <button type="button" class="btn-primary fb-btn-pill" id="fb-nouns-next">Done</button>
+      <section id="fb-nouns" class="fb-screen fb-screen--water" aria-label="Enter nouns">
+        <div class="fb-fishbowl-ui">
+          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+          <p class="fb-fill-head fb-fill-line1">FILL THE BOWL</p>
+          <p class="fb-fill-head fb-fill-line2">PASS THE PHONE TO:</p>
+          <div class="fb-pass-hero">
+            <img id="fb-nouns-fish" class="fb-fish-hero" src="assets/fishbowl/characters/fishbowl1.svg" alt="" width="200" height="200" />
+            <p class="fb-nouns-player-name" id="fb-nouns-player-name">PLAYER</p>
+          </div>
+          <span class="fb-label-row" id="fb-label-person">PERSON</span>
+          <input id="fb-noun-person" class="fb-dark-field" type="text" autocomplete="off" placeholder="TYPE HERE" />
+          <span class="fb-label-row" id="fb-label-place">PLACE</span>
+          <input id="fb-noun-place" class="fb-dark-field" type="text" autocomplete="off" placeholder="TYPE HERE" />
+          <span class="fb-label-row" id="fb-label-thing">THING</span>
+          <input id="fb-noun-thing" class="fb-dark-field" type="text" autocomplete="off" placeholder="TYPE HERE" />
+          <button type="button" class="fb-orange-btn" id="fb-nouns-next">CONTINUE</button>
         </div>
       </section>
 
-      <!-- 5. Ready / Round intro -->
-      <section id="fb-ready" class="fb-screen" aria-label="Ready to play">
-        <div class="fb-card fb-card--ready">
-          <p class="fb-kicker" id="fb-ready-kicker">Almost there</p>
-          <h1 class="fb-title" id="fb-ready-title">Ready</h1>
-          <p id="fb-ready-body" class="fb-deck"></p>
-          <p class="fb-scoreboard" id="fb-ready-scores"></p>
-          <button type="button" class="btn-primary fb-btn-pill" id="fb-ready-btn">Continue</button>
+      <!-- 5. Round intro (ready) -->
+      <section id="fb-ready" class="fb-screen fb-screen--water" aria-label="Ready to play">
+        <div class="fb-fishbowl-ui fb-ready-wrap">
+          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+          <div class="fb-ready-titles" id="fb-ready-titles">
+            <p class="a" id="fb-ready-t1">ROUND ONE:</p>
+            <p class="b" id="fb-ready-t2">DESCRIBE</p>
+          </div>
+          <ol class="fb-rules-ol" id="fb-ready-rules-ol" aria-label="Rules"></ol>
+          <p id="fb-ready-scores" class="fb-scores-dark" hidden>TEAM A: 0 · TEAM B: 0</p>
+          <button type="button" class="fb-orange-btn" id="fb-ready-btn">START</button>
         </div>
       </section>
 
       <!-- 6. Pass phone before turn -->
-      <section id="fb-pass" class="fb-screen" aria-label="Pass phone">
-        <div class="fb-card fb-card--pass">
-          <p class="fb-kicker">Pass the phone</p>
-          <h1 class="fb-title">Next up</h1>
-          <p class="fb-pass-banner">Give the phone to <strong id="fb-pass-name"></strong></p>
-          <p class="fb-deck" id="fb-pass-hint"></p>
-          <button type="button" class="btn-primary fb-btn-pill" id="fb-pass-ok">Start my turn</button>
+      <section id="fb-pass" class="fb-screen fb-screen--water" aria-label="Pass phone">
+        <div class="fb-fishbowl-ui">
+          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+          <div class="fb-pass-lines" id="fb-pass-lines">
+            <p class="a" id="fb-pass-line1">ROUND ONE:</p>
+            <p class="b" id="fb-pass-line2">DESCRIBE</p>
+            <p class="c">PASS THE PHONE TO:</p>
+          </div>
+          <div class="fb-pass-hero">
+            <img id="fb-pass-fish" class="fb-fish-hero" src="assets/fishbowl/characters/fishbowl1.svg" alt="" width="200" height="200" />
+            <p class="fb-name-badge" id="fb-pass-name">PLAYER</p>
+          </div>
+          <p id="fb-pass-hint" class="fb-deck" hidden>Hint</p>
+          <button type="button" class="fb-orange-btn" id="fb-pass-ok">START MY TURN</button>
         </div>
       </section>
 
-      <!-- 7. Active turn -->
-      <section id="fb-turn" class="fb-screen" aria-label="Your turn">
-        <div class="fb-card fb-card--play">
-          <header class="fb-turn-header">
-            <p class="fb-kicker" id="fb-turn-round-kicker">Round</p>
-            <h2 class="fb-title-level" id="fb-turn-round-label"></h2>
-            <p class="fb-turn-meta" id="fb-turn-meta"></p>
-          </header>
-          <div class="fb-timer-wrap">
-            <div id="fb-timer" class="fb-timer" role="timer" aria-live="polite">60</div>
-            <span class="fb-timer-label">seconds</span>
-          </div>
-          <div id="fb-word-card" class="fishbowl-word-card">
-            <span class="fishbowl-word-card__shine" aria-hidden="true"></span>
-            <span id="fb-word-text" class="fishbowl-word-text"></span>
-          </div>
-          <p class="fb-round-hint" id="fb-turn-rule"></p>
-          <div class="fb-turn-actions">
-            <button type="button" class="btn-secondary fb-btn-pill" id="fb-skip">Skip</button>
-            <button type="button" class="btn-primary fb-btn-pill" id="fb-got-it">Got it!</button>
-          </div>
+      <!-- 7. Active turn (timer in bowl) -->
+      <section id="fb-turn" class="fb-screen fb-screen--turn" aria-label="Your turn">
+        <p id="fb-turn-mode">DESCRIBE</p>
+        <div class="fb-turn-bowl-wrap">
+          <img src="assets/fishbowl/fishbowl%20timer.svg" alt="" class="fb-bowl-svg" width="270" height="585" />
+          <div id="fb-timer" class="fb-timer-in-bowl" role="timer" aria-live="polite">60</div>
         </div>
+        <div id="fb-word-card" class="fb-word-dank fishbowl-word-card">
+          <span class="fishbowl-word-card__shine" aria-hidden="true"></span>
+          <span id="fb-word-text" class="fishbowl-word-text"></span>
+        </div>
+        <p class="fb-round-hint" id="fb-turn-rule" hidden>Rule</p>
+        <div class="fb-turn-btns">
+          <button type="button" class="fb-orange-btn fb-orange-btn--half" id="fb-skip">SKIP</button>
+          <button type="button" class="fb-orange-btn fb-orange-btn--half" id="fb-got-it">GOT IT</button>
+        </div>
+        <p id="fb-turn-meta" class="fb-deck" hidden></p>
+        <p id="fb-turn-round-kicker" class="fb-deck" hidden></p>
+        <h2 class="fb-title-level" id="fb-turn-round-label" hidden></h2>
       </section>
 
       <!-- 8. Round over -->
-      <section id="fb-round-end" class="fb-screen" aria-label="Round over">
-        <div class="fb-card fb-card--celebrate">
-          <p class="fb-kicker" id="fb-re-kicker">Round recap</p>
-          <h1 class="fb-title">
-            Round <span id="fb-re-ended-round"></span> <span class="fb-title-soft">— done</span>
-          </h1>
-          <p class="fb-scoreboard" id="fb-re-scores"></p>
-          <p class="fb-deck" id="fb-re-next"></p>
-          <button type="button" class="btn-primary fb-btn-pill" id="fb-round-next">Continue</button>
+      <section id="fb-round-end" class="fb-screen fb-screen--water" aria-label="Round over">
+        <div class="fb-fishbowl-ui">
+          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+          <p class="fb-fb-h1" id="fb-re-kicker">ROUND RECAP</p>
+          <h2 class="fb-fb-h1 fb-fb-h1--2" id="fb-re-end-title">ROUND DONE</h2>
+          <p class="fb-scores-dark" id="fb-re-scores">TEAM A: 0 · TEAM B: 0</p>
+          <p class="fb-fb-h1" id="fb-re-next">Next round</p>
+          <button type="button" class="fb-orange-btn" id="fb-round-next">CONTINUE</button>
         </div>
       </section>
 
       <!-- 9. Game over -->
-      <section id="fb-game-over" class="fb-screen" aria-label="Game over">
-        <div class="fb-card fb-card--celebrate">
-          <p class="fb-kicker">Game over</p>
-          <h1 class="fb-title">Final scores</h1>
-          <p class="fb-scoreboard" id="fb-go-scores"></p>
-          <p class="fb-deck fb-deck--big" id="fb-go-winner"></p>
-          <a href="fishbowl.html" class="btn-primary fb-btn-pill">Play again</a>
+      <section id="fb-game-over" class="fb-screen fb-screen--water" aria-label="Game over">
+        <div class="fb-fishbowl-ui">
+          <span class="fb-bubble-wordmark fb-bubble-wordmark--win" aria-hidden="true">WINNERS</span>
+          <p class="fb-go-klaxon" id="fb-go-winner">TEAM A WINS!</p>
+          <p class="fb-scores-dark fb-scores-orange" id="fb-go-scores">TEAM A: 0 · TEAM B: 0</p>
+          <img class="fb-winner-carp" id="fb-go-illu" src="assets/fishbowl/WINNER.svg" alt="" width="500" height="500" />
+          <a href="fishbowl.html" class="fb-orange-btn" id="fb-play-again">PLAY AGAIN</a>
         </div>
       </section>
     </div>
 
     <nav class="bottom-nav visible" aria-label="Main">
-      <a class="bottom-nav-link" href="index.html">Home</a>
-      <a class="bottom-nav-link" href="fishbowl.html">New game</a>
-      <a class="bottom-nav-link" href="choose-game.html">New category</a>
-      <span class="nav-timer" id="nav-timer" role="status" aria-live="polite">—:—</span>
+      <a href="index.html" class="bottom-nav-icon" aria-label="Line Laughs home">
+        <img src="assets/navigation/Home.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <a href="choose-game.html" class="bottom-nav-icon" aria-label="Pick a game">
+        <img src="assets/navigation/new%20game.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <a href="fishbowl.html" class="bottom-nav-icon" aria-label="Restart Fishbowl">
+        <img src="assets/navigation/restart.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <div class="nav-timer-block" role="status" aria-live="polite">
+        <img
+          class="nav-timer__icon"
+          src="assets/navigation/timer.png"
+          alt=""
+          width="48"
+          height="48"
+          decoding="async"
+          aria-hidden="true"
+        />
+        <span class="nav-timer" id="nav-timer">—:—</span>
+      </div>
     </nav>
 
     <script src="timer-nav.js"></script>
+    <script src="game-brand.js"></script>
     <script>
       (function () {
         var ROUNDS = [
-          {
-            round: 1,
-            title: "Describe",
-            rule: "Don’t say the word or a rhyme.",
-          },
-          { round: 2, title: "Charades", rule: "Act it out—no talking." },
-          { round: 3, title: "One word", rule: "Only one clue word." },
+          { round: 1, title: "Describe", key: "DESCRIBE", rule: "Don’t say the word or a rhyme." },
+          { round: 2, title: "Charades", key: "CHARADES", rule: "Act it out—no talking." },
+          { round: 3, title: "One word", key: "ONE WORD", rule: "Only one clue word." }
         ];
-
+        var ROUND_PASS = [
+          { a: "ROUND ONE:", b: "DESCRIBE" },
+          { a: "ROUND TWO:", b: "CHARADES" },
+          { a: "ROUND THREE:", b: "ONE WORD" }
+        ];
+        var ROUND_RULES = [
+          [
+            "ONLY GUESS WHEN YOUR TEAMMATE IS GOING!",
+            "TEAM A STARTS!",
+            "DESCRIBE THE WORD! NO RHYMING OR SAYING THE WORD!",
+            "60 SECONDS"
+          ],
+          [
+            "ONLY GUESS WHEN YOUR TEAMMATE IS GOING!",
+            "ACT IT OUT!",
+            "NO NOISES OR TALKING!",
+            "SAME WORDS!"
+          ],
+          [
+            "ONLY GUESS WHEN YOUR TEAMMATE IS GOING!",
+            "ONE WORD ONLY!",
+            "UM COUNTS AS A WORD!",
+            "SAME WORDS!"
+          ]
+        ];
         var players = [];
         var allWords = [];
         var nounIndex = 0;
@@ -189,13 +261,14 @@
         function $(id) {
           return document.getElementById(id);
         }
-
+        function fishSrcForIndex(i) {
+          return "assets/fishbowl/characters/fishbowl" + ((i % 9) + 1) + ".svg";
+        }
         function showScreen(id) {
           document.querySelectorAll(".fb-screen").forEach(function (el) {
             el.classList.toggle("active", el.id === id);
           });
         }
-
         function shuffle(arr) {
           var a = arr.slice();
           var i;
@@ -207,14 +280,12 @@
           }
           return a;
         }
-
         function clearTimer() {
           if (timerId) {
             clearInterval(timerId);
             timerId = null;
           }
         }
-
         function buildTeams() {
           players = [];
           var i;
@@ -229,27 +300,56 @@
           listA.innerHTML = "";
           listB.innerHTML = "";
           for (i = 0; i < players.length; i++) {
-            var li = document.createElement("li");
-            li.textContent = players[i].name;
-            if (players[i].team === "A") listA.appendChild(li);
-            else listB.appendChild(li);
+            var pair = document.createElement("div");
+            pair.className = "fb-team-pair";
+            var im = document.createElement("img");
+            im.src = fishSrcForIndex(i);
+            im.alt = "";
+            im.width = 200;
+            im.height = 200;
+            var sp = document.createElement("span");
+            sp.textContent = players[i].name;
+            pair.appendChild(im);
+            pair.appendChild(sp);
+            if (players[i].team === "A") listA.appendChild(pair);
+            else listB.appendChild(pair);
           }
         }
-
+        function setReadyScreen(ri) {
+          var p = ROUND_PASS[ri];
+          $("fb-ready-t1").textContent = p.a;
+          $("fb-ready-t2").textContent = p.b;
+          var rules = ROUND_RULES[ri];
+          var ol = $("fb-ready-rules-ol");
+          ol.innerHTML = "";
+          for (var j = 0; j < rules.length; j++) {
+            var li = document.createElement("li");
+            li.textContent = rules[j];
+            ol.appendChild(li);
+          }
+          var sc = $("fb-ready-scores");
+          if (ri > 0) {
+            sc.hidden = false;
+            sc.classList.add("fb-scores-dark");
+            sc.textContent = "TEAM A: " + scores.A + "  TEAM B: " + scores.B;
+          } else {
+            sc.hidden = true;
+            sc.textContent = "";
+          }
+        }
         function startNounEntry() {
           nounIndex = 0;
           fillNounScreen();
           showScreen("fb-nouns");
         }
-
         function fillNounScreen() {
           $("fb-nouns-player-name").textContent = players[nounIndex].name;
+          $("fb-nouns-fish").src = fishSrcForIndex(nounIndex);
           $("fb-noun-person").value = "";
           $("fb-noun-place").value = "";
           $("fb-noun-thing").value = "";
           $("fb-noun-person").focus();
         }
-
         function saveNounsAndAdvance() {
           var p = $("fb-noun-person").value.trim();
           var pl = $("fb-noun-place").value.trim();
@@ -266,40 +366,27 @@
             fillNounScreen();
           }
         }
-
         function showReadyForGame() {
           roundIndex = 0;
           turnPlayerIndex = 0;
-          $("fb-ready-kicker").textContent = "Ready";
-          $("fb-ready-title").textContent = "Start playing";
-          $("fb-ready-body").innerHTML =
-            "Team A starts. Round 1: <strong>Describe</strong>—no saying the word or rhymes. " +
-            turnSeconds +
-            "s per turn. Time’s up? Word on screen goes back in the bowl.";
-          $("fb-ready-scores").textContent = "Team A: 0 · Team B: 0";
-          $("fb-ready-btn").textContent = "Start round 1 — Describe";
+          setReadyScreen(0);
           showScreen("fb-ready");
         }
-
         function startRound() {
-          var r = ROUNDS[roundIndex];
           pile = shuffle(allWords.slice());
           activeWord = null;
           turnPlayerIndex = 0;
           showPassScreen();
         }
-
         function showPassScreen() {
           var p = players[turnPlayerIndex];
           $("fb-pass-name").textContent = p.name;
-          $("fb-pass-hint").innerHTML =
-            "<strong>" +
-            ROUNDS[roundIndex].title +
-            "</strong> — " +
-            ROUNDS[roundIndex].rule;
+          $("fb-pass-fish").src = fishSrcForIndex(turnPlayerIndex);
+          var L = ROUND_PASS[roundIndex];
+          $("fb-pass-line1").textContent = L.a;
+          $("fb-pass-line2").textContent = L.b;
           showScreen("fb-pass");
         }
-
         function beginTurnTimer() {
           if (pile.length === 0) {
             endRound();
@@ -309,10 +396,7 @@
           timeLeft = turnSeconds;
           $("fb-timer").textContent = String(timeLeft);
           var r = ROUNDS[roundIndex];
-          $("fb-turn-round-kicker").textContent = "Round " + r.round;
-          $("fb-turn-round-label").textContent = r.title;
-          $("fb-turn-meta").textContent =
-            players[turnPlayerIndex].name + " · Team " + players[turnPlayerIndex].team;
+          $("fb-turn-mode").textContent = r.key;
           $("fb-turn-rule").textContent = r.rule;
           showScreen("fb-turn");
           drawWordIfNeeded();
@@ -327,7 +411,6 @@
             }
           }, 1000);
         }
-
         function drawWordIfNeeded() {
           if (activeWord !== null) return;
           if (pile.length === 0) {
@@ -337,14 +420,12 @@
           activeWord = pile.shift();
           $("fb-word-text").textContent = activeWord;
         }
-
         function returnActiveToPile() {
           if (activeWord !== null) {
             pile.push(activeWord);
             activeWord = null;
           }
         }
-
         function endTurn(fromTimer) {
           clearTimer();
           returnActiveToPile();
@@ -360,7 +441,6 @@
           }
           showPassScreen();
         }
-
         function onGotIt() {
           if (activeWord === null) return;
           var team = players[turnPlayerIndex].team;
@@ -373,7 +453,6 @@
           }
           drawWordIfNeeded();
         }
-
         function onSkip() {
           returnActiveToPile();
           activeWord = null;
@@ -384,61 +463,45 @@
           }
           drawWordIfNeeded();
         }
-
         function endRound() {
           clearTimer();
           activeWord = null;
           var r = ROUNDS[roundIndex];
-          $("fb-re-kicker").textContent = "Round " + r.round + " · " + r.title;
-          $("fb-re-ended-round").textContent = String(r.round);
-          $("fb-re-scores").textContent =
-            "Team A: " + scores.A + " · Team B: " + scores.B;
+          $("fb-re-kicker").textContent = "ROUND " + r.round + " · " + r.title;
+          $("fb-re-end-title").textContent = "ROUND " + r.round + " — DONE";
+          $("fb-re-scores").textContent = "TEAM A: " + scores.A + " · TEAM B: " + scores.B;
           if (roundIndex >= 2) {
-            $("fb-re-next").textContent = "All slips played—see who won.";
-            $("fb-round-next").textContent = "See results";
+            $("fb-re-next").textContent = "ALL SLIPS PLAYED—SEE THE WINNER";
+            $("fb-round-next").textContent = "RESULTS";
           } else {
-            $("fb-re-next").innerHTML =
-              "Slips back in the bowl for <strong>" +
-              ROUNDS[roundIndex + 1].title +
-              "</strong>—same words, new rules.";
-            $("fb-round-next").textContent = "Next round";
+            $("fb-re-next").textContent = "SAME WORDS, NEXT ROUND: " + ROUNDS[roundIndex + 1].key;
+            $("fb-round-next").textContent = "CONTINUE";
           }
           showScreen("fb-round-end");
         }
-
         function roundNextClick() {
           if (roundIndex >= 2) {
             showGameOver();
             return;
           }
           roundIndex++;
-          $("fb-ready-kicker").textContent = "Next round";
-          $("fb-ready-title").textContent = "Round " + ROUNDS[roundIndex].round + " — " + ROUNDS[roundIndex].title;
-          $("fb-ready-body").innerHTML =
-            "<strong>" +
-            ROUNDS[roundIndex].title +
-            "</strong>: " +
-            ROUNDS[roundIndex].rule +
-            " Slips back in; reshuffle, same words.";
-          $("fb-ready-scores").textContent =
-            "Team A: " + scores.A + " · Team B: " + scores.B;
-          $("fb-ready-btn").textContent = "Start round " + ROUNDS[roundIndex].round + " — " + ROUNDS[roundIndex].title;
+          setReadyScreen(roundIndex);
           showScreen("fb-ready");
         }
-
         function showGameOver() {
-          $("fb-go-scores").textContent =
-            "Team A: " + scores.A + " · Team B: " + scores.B;
-          var win =
-            scores.A === scores.B
-              ? "It’s a tie!"
-              : scores.A > scores.B
-                ? "Team A wins!"
-                : "Team B wins!";
+          var sc = "TEAM A: " + scores.A + "  TEAM B: " + scores.B;
+          $("fb-go-scores").textContent = sc;
+          var win;
+          if (scores.A === scores.B) {
+            win = "IT’S A TIE!";
+          } else if (scores.A > scores.B) {
+            win = "TEAM A WINS!";
+          } else {
+            win = "TEAM B WINS!";
+          }
           $("fb-go-winner").textContent = win;
           showScreen("fb-game-over");
         }
-
         $("fb-count-next").addEventListener("click", function () {
           var n = parseInt($("fb-player-count").value, 10);
           if (!Number.isFinite(n) || n < 4) {
@@ -449,44 +512,41 @@
           wrap.innerHTML = "";
           var i;
           for (i = 0; i < n; i++) {
-            var lab = document.createElement("label");
-            lab.className = "fb-label";
-            lab.setAttribute("for", "fb-name-" + i);
-            lab.textContent = "Player " + (i + 1);
+            var row = document.createElement("div");
+            row.className = "fb-name-row";
             var inp = document.createElement("input");
             inp.id = "fb-name-" + i;
-            inp.className = "fb-input fb-input-dark";
+            inp.className = "fb-dark-field fb-name-field";
             inp.type = "text";
             inp.autocomplete = "name";
-            inp.placeholder = "Name";
-            inp.classList.add("fb-name-field");
-            wrap.appendChild(lab);
-            wrap.appendChild(inp);
+            inp.placeholder = "TYPE HERE";
+            var img = document.createElement("img");
+            img.className = "fb-name-fish";
+            img.src = fishSrcForIndex(i);
+            img.alt = "";
+            img.width = 200;
+            img.height = 200;
+            row.appendChild(inp);
+            row.appendChild(img);
+            wrap.appendChild(row);
           }
           showScreen("fb-names");
         });
-
         $("fb-names-next").addEventListener("click", function () {
           buildTeams();
           allWords = [];
           showScreen("fb-teams");
         });
-
         $("fb-teams-next").addEventListener("click", function () {
           startNounEntry();
         });
-
         $("fb-nouns-next").addEventListener("click", saveNounsAndAdvance);
-
         $("fb-ready-btn").addEventListener("click", function () {
           startRound();
         });
-
         $("fb-pass-ok").addEventListener("click", beginTurnTimer);
-
         $("fb-got-it").addEventListener("click", onGotIt);
         $("fb-skip").addEventListener("click", onSkip);
-
         $("fb-round-next").addEventListener("click", roundNextClick);
       })();
     </script>

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="tk-mokoko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Choose a game — Line Laughs</title>
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -12,21 +14,50 @@
       <section id="games" class="game-screen screen active" aria-label="Choose a game">
         <h2 class="games-heading">Choose your game</h2>
         <div class="games-grid" role="group" aria-label="Games">
-          <a href="fishbowl.html" class="game-tile" data-game="fishbowl">Fishbowl</a>
-          <a href="imposter.html" class="game-tile" data-game="imposter">Imposter</a>
-          <a href="trivia.html" class="game-tile" data-game="trivia">Trivia</a>
-          <a href="telestrations.html" class="game-tile" data-game="telestrations">Telestrations</a>
-          <a href="conversation.html" class="game-tile" data-game="conversation">Conversation topics</a>
-          <a href="wild-words.html" class="game-tile" data-game="wild-words">Wild Words</a>
+          <a href="fishbowl.html" class="game-tile" data-game="fishbowl" aria-label="Fishbowl">
+            <img class="game-tile__icon" src="assets/game_icons/fishbowl.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
+          <a href="imposter.html" class="game-tile" data-game="imposter" aria-label="Imposter">
+            <img class="game-tile__icon" src="assets/game_icons/imposter.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
+          <a href="trivia.html" class="game-tile" data-game="trivia" aria-label="Smarty Party">
+            <img class="game-tile__icon" src="assets/game_icons/party.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
+          <a href="telestrations.html" class="game-tile" data-game="telestrations" aria-label="Silly Sketch">
+            <img class="game-tile__icon" src="assets/game_icons/sketch.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
+          <a href="conversation.html" class="game-tile" data-game="conversation" aria-label="Spill the Beans">
+            <img class="game-tile__icon" src="assets/game_icons/beans.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
+          <a href="wild-words.html" class="game-tile" data-game="wild-words" aria-label="Wild Words">
+            <img class="game-tile__icon" src="assets/game_icons/words.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
         </div>
       </section>
     </div>
 
     <nav class="bottom-nav visible" aria-label="Main">
-      <a class="bottom-nav-link" href="index.html">Home</a>
-      <a class="bottom-nav-link" href="choose-game.html">New game</a>
-      <a class="bottom-nav-link" href="choose-game.html">New category</a>
-      <span class="nav-timer" id="nav-timer" role="status" aria-live="polite">—:—</span>
+      <a href="index.html" class="bottom-nav-icon" aria-label="Line Laughs home">
+        <img src="assets/navigation/Home.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <a href="choose-game.html" class="bottom-nav-icon" aria-label="Pick a game">
+        <img src="assets/navigation/new%20game.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <a href="index.html" class="bottom-nav-icon" aria-label="Start over from Line Laughs">
+        <img src="assets/navigation/restart.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <div class="nav-timer-block" role="status" aria-live="polite">
+        <img
+          class="nav-timer__icon"
+          src="assets/navigation/timer.png"
+          alt=""
+          width="48"
+          height="48"
+          decoding="async"
+          aria-hidden="true"
+        />
+        <span class="nav-timer" id="nav-timer">—:—</span>
+      </div>
     </nav>
 
     <script src="timer-nav.js"></script>

@@ -1,33 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="tk-mokoko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Line Laughs</title>
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div id="app">
       <section id="splash" class="screen active" aria-label="Welcome" role="button" tabindex="0">
-        <h1 class="splash-title">Line Laughs</h1>
-        <p class="splash-hint">Tap to continue</p>
+        <h1 class="splash-title tk-comba" aria-label="Line Laughs">
+          <span class="splash-title__tile splash-title__c1">L</span><span class="splash-title__tile splash-title__c2">I</span><span class="splash-title__tile splash-title__c3">N</span><span class="splash-title__tile splash-title__c4">E</span><span class="splash-title__space" aria-hidden="true"> </span><span class="splash-title__tile splash-title__c1">L</span><span class="splash-title__tile splash-title__c2">A</span><span class="splash-title__tile splash-title__c3">U</span><span class="splash-title__tile splash-title__c4">G</span><span class="splash-title__tile splash-title__c1">H</span><span class="splash-title__tile splash-title__c2">S</span>
+        </h1>
       </section>
 
       <section id="line-time" class="screen" aria-label="Line wait time">
-        <div>
+        <div class="line-time-stack">
           <p class="line-time-prompt">How long is your line?</p>
           <div class="line-time-input-wrap">
             <label class="visually-hidden" for="minutes-input">Minutes</label>
             <input
               id="minutes-input"
               class="line-time-input"
-              type="number"
+              type="text"
               inputmode="numeric"
-              min="1"
-              max="999"
+              maxlength="3"
               placeholder="Minutes…"
               autocomplete="off"
+              spellcheck="false"
             />
           </div>
           <div class="line-time-actions">
@@ -36,50 +39,29 @@
             </button>
           </div>
         </div>
-        <div class="coaster-wrap coaster-root" aria-hidden="true" data-coaster-mode="idle">
-          <svg class="coaster-svg" viewBox="0 0 400 118" xmlns="http://www.w3.org/2000/svg">
-            <line
-              class="coaster-ground-line"
-              x1="0"
-              y1="104"
-              x2="400"
-              y2="104"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.25"
-              stroke-opacity="0.35"
-              stroke-linecap="round"
-            />
-            <g class="coaster-supports" fill="none" stroke="currentColor" stroke-linecap="round"></g>
-            <path
-              class="coaster-rail-path"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M 6 99 C 28 99 38 76 55 70 C 72 64 88 92 108 100 C 128 108 145 78 168 54 C 192 32 208 44 228 78 C 246 100 260 92 278 50 C 298 18 318 16 342 52 C 364 82 382 88 395 90"
-            />
-            <g class="coaster-car" transform="translate(6,99)">
-              <g class="coaster-car-body">
-                <rect x="-11" y="-12" width="22" height="11" rx="2" fill="currentColor" />
-                <circle cx="-4.5" cy="2" r="3.25" fill="currentColor" />
-                <circle cx="5.5" cy="2" r="3.25" fill="currentColor" />
-              </g>
-            </g>
-          </svg>
-        </div>
       </section>
 
       <section id="games" class="screen" aria-label="Choose a game">
         <h2 class="games-heading">Choose your game</h2>
         <div class="games-grid" role="group" aria-label="Games">
-          <a href="fishbowl.html" class="game-tile" data-game="fishbowl">Fishbowl</a>
-          <a href="imposter.html" class="game-tile" data-game="imposter">Imposter</a>
-          <a href="trivia.html" class="game-tile" data-game="trivia">Trivia</a>
-          <a href="telestrations.html" class="game-tile" data-game="telestrations">Telestrations</a>
-          <a href="conversation.html" class="game-tile" data-game="conversation">Conversation topics</a>
-          <a href="wild-words.html" class="game-tile" data-game="wild-words">Wild Words</a>
+          <a href="fishbowl.html" class="game-tile" data-game="fishbowl" aria-label="Fishbowl">
+            <img class="game-tile__icon" src="assets/game_icons/fishbowl.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
+          <a href="imposter.html" class="game-tile" data-game="imposter" aria-label="Imposter">
+            <img class="game-tile__icon" src="assets/game_icons/imposter.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
+          <a href="trivia.html" class="game-tile" data-game="trivia" aria-label="Smarty Party">
+            <img class="game-tile__icon" src="assets/game_icons/party.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
+          <a href="telestrations.html" class="game-tile" data-game="telestrations" aria-label="Silly Sketch">
+            <img class="game-tile__icon" src="assets/game_icons/sketch.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
+          <a href="conversation.html" class="game-tile" data-game="conversation" aria-label="Spill the Beans">
+            <img class="game-tile__icon" src="assets/game_icons/beans.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
+          <a href="wild-words.html" class="game-tile" data-game="wild-words" aria-label="Wild Words">
+            <img class="game-tile__icon" src="assets/game_icons/words.jpg" alt="" width="512" height="512" decoding="async" />
+          </a>
         </div>
         <div class="coaster-wrap coaster-root" aria-hidden="true" data-coaster-mode="timer">
           <svg class="coaster-svg" viewBox="0 0 400 118" xmlns="http://www.w3.org/2000/svg">
@@ -90,16 +72,13 @@
               x2="400"
               y2="104"
               fill="none"
-              stroke="currentColor"
               stroke-width="1.25"
-              stroke-opacity="0.35"
               stroke-linecap="round"
             />
-            <g class="coaster-supports" fill="none" stroke="currentColor" stroke-linecap="round"></g>
+            <g class="coaster-supports" fill="none" stroke-linecap="round"></g>
             <path
               class="coaster-rail-path"
               fill="none"
-              stroke="currentColor"
               stroke-width="8"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -118,10 +97,27 @@
     </div>
 
     <nav id="bottom-nav" class="bottom-nav" aria-label="Main">
-      <button type="button" id="nav-home">Home</button>
-      <button type="button" id="nav-new-game">New game</button>
-      <button type="button" id="nav-new-category">New category</button>
-      <span class="nav-timer" id="nav-timer" role="status" aria-live="polite">—:—</span>
+      <a href="index.html" class="bottom-nav-icon" aria-label="Line Laughs home">
+        <img src="assets/navigation/Home.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <a href="choose-game.html" class="bottom-nav-icon" aria-label="Pick a game">
+        <img src="assets/navigation/new%20game.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <a href="index.html" class="bottom-nav-icon" aria-label="Start over from Line Laughs">
+        <img src="assets/navigation/restart.png" alt="" width="56" height="56" decoding="async" />
+      </a>
+      <div class="nav-timer-block" role="status" aria-live="polite">
+        <img
+          class="nav-timer__icon"
+          src="assets/navigation/timer.png"
+          alt=""
+          width="48"
+          height="48"
+          decoding="async"
+          aria-hidden="true"
+        />
+        <span class="nav-timer" id="nav-timer">—:—</span>
+      </div>
     </nav>
 
     <script>
@@ -132,9 +128,6 @@
         var bottomNav = document.getElementById("bottom-nav");
         var minutesInput = document.getElementById("minutes-input");
         var lineTimeSubmit = document.getElementById("line-time-submit");
-        var navHome = document.getElementById("nav-home");
-        var navNewGame = document.getElementById("nav-new-game");
-        var navNewCategory = document.getElementById("nav-new-category");
         var navTimer = document.getElementById("nav-timer");
 
         var totalSeconds = 0;
@@ -250,7 +243,7 @@
               line.setAttribute("y1", p.y);
               line.setAttribute("x2", p.x);
               line.setAttribute("y2", groundY);
-              line.setAttribute("stroke-width", "2.5");
+              line.setAttribute("stroke-width", "5");
               group.appendChild(line);
             }
             group.setAttribute("data-supports-ok", "1");
@@ -330,9 +323,15 @@
           });
         }
 
+        function lineTimeMinutesValue() {
+          var digits = String(minutesInput.value).replace(/\D/g, "");
+          var v = parseInt(digits, 10);
+          return Number.isFinite(v) ? v : NaN;
+        }
+
         function syncSubmitEnabled() {
-          var v = parseInt(minutesInput.value, 10);
-          lineTimeSubmit.disabled = !(Number.isFinite(v) && v > 0);
+          var v = lineTimeMinutesValue();
+          lineTimeSubmit.disabled = !(Number.isFinite(v) && v > 0 && v <= 999);
         }
 
         function advanceFromSplash() {
@@ -347,29 +346,18 @@
           }
         });
 
-        minutesInput.addEventListener("input", syncSubmitEnabled);
+        minutesInput.addEventListener("input", function () {
+          var d = String(minutesInput.value).replace(/\D/g, "").slice(0, 3);
+          if (minutesInput.value !== d) minutesInput.value = d;
+          syncSubmitEnabled();
+        });
 
         lineTimeSubmit.addEventListener("click", function () {
-          var v = parseInt(minutesInput.value, 10);
+          var v = lineTimeMinutesValue();
           if (!Number.isFinite(v) || v <= 0) return;
           totalSeconds = Math.min(v, 999) * 60;
           goGames();
           startTimer();
-        });
-
-        navHome.addEventListener("click", goSplash);
-
-        navNewGame.addEventListener("click", function () {
-          goGames();
-          if (totalSeconds > 0) startTimer();
-          else {
-            updateTimerLabel();
-            updateCoasters();
-          }
-        });
-
-        navNewCategory.addEventListener("click", function () {
-          window.location.href = "choose-game.html";
         });
 
         syncSubmitEnabled();
