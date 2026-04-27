@@ -15,13 +15,15 @@
     <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="fishbowl.css" />
+    <link rel="stylesheet" href="conversation.css" />
   </head>
   <body class="conversation-body">
     <div id="app" class="conversation-app">
       <section
         id="game-brand-splash"
-        class="fb-screen game-splash-full active"
-        data-next="conv-main"
+        class="fb-screen fb-splash game-splash-full active"
+        data-next="conv-welcome"
         data-splash-autoadvance="3000"
         role="button"
         aria-label="Spill the Beans, tap or wait a few seconds to start"
@@ -37,13 +39,28 @@
         />
       </section>
 
-      <section id="conv-main" class="fb-screen" aria-label="Conversation topics">
-        <div class="fb-card fb-card--celebrate">
-          <p class="fb-kicker">Line Laughs</p>
-          <h1 class="fb-title">Conversation topics</h1>
-          <p class="fb-deck">A random prompt to get people talking. Read it out, then hit next when you’re ready for another.</p>
-          <p id="conv-topic" class="conv-topic" role="status"></p>
-          <button type="button" class="btn-primary fb-btn-pill" id="conv-next">Next topic</button>
+      <section id="conv-welcome" class="fb-screen fb-screen--water" aria-label="Welcome">
+        <div class="fb-fishbowl-ui fb-rules-stack">
+          <h2 class="fb-fb-h1 fb-rules-title">WELCOME</h2>
+          <p class="fb-conv-welcome-deck">ENJOY RANDOM CONVERSATION STARTERS<br />TO KILL TIME AND<br />GET DEEP!</p>
+          <button type="button" class="fb-orange-btn" id="conv-welcome-next">CONTINUE</button>
+        </div>
+      </section>
+
+      <section
+        id="conv-main"
+        class="fb-screen fb-screen--water conv-main--play"
+        aria-label="Conversation topics"
+      >
+        <div class="conv-play-layout">
+          <div class="fb-fishbowl-ui fb-conv-main-stack">
+            <h2 class="fb-fb-h1 fb-rules-title" id="conv-main-heading">TOPICS</h2>
+            <p id="conv-topic" class="fb-conv-topic-para" role="status" aria-live="polite"></p>
+            <button type="button" class="fb-orange-btn" id="conv-next">NEXT TOPIC</button>
+          </div>
+          <div class="conv-bean-tray" aria-label="Topics completed">
+            <div id="conv-bean-grid" class="conv-bean-grid" role="list"></div>
+          </div>
         </div>
       </section>
     </div>
@@ -145,6 +162,12 @@
         var order = [];
         var idx = 0;
 
+        function showScreen(id) {
+          document.querySelectorAll("#app .fb-screen").forEach(function (el) {
+            el.classList.toggle("active", el.id === id);
+          });
+        }
+
         function shuffle(arr) {
           var a = arr.slice();
           var i;
@@ -162,7 +185,7 @@
           idx = 0;
         }
 
-        function nextTopic() {
+        function advanceTopic() {
           if (order.length === 0 || idx >= order.length) {
             refill();
           }
@@ -170,10 +193,31 @@
           idx++;
         }
 
-        document.getElementById("conv-next").addEventListener("click", nextTopic);
+        function addBean() {
+          var g = document.getElementById("conv-bean-grid");
+          if (!g) return;
+          var img = document.createElement("img");
+          img.className = "conv-bean-icon";
+          img.src = "assets/spill_the_beans/bean.svg";
+          img.alt = "";
+          img.setAttribute("width", "270");
+          img.setAttribute("height", "585");
+          img.decoding = "async";
+          img.setAttribute("role", "listitem");
+          g.appendChild(img);
+        }
+
+        document.getElementById("conv-next").addEventListener("click", function () {
+          addBean();
+          advanceTopic();
+        });
+
+        document.getElementById("conv-welcome-next").addEventListener("click", function () {
+          showScreen("conv-main");
+        });
 
         refill();
-        nextTopic();
+        advanceTopic();
       })();
     </script>
   </body>

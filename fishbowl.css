@@ -246,7 +246,7 @@ button.fb-orange-btn {
   width: 100%;
   max-width: 22.5rem;
   /* Whole block shifts down; spacing inside the block stays the same */
-  margin-top: clamp(5.25rem, 47vh, 12rem);
+  margin-top: clamp(6rem, 50vh, 13rem);
   padding: 0 0.2rem;
 }
 #fb-count .fb-fishbowl-ui--count .fb-fb-sub {
@@ -293,6 +293,15 @@ button.fb-orange-btn {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+/* Fishbowl names: slightly more space between rows; content sits lower than the water background */
+#fb-names .fb-fishbowl-ui.fb-fishbowl-ui--offset {
+  margin-top: clamp(6.25rem, 49vh, 12.75rem);
+}
+
+#fb-names .fb-names-fields {
+  gap: 0.75rem;
 }
 
 .fb-name-row {
@@ -809,4 +818,78 @@ button.fb-orange-btn {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* —— Setup “rules” step (other Line Laughs games, not core Fishbowl turn flow) —— */
+.fb-rules-stack {
+  width: 100%;
+  max-width: 17.25rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-height: 0;
+  margin-top: clamp(8.5rem, 45vh, 16.5rem);
+  /* Inset from edge art on water backgrounds */
+  padding: 0 1.1rem 1.25rem;
+  box-sizing: border-box;
+}
+
+/* Main screen title: clearly above list + subheads */
+h2.fb-fb-h1.fb-rules-title,
+.fb-rules-stack .fb-rules-title {
+  font-size: clamp(1.55rem, 5.4vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.75rem;
+  max-width: 15.5rem;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+ol.fb-rules-ol {
+  list-style: decimal;
+  list-style-position: outside;
+  text-align: left;
+  width: 100%;
+  max-width: 15.25rem;
+  margin: 0.35rem 0 1.1rem;
+  padding-left: 1.2rem;
+  font-family: var(--font-support);
+  font-size: clamp(0.78rem, 2.5vw, 0.95rem);
+  font-weight: 600;
+  color: #0a0a0a;
+  line-height: 1.45;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+ol.fb-rules-ol li {
+  margin-bottom: 0.5rem;
+}
+
+ol.fb-rules-ol li:last-child {
+  margin-bottom: 0;
+}
+
+.fb-rules-question {
+  width: 100%;
+  max-width: 15.5rem;
+  text-align: center;
+  font-family: var(--font-support);
+  font-size: clamp(1.05rem, 3.4vw, 1.3rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: #0a0a0a;
+  margin: 0.85rem 0 0.5rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.fb-rules-stack .fb-dark-field#tr-num-questions {
+  max-width: 15.25rem;
+  width: 100%;
+  align-self: center;
+  box-sizing: border-box;
 }

@@ -1,0 +1,428 @@
+/* Imposter — shared Fishbowl-style UI (uses fishbowl.css) + this app’s art */
+
+/* ---- Full-bleed splash (mobile: fixed so art runs under the status bar; outside #app safe-area padding) ---- */
+@media (max-width: 480px), (max-height: 500px) {
+  #app.imposter-app #game-brand-splash.game-splash-full.active {
+    position: fixed;
+    inset: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 200;
+    width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+    margin: 0;
+    box-sizing: border-box;
+  }
+}
+
+#app.imposter-app #game-brand-splash.game-splash-full .game-splash-full__img {
+  object-fit: cover;
+  object-position: center top;
+}
+
+#app.imposter-app #game-brand-splash:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ---- Water background (player count and any future .fb-screen--water) ---- */
+#app.imposter-app .fb-screen--water {
+  background: url("assets/imposter/imposter%20background.png") center top / cover no-repeat;
+  background-color: #d89aa8;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.9rem 1rem 0.5rem;
+}
+
+/* Player count: match fishbowl #fb-count (see fishbowl.css) */
+#imp-count.fb-screen--water {
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0;
+}
+
+#imp-count .fb-fishbowl-ui--count {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 22.5rem;
+  margin-top: clamp(6rem, 50vh, 13rem);
+  padding: 0 0.2rem;
+}
+
+#imp-count .fb-fishbowl-ui--count .fb-fb-sub {
+  margin-top: 0;
+}
+
+#imp-count .fb-fishbowl-ui--count #imp-player-count.fb-dark-field {
+  width: min(100%, 20rem);
+  max-width: 20rem;
+  box-sizing: border-box;
+  align-self: center;
+}
+
+#imp-count .fb-char-grid-9 {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 16.5rem;
+  margin-top: 1.9rem;
+  margin-bottom: 0.4rem;
+  padding: 0 0 0.15rem;
+}
+
+#imp-count .fb-fishbowl-ui input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+#imp-count .fb-fishbowl-ui input[type="number"]::-webkit-outer-spin-button,
+#imp-count .fb-fishbowl-ui input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Names (match fishbowl #fb-names: spacing + nudge) */
+#imp-names .fb-fishbowl-ui.fb-fishbowl-ui--offset {
+  margin-top: clamp(6.5rem, 50vh, 13rem);
+}
+
+#imp-names .fb-names-fields {
+  gap: 0.75rem;
+}
+
+/* ---- Rules: nudge block up (fishbowl default margin-top is large) ---- */
+#app.imposter-app #imp-rules .fb-rules-stack {
+  margin-top: clamp(6.5rem, 38vh, 14rem);
+}
+
+/* ---- Reveal-roles pass (imp-pass-start): hero header + larger art ---- */
+#app.imposter-app #imp-pass-start .ll-pass-eyebrow {
+  font-size: clamp(1.2rem, 3.5vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.12em;
+  margin: 0.45rem 0 0.2rem;
+}
+
+#app.imposter-app #imp-pass-start .ll-pass-eyebrow + .ll-pass-line {
+  margin-top: 0.3rem;
+}
+
+#app.imposter-app #imp-pass-start .ll-pass-line {
+  font-size: clamp(0.95rem, 2.9vw, 1.1rem);
+  margin: 0.35rem 0 0.5rem;
+}
+
+#app.imposter-app #imp-pass-start .ll-pass-hero {
+  width: min(84vw, 16.5rem);
+  max-height: min(48vh, 15.5rem);
+  margin: 0 auto 0.12rem;
+}
+
+#app.imposter-app #imp-pass-start .ll-pass-name {
+  margin: 0.02rem 0 0.5rem;
+}
+
+/* ---- Round turn pass: same art scale, two-line header ---- */
+#app.imposter-app #imp-pass-round .imp-round-kicker {
+  font-size: clamp(1.1rem, 3.1vw, 1.5rem);
+  line-height: 1.2;
+  margin: 0.2rem 0 0.2rem;
+}
+
+#app.imposter-app #imp-pass-round .imp-round-subline {
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
+}
+
+#app.imposter-app #imp-pass-round .ll-pass-eyebrow + .ll-pass-line {
+  margin-top: 0.2rem;
+}
+
+#app.imposter-app #imp-pass-round .ll-pass-hero {
+  width: min(84vw, 16.5rem);
+  max-height: min(48vh, 15.5rem);
+  margin: 0.15rem auto 0.1rem;
+}
+
+#app.imposter-app #imp-pass-round .ll-pass-line#imp-round-say-prompt {
+  margin: 0.4rem 0 0.45rem;
+}
+
+/* ---- Role card (after pass / REVEAL) — single header + plain black box ---- */
+#app.imposter-app .imp-card-reveal-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 22.5rem;
+  margin: 0 auto;
+  margin-top: clamp(7rem, 42vh, 15rem);
+  padding: 0 0.2rem 1rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+#app.imposter-app .imp-card-reveal-header {
+  font-family: var(--font-support);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 4.5vw, 2.1rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0 0 0.4rem;
+}
+
+#app.imposter-app .imp-card-reveal-label {
+  font-family: var(--font-support);
+  font-weight: 800;
+  font-size: clamp(0.8rem, 2.1vw, 0.95rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0 0 0.4rem;
+}
+
+#app.imposter-app .imp-card-reveal-label:empty {
+  display: none;
+}
+
+#app.imposter-app #imp-card-reveal .imp-card-wordbox.fishbowl-word-card {
+  background: #0a0a0a !important;
+  border: 2px solid #0a0a0a !important;
+  border-radius: 4px;
+  box-shadow: none !important;
+  min-height: 6.5rem;
+  margin-bottom: 0;
+  padding: 1.15rem 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 22rem;
+}
+
+#app.imposter-app #imp-card-reveal .imp-card-wordbox .fishbowl-word-card__shine {
+  display: none;
+}
+
+#app.imposter-app #imp-card-reveal .imp-card-wordbox .fishbowl-word-text {
+  color: #fff !important;
+  text-shadow: none;
+  font-size: clamp(1.1rem, 3.2vw, 1.45rem) !important;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+}
+
+#app.imposter-app #imp-card-reveal .imp-card-wordbox .fishbowl-word-text.imp-hint-text {
+  color: #fff !important;
+  font-size: clamp(1.05rem, 3vw, 1.35rem) !important;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+}
+
+#app.imposter-app .imp-card-reveal-hint {
+  font-family: var(--font-support);
+  font-weight: 800;
+  font-size: clamp(0.8rem, 2.2vw, 0.95rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0.65rem 0 0;
+}
+
+#app.imposter-app .imp-card-reveal-wrap .fb-orange-btn#imp-reveal-done {
+  width: 100%;
+  max-width: 16rem;
+  margin-top: 1.65rem;
+}
+
+/* ---- Round interstitial: large title + BEGIN — sit higher (align with other water steps, not vertically centered) ---- */
+#app.imposter-app #imp-round-intro.active.fb-screen--water {
+  justify-content: flex-start;
+}
+
+#app.imposter-app .imp-round-intro-ui {
+  margin-top: clamp(8rem, 42vh, 14.5rem);
+  width: 100%;
+  max-width: 22.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+#app.imposter-app #imp-round-intro .fb-fb-h1#imp-round-intro-title {
+  font-size: clamp(2.5rem, 9vw, 3.5rem) !important;
+  line-height: 1.05;
+  margin: 0;
+}
+
+#app.imposter-app #imp-round-intro .fb-orange-btn#imp-round-intro-btn {
+  max-width: 11.25rem;
+  width: 100%;
+}
+
+/* ---- Discuss + timer: titles stay high; timer + button sit tighter together below ---- */
+#app.imposter-app .imp-discuss-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 22.5rem;
+  margin: 0 auto;
+  margin-top: clamp(9.5rem, 52vh, 19rem);
+  padding: 0 0.75rem 1.25rem;
+  box-sizing: border-box;
+  flex: 0 1 auto;
+  gap: 0.35rem;
+}
+
+#app.imposter-app .imp-discuss-titles {
+  flex: 0 0 auto;
+}
+
+#app.imposter-app .imp-discuss-h2 {
+  font-family: var(--font-support);
+  font-weight: 800;
+  font-size: clamp(1.15rem, 3.5vw, 1.45rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0 0 0.4rem;
+}
+
+#app.imposter-app .imp-discuss-sub {
+  font-family: var(--font-support);
+  font-weight: 800;
+  font-size: clamp(0.9rem, 2.6vw, 1.1rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0 0 0;
+}
+
+#app.imposter-app .imp-discuss-timer {
+  font-family: var(--font-support);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 10vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: #0a0a0a;
+  margin: 0.65rem 0 0.15rem;
+  flex: 0 0 auto;
+  display: block;
+  min-height: 0;
+}
+
+#app.imposter-app .imp-discuss-inner .fb-orange-btn {
+  width: 100%;
+  max-width: 16rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex: 0 0 auto;
+}
+
+/* ---- Voting (black option buttons) ---- */
+#app.imposter-app .imp-vote-ui {
+  margin-top: clamp(8.25rem, 45vh, 16rem);
+  width: 100%;
+  max-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#app.imposter-app #imp-vote .ll-pass-eyebrow#imp-vote-title {
+  font-size: clamp(1.2rem, 3.4vw, 1.6rem);
+  line-height: 1.2;
+  margin: 0.35rem 0 0.2rem;
+}
+
+#app.imposter-app .imp-vote-hero {
+  width: min(78vw, 14.5rem);
+  max-height: min(40vh, 12rem);
+  margin-bottom: 0.45rem;
+}
+
+#app.imposter-app .imp-vote-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 18rem;
+  margin-top: 0.5rem;
+}
+
+#app.imposter-app .imp-vote-target-btn {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.85rem 1rem;
+  font-family: var(--font-support);
+  font-weight: 800;
+  font-size: clamp(0.82rem, 2.2vw, 0.95rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #fff;
+  background: #0a0a0a;
+  border: 2px solid #0a0a0a;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#app.imposter-app .imp-vote-target-btn:hover {
+  background: #1a1a1a;
+}
+
+#app.imposter-app .imp-vote-target-btn:focus-visible {
+  outline: 2px solid #0a0a0a;
+  outline-offset: 2px;
+}
+
+/* ---- Win screens (full-bleed SVG) — .active only, or display:flex wins over .fb-screen { display:none } and stacks every step */
+#app.imposter-app .imp-win-screen.active {
+  min-height: 100%;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  background-color: #f0c14a;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding-bottom: calc(var(--bottom-nav-bar-height) + 0.75rem + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+}
+
+#app.imposter-app #imp-win-civilians.imp-win-screen {
+  background-image: url("assets/imposter/civilians%20win.svg");
+}
+
+#app.imposter-app #imp-win-imposter.imp-win-screen {
+  background-image: url("assets/imposter/imposter%20wins.svg");
+}
+
+#app.imposter-app .imp-win-footer {
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem 0.5rem;
+}
+
+#app.imposter-app a.imp-win-again {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 12rem;
+}

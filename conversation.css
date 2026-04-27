@@ -1,0 +1,144 @@
+/* Spill the Beans — welcome + play (water background) + bean progress */
+
+#app.conversation-app .fb-screen--water {
+  background: url("assets/spill_the_beans/background.svg") center top / cover no-repeat;
+  background-color: #d9e8a8;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.9rem 1rem 0.5rem;
+}
+
+/* Push WELCOME + copy + button below top frame art (overrides global .fb-rules-stack) */
+#conv-welcome .fb-fishbowl-ui.fb-rules-stack {
+  margin-top: clamp(12.5rem, 58vh, 24rem);
+}
+
+/* Uses shared .fb-rules-stack margin; keep welcome copy a touch smaller than the main RULES title */
+.fb-conv-welcome-deck {
+  width: 100%;
+  max-width: 15.25rem;
+  margin: 0.35rem 0 0.9rem;
+  text-align: center;
+  font-family: var(--font-support);
+  font-size: clamp(0.8rem, 2.6vw, 0.95rem);
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+}
+
+/* —— Main play: scrollable column — title / topic / button, then beans directly below; scroll if long —— */
+#app.conversation-app #conv-main.conv-main--play {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+#conv-main .conv-play-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 100%;
+  align-items: center; /* .conv-bean-tray uses align-self: stretch for full width */
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  /* Space after last beans when scrolled to end (above bottom nav) */
+  padding-bottom: calc(var(--bottom-nav-bar-height) + 0.65rem + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+}
+
+/* Override global .fb-fishbowl-ui { flex: 1 } so beans sit under the button, not at viewport bottom */
+#conv-main .fb-fishbowl-ui.fb-conv-main-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+  min-height: 0;
+  width: 100%;
+  max-width: 17.25rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: clamp(12.5rem, 58vh, 24rem);
+  padding: 0 1.1rem 0.5rem;
+  box-sizing: border-box;
+}
+
+/* Topic: same max-width as welcome body; ALL CAPS to match deck */
+#conv-main .fb-conv-topic-para {
+  width: 100%;
+  max-width: 15.25rem;
+  margin: 0.35rem 0 0.9rem;
+  text-align: center;
+  font-family: var(--font-support);
+  font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  flex: 0 1 auto;
+  min-height: 4.5rem;
+  display: block;
+  hyphens: none;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+#conv-main .fb-conv-main-stack .fb-orange-btn {
+  max-width: 15.5rem;
+  width: 100%;
+  margin-top: 0.15rem;
+  flex: 0 0 auto;
+}
+
+/* Full screen width (not the narrow topic column); under button in document order */
+#conv-main .conv-bean-tray {
+  flex: 0 0 auto;
+  align-self: stretch;
+  width: 100%;
+  max-width: none;
+  margin: 0.5rem 0 0;
+  padding: 0 0.15rem;
+  box-sizing: border-box;
+}
+
+#conv-main .conv-bean-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: 0.06rem;
+  row-gap: 0.1rem;
+  width: 100%;
+  min-height: 0;
+  align-items: center;
+  justify-items: center;
+  line-height: 0;
+}
+
+/* Cap height so portrait asset doesn’t make each row huge; keep faces readable */
+#conv-main .conv-bean-icon {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 3.75rem;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.2));
+}
+
+@media (min-width: 400px) {
+  #conv-main .conv-bean-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  #conv-main .conv-bean-icon {
+    max-height: 4rem;
+  }
+}

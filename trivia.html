@@ -10,17 +10,20 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <link rel="manifest" href="site.webmanifest" />
     <link rel="apple-touch-icon" href="assets/game_icons/fishbowl.jpg" />
-    <title>Trivia — Line Laughs</title>
+    <title>Smarty Party — Line Laughs</title>
     <link rel="preconnect" href="https://use.typekit.net" crossorigin />
     <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="fishbowl.css" />
+    <link rel="stylesheet" href="trivia.css" />
+    <link rel="stylesheet" href="pass-to-player.css" />
   </head>
   <body class="trivia-body">
     <div id="app" class="trivia-app">
       <section
         id="game-brand-splash"
-        class="fb-screen game-splash-full active"
+        class="fb-screen fb-splash game-splash-full active"
         data-next="tr-count"
         data-splash-autoadvance="3000"
         role="button"
@@ -37,90 +40,99 @@
         />
       </section>
 
-      <section id="tr-count" class="fb-screen" aria-label="Player count">
-        <div class="fb-card">
-          <p class="fb-kicker">Trivia · Party game</p>
-          <h1 class="fb-title">Who’s playing?</h1>
-          <p class="fb-deck">Multiple choice—four answers. Everyone sees the same question in turn before the next one. Need 2+ players.</p>
-          <label class="fb-label" for="tr-player-count">How many players?</label>
+      <section id="tr-count" class="fb-screen fb-screen--water" aria-label="Player count">
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--count">
+          <p class="fb-fb-sub">2+ PLAYERS</p>
+          <h2 class="fb-fb-h1">HOW MANY PLAYERS?</h2>
           <input
             id="tr-player-count"
-            class="fb-input"
+            class="fb-dark-field"
             type="number"
             inputmode="numeric"
             min="2"
             max="24"
-            value="4"
+            placeholder="TYPE HERE"
+            aria-label="How many players"
+            autocomplete="off"
           />
-          <button type="button" class="btn-primary fb-btn-pill" id="tr-count-next">Next</button>
+          <button type="button" class="fb-orange-btn" id="tr-count-next">SUBMIT</button>
+        </div>
+        <div class="fb-char-grid-9" aria-hidden="true">
+          <img src="assets/smarty%20party/Smarty_Party.svg" alt="" width="200" height="200" />
+          <img src="assets/smarty%20party/Smarty_Party%202.svg" alt="" width="200" height="200" />
+          <img src="assets/smarty%20party/Smarty_Party%203.svg" alt="" width="200" height="200" />
+          <img src="assets/smarty%20party/Smarty_Party%204.svg" alt="" width="200" height="200" />
+          <img src="assets/smarty%20party/Smarty_Party%205.svg" alt="" width="200" height="200" />
+          <img src="assets/smarty%20party/Smarty_Party%206.svg" alt="" width="200" height="200" />
+          <img src="assets/smarty%20party/Smarty_Party%207.svg" alt="" width="200" height="200" />
+          <img src="assets/smarty%20party/Smarty_Party%208.svg" alt="" width="200" height="200" />
+          <img src="assets/smarty%20party/Smarty_Party%209.svg" alt="" width="200" height="200" />
         </div>
       </section>
 
-      <section id="tr-names" class="fb-screen" aria-label="Player names">
-        <div class="fb-card">
-          <p class="fb-kicker">Setup · Names</p>
-          <h1 class="fb-title">Order</h1>
-          <p class="fb-deck">Names in the order you’ll pass the phone—same order each round.</p>
-          <h2 class="fb-subtitle">Players</h2>
+      <section id="tr-names" class="fb-screen fb-screen--water" aria-label="Player names">
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--offset">
+          <h2 class="fb-fb-h1">PLAYERS: PUT IN CIRCLE ORDER</h2>
           <div id="tr-names-fields" class="fb-names-fields"></div>
-          <button type="button" class="btn-primary fb-btn-pill" id="tr-names-next">Next</button>
+          <button type="button" class="fb-orange-btn" id="tr-names-next">SUBMIT</button>
         </div>
       </section>
 
-      <section id="tr-setup" class="fb-screen" aria-label="Length">
-        <div class="fb-card">
-          <p class="fb-kicker">Setup · Length</p>
-          <h1 class="fb-title">How many questions?</h1>
-          <p class="fb-deck">Each question is passed around—every player answers the same one before you move on.</p>
-          <label class="fb-label" for="tr-num-questions">Questions (full circle each)</label>
-          <select id="tr-num-questions" class="fb-input">
-            <option value="3">3</option>
-            <option value="5" selected>5</option>
-            <option value="8">8</option>
-            <option value="10">10</option>
-            <option value="12">12</option>
-          </select>
-          <button type="button" class="btn-primary fb-btn-pill" id="tr-setup-next">Start game</button>
+      <section id="tr-rules" class="fb-screen fb-screen--water" aria-label="Rules">
+        <div class="fb-fishbowl-ui fb-rules-stack">
+          <h2 class="fb-fb-h1 fb-rules-title">RULES</h2>
+          <ol class="fb-rules-ol">
+            <li>EACH PLAYER RECEIVES THE SAME QUESTIONS.</li>
+            <li>PLAYERS WILL ANSWER ONE AT A TIME!</li>
+            <li>NO CHEATING!</li>
+          </ol>
+          <p class="fb-rules-question" id="tr-rules-question-line">HOW MANY QUESTIONS?</p>
+          <input
+            id="tr-num-questions"
+            class="fb-dark-field"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            max="40"
+            value="5"
+            placeholder="TYPE HERE"
+            aria-labelledby="tr-rules-question-line"
+            autocomplete="off"
+          />
+          <button type="button" class="fb-orange-btn" id="tr-rules-next">CONTINUE</button>
         </div>
       </section>
 
-      <section id="tr-ready" class="fb-screen" aria-label="Ready">
-        <div class="fb-card fb-card--ready">
-          <p class="fb-kicker">Pass &amp; play</p>
-          <h1 class="fb-title">Rules</h1>
-          <p class="fb-deck" id="tr-ready-body"></p>
-          <button type="button" class="btn-primary fb-btn-pill" id="tr-ready-btn">Begin</button>
+      <section id="tr-pass" class="fb-screen fb-screen--water ll-pass-to-player" aria-label="Pass phone">
+        <div class="ll-pass-inner">
+          <p class="ll-pass-eyebrow" id="tr-pass-kicker"></p>
+          <p class="ll-pass-line tr-pass-heading">PASS THE PHONE TO:</p>
+          <img id="tr-pass-char" class="ll-pass-hero" src="assets/smarty%20party/Smarty_Party.svg" alt="" width="200" height="200" decoding="async" />
+          <p id="tr-pass-name" class="ll-pass-name"></p>
+          <button type="button" class="fb-orange-btn" id="tr-pass-show">SHOW QUESTION</button>
         </div>
       </section>
 
-      <section id="tr-pass" class="fb-screen" aria-label="Pass phone">
-        <div class="fb-card fb-card--pass">
-          <p class="fb-kicker" id="tr-pass-kicker"></p>
-          <h1 class="fb-title">Pass the phone</h1>
-          <p class="fb-pass-banner">Give it to <strong id="tr-pass-name"></strong></p>
-          <p class="fb-deck" id="tr-pass-hint"></p>
-          <button type="button" class="btn-primary fb-btn-pill" id="tr-pass-show">Show question</button>
+      <section id="tr-play" class="fb-screen fb-screen--water" aria-label="Question">
+        <div class="tr-play-inner">
+          <p class="tr-play-q" id="tr-q-text"></p>
+          <div id="tr-mc-btns" class="tr-mc-col" role="group" aria-label="Answer choices"></div>
+          <p class="tr-play-feedback" id="tr-feedback" hidden></p>
+          <button type="button" class="fb-orange-btn" id="tr-play-next" hidden>CONTINUE</button>
         </div>
       </section>
 
-      <section id="tr-play" class="fb-screen" aria-label="Question">
-        <div class="fb-card fb-card--play">
-          <p class="fb-kicker" id="tr-play-kicker"></p>
-          <p class="fb-pass-banner">Only <strong id="tr-play-name"></strong> taps an answer</p>
-          <p class="fb-question-text" id="tr-q-text"></p>
-          <div id="tr-mc-btns" class="fb-mc-grid"></div>
-          <p class="fb-deck" id="tr-feedback" hidden></p>
-          <button type="button" class="btn-primary fb-btn-pill" id="tr-play-next" hidden>Continue</button>
+      <section id="tr-score" class="fb-screen fb-screen--water" aria-label="Scores">
+        <div class="tr-score-inner">
+          <h2 class="tr-score-title">SCORES</h2>
+          <div id="tr-score-rows" class="tr-score-rows"></div>
+          <button type="button" class="fb-orange-btn" id="tr-score-continue">CONTINUE</button>
         </div>
       </section>
 
-      <section id="tr-results" class="fb-screen" aria-label="Results">
-        <div class="fb-card fb-card--celebrate">
-          <p class="fb-kicker">Final</p>
-          <h1 class="fb-title">Scores</h1>
-          <p class="fb-scoreboard" id="tr-scores"></p>
-          <p class="fb-deck fb-deck--big" id="tr-winner"></p>
-          <a href="trivia.html" class="btn-primary fb-btn-pill">Play again</a>
+      <section id="tr-results" class="fb-screen tr-win-screen" aria-label="Winner">
+        <div class="tr-win-center">
+          <p id="tr-winner-name" class="tr-winner-name"></p>
         </div>
       </section>
     </div>
@@ -237,28 +249,42 @@
           return a;
         }
 
+        function smartyPartyCharSrc(i) {
+          var n = (i % 9) + 1;
+          if (n === 1) return "assets/smarty%20party/Smarty_Party.svg";
+          return "assets/smarty%20party/Smarty_Party%20" + n + ".svg";
+        }
+
         function buildNameFields(n) {
           var wrap = $("tr-names-fields");
           wrap.innerHTML = "";
           var i;
           for (i = 0; i < n; i++) {
-            var lab = document.createElement("label");
-            lab.className = "fb-label";
-            lab.setAttribute("for", "tr-name-" + i);
-            lab.textContent = "Player " + (i + 1);
+            var row = document.createElement("div");
+            row.className = "fb-name-row";
+            var combo = document.createElement("div");
+            combo.className = "fb-name-field-combo";
             var inp = document.createElement("input");
             inp.id = "tr-name-" + i;
-            inp.className = "fb-input fb-input-dark";
+            inp.className = "fb-dark-field fb-name-field";
             inp.type = "text";
             inp.autocomplete = "name";
-            inp.placeholder = "Name";
-            wrap.appendChild(lab);
-            wrap.appendChild(inp);
+            inp.placeholder = "TYPE HERE";
+            var img = document.createElement("img");
+            img.className = "fb-name-fish";
+            img.src = smartyPartyCharSrc(i);
+            img.alt = "";
+            img.width = 200;
+            img.height = 200;
+            combo.appendChild(inp);
+            combo.appendChild(img);
+            row.appendChild(combo);
+            wrap.appendChild(row);
           }
         }
 
         function readNames() {
-          var fields = document.querySelectorAll("#tr-names-fields input.fb-input");
+          var fields = document.querySelectorAll("#tr-names-fields input.fb-name-field");
           var list = [];
           var i;
           for (i = 0; i < fields.length; i++) {
@@ -297,21 +323,16 @@
             showResults();
             return;
           }
-          $("tr-pass-kicker").textContent = "Question " + (qIndex + 1) + " of " + totalQ;
-          $("tr-pass-name").textContent = activePlayerName();
-          $("tr-pass-hint").textContent =
-            playerInQuestion === 0
-              ? "Only they see the question first—no peeking."
-              : "Same question as everyone else—pass the phone. Don’t share answers.";
+          $("tr-pass-kicker").textContent =
+            "QUESTION " + (qIndex + 1) + " OF " + totalQ;
+          $("tr-pass-char").src = smartyPartyCharSrc(playerInQuestion);
+          $("tr-pass-name").textContent = activePlayerName().toUpperCase();
           showScreen("tr-pass");
         }
 
         function renderQuestion() {
           answered = false;
           var item = deck[qIndex];
-          $("tr-play-kicker").textContent =
-            "Question " + (qIndex + 1) + " of " + totalQ + " · Turn " + (playerInQuestion + 1) + " of " + players.length;
-          $("tr-play-name").textContent = activePlayerName();
           $("tr-q-text").textContent = item.q;
           $("tr-feedback").hidden = true;
           $("tr-feedback").textContent = "";
@@ -324,7 +345,7 @@
             (function (idx) {
               var btn = document.createElement("button");
               btn.type = "button";
-              btn.className = "btn-secondary fb-btn-pill fb-mc-btn";
+              btn.className = "tr-mc-btn";
               btn.textContent = item.o[idx];
               btn.addEventListener("click", function () {
                 onPick(idx);
@@ -342,7 +363,7 @@
           var correct = item.c === choice;
           if (correct) scores[playerInQuestion]++;
 
-          var buttons = $("tr-mc-btns").querySelectorAll(".fb-mc-btn");
+          var buttons = $("tr-mc-btns").querySelectorAll(".tr-mc-btn");
           var i;
           for (i = 0; i < 4; i++) {
             buttons[i].disabled = true;
@@ -357,24 +378,51 @@
           $("tr-play-next").hidden = false;
         }
 
+        function showScoreUpdate() {
+          var wrap = $("tr-score-rows");
+          wrap.innerHTML = "";
+          var i;
+          for (i = 0; i < players.length; i++) {
+            var row = document.createElement("div");
+            row.className = "tr-score-row";
+            var img = document.createElement("img");
+            img.className = "tr-score-char";
+            img.src = smartyPartyCharSrc(i);
+            img.width = 72;
+            img.height = 72;
+            img.alt = "";
+            var name = document.createElement("span");
+            name.className = "tr-score-name";
+            name.textContent = players[i];
+            var num = document.createElement("span");
+            num.className = "tr-score-num";
+            num.textContent = String(scores[i]);
+            row.appendChild(img);
+            row.appendChild(name);
+            row.appendChild(num);
+            wrap.appendChild(row);
+          }
+          showScreen("tr-score");
+        }
+
         function showResults() {
-          var lines = [];
           var i;
           var best = -1;
           for (i = 0; i < players.length; i++) {
-            lines.push(players[i] + ": " + scores[i]);
             if (scores[i] > best) best = scores[i];
           }
-          $("tr-scores").textContent = lines.join(" · ");
-
           var winners = [];
           for (i = 0; i < players.length; i++) {
             if (scores[i] === best) winners.push(players[i]);
           }
-          $("tr-winner").textContent =
+          $("tr-winner-name").textContent =
             winners.length === 1
-              ? winners[0] + " wins!"
-              : "Tie: " + winners.join(", ");
+              ? winners[0].toUpperCase()
+              : winners
+                  .map(function (n) {
+                    return n.toUpperCase();
+                  })
+                  .join(" · ");
           showScreen("tr-results");
         }
 
@@ -392,19 +440,17 @@
           var list = readNames();
           if (!list) return;
           players = list;
-          showScreen("tr-setup");
+          showScreen("tr-rules");
         });
 
-        $("tr-setup-next").addEventListener("click", function () {
-          numQuestions = parseInt($("tr-num-questions").value, 10) || 5;
+        $("tr-rules-next").addEventListener("click", function () {
+          var nq = parseInt($("tr-num-questions").value, 10);
+          if (!Number.isFinite(nq) || nq < 1) {
+            alert("Enter how many questions (1 or more).");
+            return;
+          }
+          numQuestions = nq;
           if (!buildDeck()) return;
-          $("tr-ready-body").textContent =
-            totalQ +
-            " questions. For each one, the phone goes around the circle—everyone gets the same question before the next. Only the player holding the phone answers. Correct answers score a point.";
-          showScreen("tr-ready");
-        });
-
-        $("tr-ready-btn").addEventListener("click", function () {
           showPass();
         });
 
@@ -415,13 +461,17 @@
           if (playerInQuestion < players.length) {
             showPass();
           } else {
-            playerInQuestion = 0;
-            qIndex++;
-            if (qIndex >= totalQ) {
-              showResults();
-            } else {
-              showPass();
-            }
+            showScoreUpdate();
+          }
+        });
+
+        $("tr-score-continue").addEventListener("click", function () {
+          playerInQuestion = 0;
+          qIndex++;
+          if (qIndex >= totalQ) {
+            showResults();
+          } else {
+            showPass();
           }
         });
       })();

@@ -15,12 +15,15 @@
     <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="fishbowl.css" />
+    <link rel="stylesheet" href="wild-words.css" />
+    <link rel="stylesheet" href="pass-to-player.css" />
   </head>
   <body class="wild-words-body">
     <div id="app" class="wild-words-app">
       <section
         id="game-brand-splash"
-        class="fb-screen game-splash-full active"
+        class="fb-screen fb-splash game-splash-full active"
         data-next="ww-count"
         data-splash-autoadvance="3000"
         role="button"
@@ -37,101 +40,89 @@
         />
       </section>
 
-      <section id="ww-count" class="fb-screen" aria-label="Player count">
-        <div class="fb-card">
-          <p class="fb-kicker">Wild Words · Party game</p>
-          <h1 class="fb-title">Who’s playing?</h1>
-          <p class="fb-deck">Pass one phone. Type a real English word that uses your letters in order before the bomb goes off. Last player with lives wins.</p>
-          <label class="fb-label" for="ww-player-count">How many players?</label>
+      <section id="ww-count" class="fb-screen fb-screen--water" aria-label="Player count">
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--count">
+          <p class="fb-fb-sub">2+ PLAYERS</p>
+          <h2 class="fb-fb-h1">HOW MANY PLAYERS?</h2>
           <input
             id="ww-player-count"
-            class="fb-input"
+            class="fb-dark-field"
             type="number"
             inputmode="numeric"
             min="2"
             max="24"
-            value="4"
+            placeholder="TYPE HERE"
+            aria-label="How many players"
+            autocomplete="off"
           />
-          <button type="button" class="btn-primary fb-btn-pill" id="ww-count-next">Next</button>
+          <button type="button" class="fb-orange-btn" id="ww-count-next">SUBMIT</button>
+        </div>
+        <div class="fb-char-grid-9" aria-hidden="true">
+          <img src="assets/wild_words/Wild_Words%201.svg" alt="" width="200" height="200" />
+          <img src="assets/wild_words/Wild_Words%202.svg" alt="" width="200" height="200" />
+          <img src="assets/wild_words/Wild_Words%203.svg" alt="" width="200" height="200" />
+          <img src="assets/wild_words/Wild_Words%204.svg" alt="" width="200" height="200" />
+          <img src="assets/wild_words/Wild_Words%205.svg" alt="" width="200" height="200" />
+          <img src="assets/wild_words/Wild_Words%206.svg" alt="" width="200" height="200" />
+          <img src="assets/wild_words/Wild_Words%207.svg" alt="" width="200" height="200" />
+          <img src="assets/wild_words/Wild_Words%208.svg" alt="" width="200" height="200" />
+          <img src="assets/wild_words/Wild_Words%209.svg" alt="" width="200" height="200" />
         </div>
       </section>
 
-      <section id="ww-names" class="fb-screen" aria-label="Names">
-        <div class="fb-card">
-          <p class="fb-kicker">Setup · Order</p>
-          <h1 class="fb-title">Turn order</h1>
-          <p class="fb-deck">Names in the order you’ll pass the phone.</p>
-          <h2 class="fb-subtitle">Players</h2>
+      <section id="ww-names" class="fb-screen fb-screen--water" aria-label="Names">
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--offset">
+          <h2 class="fb-fb-h1">PLAYERS: PUT IN CIRCLE ORDER</h2>
           <div id="ww-names-fields" class="fb-names-fields"></div>
-          <button type="button" class="btn-primary fb-btn-pill" id="ww-names-next">Next</button>
+          <button type="button" class="fb-orange-btn" id="ww-names-next">SUBMIT</button>
         </div>
       </section>
 
-      <section id="ww-setup" class="fb-screen" aria-label="Settings">
-        <div class="fb-card">
-          <p class="fb-kicker">Room settings</p>
-          <h1 class="fb-title">Lives &amp; timer</h1>
-          <label class="fb-label" for="ww-lives">Lives each</label>
-          <select id="ww-lives" class="fb-input">
-            <option value="2">2</option>
-            <option value="3" selected>3</option>
-          </select>
-          <label class="fb-label" for="ww-timer-max">Starting bomb time (seconds)</label>
-          <select id="ww-timer-max" class="fb-input">
-            <option value="60">60</option>
-            <option value="45">45</option>
-            <option value="30">30</option>
-            <option value="15">15</option>
-          </select>
-          <p class="fb-deck">Timer shortens as the game goes on (minimum 15s). Skull bombs are tougher.</p>
-          <button type="button" class="btn-primary fb-btn-pill" id="ww-setup-next">Start</button>
+      <section id="ww-rules" class="fb-screen fb-screen--water" aria-label="Rules">
+        <div class="fb-fishbowl-ui fb-rules-stack">
+          <h2 class="fb-fb-h1 fb-rules-title">RULES</h2>
+          <ol class="fb-rules-ol">
+            <li>YOU WILL RECEIVE 2–3 LETTERS AND YOU MUST CREATE AN ENGLISH WORD USING THOSE LETTERS WHILE KEEPING THEM IN ORDER</li>
+            <li>CREATE AND SUBMIT YOUR WORD BEFORE THE BOMB GOES OFF</li>
+            <li>YOU HAVE 3 LIVES</li>
+          </ol>
+          <button type="button" class="fb-orange-btn" id="ww-rules-next">CONTINUE</button>
         </div>
       </section>
 
-      <section id="ww-ready" class="fb-screen" aria-label="Ready">
-        <div class="fb-card fb-card--ready">
-          <p class="fb-kicker">Rules</p>
-          <h1 class="fb-title">Wild Words</h1>
-          <p class="fb-deck" id="ww-ready-body"></p>
-          <button type="button" class="btn-primary fb-btn-pill" id="ww-ready-btn">Begin</button>
+      <section id="ww-pass-start" class="fb-screen fb-screen--water ll-pass-to-player" aria-label="Pass the phone">
+        <div class="ll-pass-inner">
+          <p class="ll-pass-line">PASS THE PHONE TO:</p>
+          <img id="ww-pass-start-char" class="ll-pass-hero" src="assets/wild_words/Wild_Words%201.svg" alt="" width="200" height="200" decoding="async" />
+          <p id="ww-pass-start-name" class="ll-pass-name"></p>
+          <p id="ww-pass-start-lives" class="ll-pass-meta" aria-live="polite"></p>
+          <button type="button" class="fb-orange-btn" id="ww-pass-start-btn">START</button>
         </div>
       </section>
 
-      <section id="ww-pass" class="fb-screen" aria-label="Pass">
-        <div class="fb-card fb-card--pass">
-          <p class="fb-kicker" id="ww-pass-kicker"></p>
-          <h1 class="fb-title">Pass the phone</h1>
-          <p class="fb-pass-banner">Give it to <strong id="ww-pass-name"></strong></p>
-          <p class="fb-scoreboard" id="ww-pass-lives"></p>
-          <p class="fb-deck">Don’t peek at the letters until it’s your turn.</p>
-          <button type="button" class="btn-primary fb-btn-pill" id="ww-pass-go">Show my turn</button>
+      <section id="ww-play" class="fb-screen ww-play-screen" aria-label="Your turn">
+        <div class="ww-play-stage">
+          <div id="ww-timer" class="ww-timer-digits" role="timer" aria-live="polite">30</div>
+          <p id="ww-skull-label" class="ww-skull-under" hidden>SKULL BOMB</p>
+        </div>
+        <div class="ww-play-controls">
+          <p id="ww-letters" class="ww-letters ww-letters--play" aria-live="polite"></p>
+          <input
+            id="ww-word-input"
+            class="fb-dark-field ww-play-input"
+            type="text"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="true"
+            placeholder="TYPE HERE"
+            aria-label="Your word"
+          />
+          <button type="button" class="fb-orange-btn" id="ww-submit">SUBMIT</button>
         </div>
       </section>
 
-      <section id="ww-play" class="fb-screen" aria-label="Your turn">
-        <div class="fb-card fb-card--play">
-          <p class="fb-kicker" id="ww-play-kicker"></p>
-          <p id="ww-skull-msg" class="ww-skull-banner" hidden>Skull bomb — harsher letters &amp; timer</p>
-          <div class="fb-timer-wrap">
-            <div id="ww-timer" class="fb-timer" role="timer" aria-live="polite">0</div>
-            <span class="fb-timer-label">seconds left</span>
-          </div>
-          <p class="fb-pass-banner">Your letters (in order):</p>
-          <p id="ww-letters" class="ww-letters" aria-live="polite"></p>
-          <p class="fb-deck" id="ww-play-hint"></p>
-          <label class="fb-label" for="ww-word-input">Your word</label>
-          <input id="ww-word-input" class="fb-input fb-input-dark" type="text" autocomplete="off" autocapitalize="off" spellcheck="true" />
-          <button type="button" class="btn-primary fb-btn-pill" id="ww-submit">Submit</button>
-        </div>
-      </section>
-
-      <section id="ww-over" class="fb-screen" aria-label="Game over">
-        <div class="fb-card fb-card--celebrate">
-          <p class="fb-kicker">Wild Words</p>
-          <h1 class="fb-title" id="ww-over-title"></h1>
-          <p class="fb-deck fb-deck--big" id="ww-over-body"></p>
-          <a href="wild-words.html" class="btn-primary fb-btn-pill">Play again</a>
-        </div>
+      <section id="ww-over" class="fb-screen ww-winner-screen" aria-label="Winner">
+        <h1 id="ww-winner-name" class="ww-winner-name"></h1>
       </section>
     </div>
 
@@ -332,7 +323,6 @@
 
         var dictCache = new Map();
         var players = [];
-        var livesEach = 3;
         var timerMaxStart = 60;
         var turnCount = 0;
         var currentIndex = 0;
@@ -445,28 +435,40 @@
           });
         }
 
+        function wildWordsCharSrc(i) {
+          return "assets/wild_words/Wild_Words%20" + ((i % 9) + 1) + ".svg";
+        }
+
         function buildNameFields(n) {
           var wrap = $("ww-names-fields");
           wrap.innerHTML = "";
           var i;
           for (i = 0; i < n; i++) {
-            var lab = document.createElement("label");
-            lab.className = "fb-label";
-            lab.setAttribute("for", "ww-name-" + i);
-            lab.textContent = "Player " + (i + 1);
+            var row = document.createElement("div");
+            row.className = "fb-name-row";
+            var combo = document.createElement("div");
+            combo.className = "fb-name-field-combo";
             var inp = document.createElement("input");
             inp.id = "ww-name-" + i;
-            inp.className = "fb-input fb-input-dark";
+            inp.className = "fb-dark-field fb-name-field";
             inp.type = "text";
             inp.autocomplete = "name";
-            inp.placeholder = "Name";
-            wrap.appendChild(lab);
-            wrap.appendChild(inp);
+            inp.placeholder = "TYPE HERE";
+            var img = document.createElement("img");
+            img.className = "fb-name-fish";
+            img.src = wildWordsCharSrc(i);
+            img.alt = "";
+            img.width = 200;
+            img.height = 200;
+            combo.appendChild(inp);
+            combo.appendChild(img);
+            row.appendChild(combo);
+            wrap.appendChild(row);
           }
         }
 
         function readNamesStrings() {
-          var fields = document.querySelectorAll("#ww-names-fields input.fb-input");
+          var fields = document.querySelectorAll("#ww-names-fields input.fb-name-field");
           var list = [];
           var i;
           for (i = 0; i < fields.length; i++) {
@@ -478,15 +480,6 @@
             list.push(v);
           }
           return list;
-        }
-
-        function livesSummary() {
-          var parts = [];
-          var i;
-          for (i = 0; i < players.length; i++) {
-            parts.push(players[i].name + ": " + players[i].lives + " ♥");
-          }
-          return parts.join(" · ");
         }
 
         function ensureCurrentAlive() {
@@ -512,16 +505,31 @@
           return alive[(pos + 1) % alive.length];
         }
 
-        function showPass() {
+        function showPassStart() {
           ensureCurrentAlive();
           if (aliveCount() <= 1) {
             showWin();
             return;
           }
-          $("ww-pass-kicker").textContent = "Turn " + (turnCount + 1);
-          $("ww-pass-name").textContent = players[currentIndex].name;
-          $("ww-pass-lives").textContent = livesSummary();
-          showScreen("ww-pass");
+          $("ww-pass-start-char").src = wildWordsCharSrc(currentIndex);
+          $("ww-pass-start-name").textContent = players[currentIndex].name.toUpperCase();
+          var L = players[currentIndex].lives;
+          $("ww-pass-start-lives").textContent = String(L) + (L === 1 ? " HEART" : " HEARTS");
+          showScreen("ww-pass-start");
+        }
+
+        var WRONG_SUBMIT_PENALTY_SEC = 5;
+
+        /** Returns true if the turn ended (timer hit zero). */
+        function penalizeWrongSubmit() {
+          timeLeft = Math.max(0, timeLeft - WRONG_SUBMIT_PENALTY_SEC);
+          $("ww-timer").textContent = String(timeLeft);
+          if (timeLeft <= 0) {
+            clearTimer();
+            onTimeout();
+            return true;
+          }
+          return false;
         }
 
         function startTurn() {
@@ -531,12 +539,8 @@
           timeLeft = secondsForTurn();
           $("ww-timer").textContent = String(timeLeft);
           $("ww-timer").classList.toggle("ww-bomb--skull", isSkull);
-          $("ww-skull-msg").hidden = !isSkull;
-          $("ww-play-kicker").textContent = players[currentIndex].name + " — go!";
+          $("ww-skull-label").hidden = !isSkull;
           $("ww-letters").textContent = letters.toUpperCase();
-          $("ww-play-hint").textContent = isSkull
-            ? "Skull round: tougher letters and less time. Timeout costs extra."
-            : "Letters must appear left to right in your word (not necessarily together).";
           $("ww-word-input").value = "";
           $("ww-submit").disabled = false;
           showScreen("ww-play");
@@ -561,17 +565,15 @@
             return;
           }
           currentIndex = nextAliveAfter(currentIndex);
-          showPass();
+          showPassStart();
         }
 
         function showWin() {
           var alive = aliveIndices();
           if (alive.length === 1) {
-            $("ww-over-title").textContent = players[alive[0]].name + " wins!";
-            $("ww-over-body").textContent = "Last one standing.";
+            $("ww-winner-name").textContent = players[alive[0]].name.toUpperCase();
           } else {
-            $("ww-over-title").textContent = "Game over";
-            $("ww-over-body").textContent = "Something went odd—no single winner.";
+            $("ww-winner-name").textContent = "GAME OVER";
           }
           showScreen("ww-over");
         }
@@ -580,7 +582,7 @@
           clearTimer();
           turnCount++;
           currentIndex = nextAliveAfter(currentIndex);
-          showPass();
+          showPassStart();
         }
 
         $("ww-count-next").addEventListener("click", function () {
@@ -599,46 +601,36 @@
           players = list.map(function (name) {
             return { name: name, lives: 3 };
           });
-          showScreen("ww-setup");
+          showScreen("ww-rules");
         });
 
-        $("ww-setup-next").addEventListener("click", function () {
-          livesEach = parseInt($("ww-lives").value, 10) || 3;
-          var i;
-          for (i = 0; i < players.length; i++) {
-            players[i].lives = livesEach;
-          }
-          timerMaxStart = parseInt($("ww-timer-max").value, 10) || 60;
-          $("ww-ready-body").innerHTML =
-            "Each turn you get <strong>2–3 letters</strong>. Type a <strong>real English word</strong> that contains them <strong>in order</strong>. " +
-            "No word twice. The <strong>bomb</strong> ticks down—timeout costs a life (two on a <strong>skull bomb</strong>). " +
-            "Timer gets faster over time. Last player with lives wins.";
-          showScreen("ww-ready");
-        });
-
-        $("ww-ready-btn").addEventListener("click", function () {
+        $("ww-rules-next").addEventListener("click", function () {
           usedWords = new Set();
           dictCache = new Map();
           turnCount = 0;
           currentIndex = 0;
-          showPass();
+          timerMaxStart = 45;
+          showPassStart();
         });
 
-        $("ww-pass-go").addEventListener("click", startTurn);
+        $("ww-pass-start-btn").addEventListener("click", startTurn);
 
         $("ww-submit").addEventListener("click", function () {
           var raw = $("ww-word-input").value;
           var w = norm(raw);
           if (!w) {
             alert("Type a word.");
+            penalizeWrongSubmit();
             return;
           }
           if (usedWords.has(w)) {
             alert("That word was already used this game.");
+            penalizeWrongSubmit();
             return;
           }
           if (!lettersInOrder(w, letters)) {
             alert('Your word must include the letters "' + letters.toUpperCase() + '" in order.');
+            penalizeWrongSubmit();
             return;
           }
           $("ww-submit").disabled = true;
@@ -646,6 +638,7 @@
             $("ww-submit").disabled = false;
             if (!ok) {
               alert("We couldn’t verify that word in the dictionary. Try another.");
+              penalizeWrongSubmit();
               return;
             }
             usedWords.add(w);

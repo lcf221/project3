@@ -10,17 +10,20 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <link rel="manifest" href="site.webmanifest" />
     <link rel="apple-touch-icon" href="assets/game_icons/fishbowl.jpg" />
-    <title>Telestrations — Line Laughs</title>
+    <title>Silly Sketch — Line Laughs</title>
     <link rel="preconnect" href="https://use.typekit.net" crossorigin />
     <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <link rel="stylesheet" href="https://use.typekit.net/mdc7iyl.css" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="fishbowl.css" />
+    <link rel="stylesheet" href="telestrations.css" />
+    <link rel="stylesheet" href="pass-to-player.css" />
   </head>
   <body class="telestrations-body">
     <div id="app" class="telestrations-app">
       <section
         id="game-brand-splash"
-        class="fb-screen game-splash-full active"
+        class="fb-screen fb-splash game-splash-full active"
         data-next="ts-count"
         data-splash-autoadvance="3000"
         role="button"
@@ -37,95 +40,111 @@
         />
       </section>
 
-      <section id="ts-count" class="fb-screen" aria-label="Player count">
-        <div class="fb-card">
-          <p class="fb-kicker">Telestrations · Party game</p>
-          <h1 class="fb-title">Who’s playing?</h1>
-          <p class="fb-deck">
-            One phone—pass it around. Draw and guess in order until the chain comes back to who started. Need 2+ players.
-          </p>
-          <label class="fb-label" for="ts-player-count">How many players?</label>
+      <section id="ts-count" class="fb-screen fb-screen--water" aria-label="Player count">
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--count">
+          <p class="fb-fb-sub">2+ PLAYERS</p>
+          <h2 class="fb-fb-h1">HOW MANY PLAYERS?</h2>
           <input
             id="ts-player-count"
-            class="fb-input"
+            class="fb-dark-field"
             type="number"
             inputmode="numeric"
             min="2"
             max="24"
-            value="4"
+            placeholder="TYPE HERE"
+            aria-label="How many players"
+            autocomplete="off"
           />
-          <button type="button" class="btn-primary fb-btn-pill" id="ts-count-next">Next</button>
+          <button type="button" class="fb-orange-btn" id="ts-count-next">SUBMIT</button>
+        </div>
+        <div class="fb-char-grid-9" aria-hidden="true">
+          <img src="assets/silly_sketch/Silly_Sketch%201.svg" alt="" width="200" height="200" />
+          <img src="assets/silly_sketch/Silly_Sketch%202.svg" alt="" width="200" height="200" />
+          <img src="assets/silly_sketch/Silly_Sketch%203.svg" alt="" width="200" height="200" />
+          <img src="assets/silly_sketch/Silly_Sketch%204.svg" alt="" width="200" height="200" />
+          <img src="assets/silly_sketch/Silly_Sketch%205.svg" alt="" width="200" height="200" />
+          <img src="assets/silly_sketch/Silly_Sketch%206.svg" alt="" width="200" height="200" />
+          <img src="assets/silly_sketch/Silly_Sketch%207.svg" alt="" width="200" height="200" />
+          <img src="assets/silly_sketch/Silly_Sketch%208.svg" alt="" width="200" height="200" />
+          <img src="assets/silly_sketch/Silly_Sketch%209.svg" alt="" width="200" height="200" />
         </div>
       </section>
 
-      <section id="ts-names" class="fb-screen" aria-label="Player names">
-        <div class="fb-card">
-          <p class="fb-kicker">Setup · Order</p>
-          <h1 class="fb-title">Pass order</h1>
-          <p class="fb-deck">Names in circle order (pass to the left). Player 1 starts the chain with a secret prompt.</p>
-          <h2 class="fb-subtitle">Players</h2>
+      <section id="ts-names" class="fb-screen fb-screen--water" aria-label="Player names">
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--offset">
+          <h2 class="fb-fb-h1">PLAYERS: PUT IN CIRCLE ORDER</h2>
           <div id="ts-names-fields" class="fb-names-fields"></div>
-          <button type="button" class="btn-primary fb-btn-pill" id="ts-names-next">Next</button>
+          <button type="button" class="fb-orange-btn" id="ts-names-next">SUBMIT</button>
         </div>
       </section>
 
-      <section id="ts-ready" class="fb-screen" aria-label="Ready">
-        <div class="fb-card fb-card--ready">
-          <p class="fb-kicker">Telephone + drawing</p>
-          <h1 class="fb-title">How it works</h1>
-          <p class="fb-deck" id="ts-ready-body"></p>
-          <button type="button" class="btn-primary fb-btn-pill" id="ts-ready-btn">Draw prompt</button>
+      <section id="ts-rules" class="fb-screen fb-screen--water" aria-label="Rules">
+        <div class="fb-fishbowl-ui fb-rules-stack">
+          <h2 class="fb-fb-h1 fb-rules-title">RULES</h2>
+          <ol class="fb-rules-ol">
+            <li>PICTIONARY TELEPHONE!</li>
+            <li>DON’T SAY YOUR WORD OR GUESS OUT LOUD!</li>
+            <li>60 SECONDS TO GET ARTSY!</li>
+          </ol>
+          <button type="button" class="fb-orange-btn" id="ts-rules-next">BEGIN</button>
         </div>
       </section>
 
-      <section id="ts-pass" class="fb-screen" aria-label="Pass phone">
-        <div class="fb-card fb-card--pass">
-          <p class="fb-kicker" id="ts-pass-kicker"></p>
-          <h1 class="fb-title">Pass the phone</h1>
-          <p class="fb-pass-banner">Give it to <strong id="ts-pass-name"></strong></p>
-          <p class="fb-deck" id="ts-pass-hint"></p>
-          <button type="button" class="btn-primary fb-btn-pill" id="ts-pass-go">I’m ready</button>
+      <section id="ts-pass" class="fb-screen fb-screen--water ll-pass-to-player" aria-label="Pass phone">
+        <div class="ll-pass-inner">
+          <p class="ll-pass-eyebrow" id="ts-pass-kicker" hidden></p>
+          <p class="ll-pass-line">PASS THE PHONE TO:</p>
+          <img id="ts-pass-char" class="ll-pass-hero" src="assets/silly_sketch/Silly_Sketch%201.svg" alt="" width="200" height="200" decoding="async" />
+          <p id="ts-pass-name" class="ll-pass-name"></p>
+          <p id="ts-pass-hint" class="ll-pass-note" aria-live="polite"></p>
+          <button type="button" class="fb-orange-btn" id="ts-pass-go">START</button>
         </div>
       </section>
 
-      <section id="ts-draw" class="fb-screen" aria-label="Draw">
-        <div class="fb-card fb-card--play">
-          <p class="fb-kicker" id="ts-draw-kicker"></p>
-          <p class="fb-pass-banner">Only <strong id="ts-draw-name"></strong> draws</p>
-          <p class="fb-question-text" id="ts-draw-prompt"></p>
+      <section id="ts-draw" class="fb-screen fb-screen--water ts-play-screen" aria-label="Draw">
+        <div class="ts-play-inner">
+          <div class="ts-timer-circle" id="ts-timer" role="timer" aria-live="polite">60</div>
+          <p class="ts-draw-prompt" id="ts-draw-prompt"></p>
           <div class="ts-canvas-wrap">
             <canvas id="ts-canvas" aria-label="Drawing area"></canvas>
           </div>
-          <div class="fb-timer-wrap">
-            <div id="ts-timer" class="fb-timer" role="timer">60</div>
-            <span class="fb-timer-label">seconds</span>
-          </div>
-          <div class="ts-draw-tools">
-            <button type="button" class="btn-secondary fb-btn-pill" id="ts-draw-clear">Clear</button>
-            <button type="button" class="btn-primary fb-btn-pill" id="ts-draw-done">Done</button>
+          <div class="ts-dual-btns">
+            <button type="button" class="fb-orange-btn ts-btn-half" id="ts-draw-undo">UNDO</button>
+            <button type="button" class="fb-orange-btn ts-btn-half" id="ts-draw-done">DONE</button>
           </div>
         </div>
       </section>
 
-      <section id="ts-guess" class="fb-screen" aria-label="Guess">
-        <div class="fb-card fb-card--play">
-          <p class="fb-kicker" id="ts-guess-kicker"></p>
-          <p class="fb-pass-banner">Only <strong id="ts-guess-name"></strong> guesses</p>
-          <p class="fb-deck">What do you think the drawing is? One short phrase is enough.</p>
+      <section id="ts-guess" class="fb-screen fb-screen--water ts-play-screen" aria-label="Guess">
+        <div class="ts-play-inner">
+          <div class="ts-timer-circle" id="ts-guess-timer" role="timer" aria-live="polite">60</div>
+          <p class="ts-guess-heading">GUESS:</p>
           <img id="ts-guess-img" class="ts-guess-preview" alt="Drawing to guess" />
-          <label class="fb-label" for="ts-guess-input">Your guess</label>
-          <input id="ts-guess-input" class="fb-input fb-input-dark" type="text" autocomplete="off" placeholder="Type a word or phrase" />
-          <button type="button" class="btn-primary fb-btn-pill" id="ts-guess-submit">Submit</button>
+          <input
+            id="ts-guess-input"
+            class="fb-dark-field ts-guess-input"
+            type="text"
+            autocomplete="off"
+            autocapitalize="off"
+            placeholder="TYPE HERE"
+            aria-label="Your guess"
+          />
+          <div class="ts-dual-btns">
+            <button type="button" class="fb-orange-btn ts-btn-half" id="ts-guess-undo">UNDO</button>
+            <button type="button" class="fb-orange-btn ts-btn-half" id="ts-guess-done">DONE</button>
+          </div>
         </div>
       </section>
 
-      <section id="ts-reveal" class="fb-screen" aria-label="Reveal">
-        <div class="fb-card fb-card--celebrate">
-          <p class="fb-kicker">The chain</p>
-          <h1 class="fb-title">How it morphed</h1>
-          <p class="fb-deck">Started by <strong id="ts-reveal-starter"></strong></p>
-          <div id="ts-reveal-chain" class="ts-reveal-chain"></div>
-          <a href="telestrations.html" class="btn-primary fb-btn-pill">Play again</a>
+      <section id="ts-reveal" class="fb-screen fb-screen--water" aria-label="The telephone">
+        <div class="ts-telephone-wrap">
+          <h2 class="ts-telephone-title" id="ts-telephone-heading">THE TELEPHONE</h2>
+          <p class="ts-telephone-sub">The full chain from the original word to the end.</p>
+          <div class="ts-telephone-scroll" id="ts-telephone-scroll" tabindex="0">
+            <div class="ts-telephone-origin" id="ts-reveal-origin"></div>
+            <div id="ts-reveal-chain" class="ts-reveal-chain ts-reveal-chain--inner"></div>
+            <a href="telestrations.html" class="fb-orange-btn ts-telephone-again">PLAY AGAIN</a>
+          </div>
         </div>
       </section>
     </div>
@@ -190,14 +209,26 @@
         var seedWord = "";
         var chain = [];
         var stepIndex = 0;
+        var tsPassPreamble = false;
         var timerId = null;
         var timeLeft = 60;
         var canvasCtx = null;
         var drawingDown = false;
         var lastPt = null;
+        var strokeHadInk = false;
+        var undoStack = [];
+        var turnFinishing = false;
+        var DRAW_SEC = 60;
+        var GUESS_SEC = 60;
 
         function $(id) {
           return document.getElementById(id);
+        }
+
+        function escapeHtml(s) {
+          var d = document.createElement("div");
+          d.textContent = s;
+          return d.innerHTML;
         }
 
         function showScreen(id) {
@@ -217,28 +248,40 @@
           return PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
         }
 
+        function sillySketchCharSrc(i) {
+          return "assets/silly_sketch/Silly_Sketch%20" + ((i % 9) + 1) + ".svg";
+        }
+
         function buildNameFields(n) {
           var wrap = $("ts-names-fields");
           wrap.innerHTML = "";
           var i;
           for (i = 0; i < n; i++) {
-            var lab = document.createElement("label");
-            lab.className = "fb-label";
-            lab.setAttribute("for", "ts-name-" + i);
-            lab.textContent = "Player " + (i + 1);
+            var row = document.createElement("div");
+            row.className = "fb-name-row";
+            var combo = document.createElement("div");
+            combo.className = "fb-name-field-combo";
             var inp = document.createElement("input");
             inp.id = "ts-name-" + i;
-            inp.className = "fb-input fb-input-dark";
+            inp.className = "fb-dark-field fb-name-field";
             inp.type = "text";
             inp.autocomplete = "name";
-            inp.placeholder = "Name";
-            wrap.appendChild(lab);
-            wrap.appendChild(inp);
+            inp.placeholder = "TYPE HERE";
+            var img = document.createElement("img");
+            img.className = "fb-name-fish";
+            img.src = sillySketchCharSrc(i);
+            img.alt = "";
+            img.width = 200;
+            img.height = 200;
+            combo.appendChild(inp);
+            combo.appendChild(img);
+            row.appendChild(combo);
+            wrap.appendChild(row);
           }
         }
 
         function readNames() {
-          var fields = document.querySelectorAll("#ts-names-fields input.fb-input");
+          var fields = document.querySelectorAll("#ts-names-fields input.fb-name-field");
           var list = [];
           var i;
           for (i = 0; i < fields.length; i++) {
@@ -274,6 +317,21 @@
           canvasCtx.lineCap = "round";
           canvasCtx.lineJoin = "round";
           canvasCtx.strokeStyle = "#0f1729";
+          undoStack = [];
+          undoStack.push(canvasCtx.getImageData(0, 0, w, h));
+        }
+
+        function pushCanvasState() {
+          if (!canvasCtx) return;
+          var canvas = $("ts-canvas");
+          undoStack.push(canvasCtx.getImageData(0, 0, canvas.width, canvas.height));
+        }
+
+        function undoCanvas() {
+          if (!canvasCtx || undoStack.length <= 1) return;
+          undoStack.pop();
+          var im = undoStack[undoStack.length - 1];
+          canvasCtx.putImageData(im, 0, 0);
         }
 
         function canvasPoint(e) {
@@ -291,6 +349,7 @@
           function start(e) {
             e.preventDefault();
             drawingDown = true;
+            strokeHadInk = false;
             lastPt = canvasPoint(e);
           }
           function move(e) {
@@ -302,10 +361,15 @@
             canvasCtx.lineTo(p.x, p.y);
             canvasCtx.stroke();
             lastPt = p;
+            strokeHadInk = true;
           }
           function end(e) {
             if (e) e.preventDefault();
+            if (drawingDown && strokeHadInk) {
+              pushCanvasState();
+            }
             drawingDown = false;
+            strokeHadInk = false;
             lastPt = null;
           }
           canvas.onmousedown = start;
@@ -319,45 +383,66 @@
 
         function startDrawTimer() {
           clearTimer();
-          timeLeft = 60;
+          timeLeft = DRAW_SEC;
           $("ts-timer").textContent = String(timeLeft);
           timerId = setInterval(function () {
             timeLeft--;
             $("ts-timer").textContent = String(Math.max(0, timeLeft));
             if (timeLeft <= 0) {
               clearTimer();
+              if ($("ts-draw").classList.contains("active")) {
+                finishDraw();
+              }
+            }
+          }, 1000);
+        }
+
+        function startGuessTimer() {
+          clearTimer();
+          timeLeft = GUESS_SEC;
+          $("ts-guess-timer").textContent = String(timeLeft);
+          timerId = setInterval(function () {
+            timeLeft--;
+            $("ts-guess-timer").textContent = String(Math.max(0, timeLeft));
+            if (timeLeft <= 0) {
+              clearTimer();
+              if ($("ts-guess").classList.contains("active")) {
+                if (!$("ts-guess-input").value.trim()) {
+                  $("ts-guess-input").value = "?";
+                }
+                finishGuess();
+              }
             }
           }, 1000);
         }
 
         function showPass() {
-          var n = players.length;
-          var stepNum = stepIndex + 1;
-          $("ts-pass-kicker").textContent = "Step " + stepNum + " of " + n;
-          $("ts-pass-name").textContent = players[stepIndex];
+          tsPassPreamble = false;
+          $("ts-pass-kicker").hidden = true;
+          $("ts-pass-char").src = sillySketchCharSrc(stepIndex);
+          $("ts-pass-name").textContent = String(players[stepIndex]).toUpperCase();
           if (isDrawStep()) {
             $("ts-pass-hint").textContent =
               stepIndex === 0
-                ? "You’ll get a random prompt, then draw it in 60 seconds."
-                : "You’ll draw what the last person wrote—don’t peek at earlier steps.";
+                ? "YOU’LL GET A RANDOM PROMPT, THEN DRAW IT IN 60 SECONDS."
+                : "DRAW WHAT THE PREVIOUS PLAYER WROTE—DON’T PEEK AT EARLIER STEPS.";
           } else {
-            $("ts-pass-hint").textContent =
-              "You’ll see only the last drawing and write what you think it is.";
+            $("ts-pass-hint").textContent = "LOOK AT THE LAST DRAWING ONLY— THEN WRITE WHAT YOU THINK IT IS.";
           }
+          $("ts-pass-go").textContent = "START";
           showScreen("ts-pass");
         }
 
         function showDraw() {
           clearTimer();
-          $("ts-draw-kicker").textContent =
-            "Step " + (stepIndex + 1) + " of " + totalSteps() + " · Draw";
-          $("ts-draw-name").textContent = players[stepIndex];
+          turnFinishing = false;
           var promptEl = $("ts-draw-prompt");
           if (stepIndex === 0) {
-            promptEl.innerHTML = "Your prompt: <strong>" + seedWord + "</strong>";
+            promptEl.innerHTML = "DRAW: <strong>" + escapeHtml(seedWord.toUpperCase()) + "</strong>";
           } else {
             var prev = chain[stepIndex - 1];
-            promptEl.innerHTML = "Draw this phrase: <strong>" + (prev && prev.text ? prev.text : "?") + "</strong>";
+            var phrase = prev && prev.text ? prev.text : "?";
+            promptEl.innerHTML = "DRAW: <strong>" + escapeHtml(phrase.toUpperCase()) + "</strong>";
           }
           setupCanvas();
           bindCanvasEvents();
@@ -367,12 +452,11 @@
 
         function showGuess() {
           clearTimer();
-          $("ts-guess-kicker").textContent =
-            "Step " + (stepIndex + 1) + " of " + totalSteps() + " · Guess";
-          $("ts-guess-name").textContent = players[stepIndex];
+          turnFinishing = false;
           var prev = chain[stepIndex - 1];
           $("ts-guess-img").src = prev && prev.dataUrl ? prev.dataUrl : "";
           $("ts-guess-input").value = "";
+          startGuessTimer();
           showScreen("ts-guess");
           $("ts-guess-input").focus();
         }
@@ -387,6 +471,8 @@
         }
 
         function finishDraw() {
+          if (turnFinishing) return;
+          turnFinishing = true;
           clearTimer();
           var canvas = $("ts-canvas");
           var dataUrl = canvas.toDataURL("image/png");
@@ -395,25 +481,25 @@
         }
 
         function finishGuess() {
+          if (turnFinishing) return;
           var t = $("ts-guess-input").value.trim();
           if (!t) {
-            alert("Type a guess—or a question mark if you’re stumped.");
+            alert("Type a guess—or a single ? if you’re stumped.");
             return;
           }
+          turnFinishing = true;
+          clearTimer();
           chain[stepIndex] = { type: "guess", text: t, by: players[stepIndex] };
           advance();
         }
 
         function showReveal() {
-          $("ts-reveal-starter").textContent = players[0];
+          $("ts-reveal-origin").innerHTML =
+            '<p class="ts-telephone-block-label">ORIGINAL WORD</p><div class="ts-telephone-pill">' +
+            escapeHtml(seedWord) +
+            "</div>";
           var wrap = $("ts-reveal-chain");
           wrap.innerHTML = "";
-          var block = document.createElement("div");
-          block.className = "ts-reveal-block";
-          block.innerHTML =
-            '<p class="ts-reveal-label">Original prompt</p><p>' + seedWord + "</p>";
-          wrap.appendChild(block);
-
           var i;
           for (i = 0; i < chain.length; i++) {
             var item = chain[i];
@@ -421,21 +507,23 @@
             b.className = "ts-reveal-block";
             if (item.type === "draw") {
               b.innerHTML =
-                '<p class="ts-reveal-label">' +
-                item.by +
-                " drew</p><img class=\"ts-reveal-img\" src=\"" +
+                '<p class="ts-telephone-block-label">' +
+                escapeHtml(String(item.by).toUpperCase()) +
+                ' DREW</p><div class="ts-telephone-drawing"><img class="ts-reveal-img" src="' +
                 item.dataUrl +
-                '" alt="" />';
+                '" alt="" /></div>';
             } else {
               b.innerHTML =
-                '<p class="ts-reveal-label">' +
-                item.by +
-                " guessed</p><p>" +
-                item.text +
-                "</p>";
+                '<p class="ts-telephone-block-label">' +
+                escapeHtml(String(item.by).toUpperCase()) +
+                ' GUESSED</p><div class="ts-telephone-pill ts-telephone-pill--guess">' +
+                escapeHtml(item.text) +
+                "</div>";
             }
             wrap.appendChild(b);
           }
+          var scrollEl = $("ts-telephone-scroll");
+          if (scrollEl) scrollEl.scrollTop = 0;
           showScreen("ts-reveal");
         }
 
@@ -453,21 +541,33 @@
           var list = readNames();
           if (!list) return;
           players = list;
-          $("ts-ready-body").innerHTML =
-            "Player 1 gets a <strong>random prompt</strong> (like rolling a card). They draw it in <strong>60 seconds</strong>. " +
-            "Then pass left: the next person <strong>guesses</strong> from the drawing only. Then that guess is <strong>drawn</strong> by the next person, and so on. " +
-            "After everyone has had one turn, you’ll see the full chain—how far did it drift from the start?";
-          showScreen("ts-ready");
+          showScreen("ts-rules");
         });
 
-        $("ts-ready-btn").addEventListener("click", function () {
+        function showSillyPassStart() {
+          tsPassPreamble = true;
+          $("ts-pass-kicker").hidden = true;
+          $("ts-pass-kicker").textContent = "";
+          $("ts-pass-char").src = sillySketchCharSrc(0);
+          $("ts-pass-name").textContent = String(players[0]).toUpperCase();
+          $("ts-pass-hint").textContent = "";
+          $("ts-pass-go").textContent = "START";
+          showScreen("ts-pass");
+        }
+
+        $("ts-rules-next").addEventListener("click", function () {
           seedWord = pickPrompt();
           chain = [];
           stepIndex = 0;
-          showPass();
+          showSillyPassStart();
         });
 
         $("ts-pass-go").addEventListener("click", function () {
+          if (tsPassPreamble) {
+            tsPassPreamble = false;
+            showDraw();
+            return;
+          }
           if (isDrawStep()) {
             showDraw();
           } else {
@@ -475,16 +575,17 @@
           }
         });
 
-        $("ts-draw-clear").addEventListener("click", function () {
-          if (!canvasCtx) return;
-          var canvas = $("ts-canvas");
-          canvasCtx.fillStyle = "#ffffff";
-          canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+        $("ts-draw-undo").addEventListener("click", function () {
+          undoCanvas();
         });
 
         $("ts-draw-done").addEventListener("click", finishDraw);
 
-        $("ts-guess-submit").addEventListener("click", finishGuess);
+        $("ts-guess-undo").addEventListener("click", function () {
+          $("ts-guess-input").value = "";
+        });
+
+        $("ts-guess-done").addEventListener("click", finishGuess);
 
         $("ts-guess-input").addEventListener("keydown", function (e) {
           if (e.key === "Enter") finishGuess();

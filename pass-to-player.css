@@ -1,0 +1,164 @@
+/* Pass-to-player — same water background as the rest of the game; shared shell
+   Important: do NOT set min-height: 0 on the .fb-screen section — that overrides
+   .fb-screen’s min-height: 100% (lower specificity) and collapses the step in the
+   #app flex column (Wild Words, Imposter, etc.). */
+/* Must include .active — otherwise this beats .fb-screen { display: none } and every
+   pass step stays visible, stacked (see fishbowl.css note re: specificity). */
+#app .fb-screen.ll-pass-to-player.active,
+#app .fb-screen--water.ll-pass-to-player.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100%;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  width: 100%;
+  max-width: 100%;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  /* Keep room above the fixed bottom nav (matches .fb-screen intent) */
+  padding-bottom: calc(var(--bottom-nav-bar-height) + 0.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* Align with .fb-rules-stack (fishbowl.css) so pass screens sit like Rules / names water UIs */
+#app .ll-pass-to-player .ll-pass-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 22.5rem;
+  margin: 0 auto;
+  margin-top: clamp(8.5rem, 45vh, 16.5rem);
+  padding-top: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+#app .ll-pass-inner > .ll-pass-eyebrow:first-child,
+#app .ll-pass-inner > .ll-pass-line:first-child {
+  margin-top: 0;
+}
+
+#app .ll-pass-eyebrow {
+  font-family: var(--font-support);
+  font-weight: 800;
+  font-size: clamp(0.78rem, 2.2vw, 0.9rem);
+  line-height: 1.25;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0.5rem 0 0.15rem;
+}
+
+#app .ll-pass-eyebrow + .ll-pass-line {
+  margin-top: 0.25rem;
+}
+
+#app .ll-pass-eyebrow + .ll-pass-eyebrow {
+  margin-top: 0.2rem;
+}
+
+#app .ll-pass-line {
+  font-family: var(--font-support);
+  font-weight: 800;
+  font-size: clamp(0.85rem, 2.4vw, 0.95rem);
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  margin: 0.6rem 0 0.75rem;
+}
+
+#app .ll-pass-hero {
+  display: block;
+  width: min(75vw, 14rem);
+  max-height: min(40vh, 12.5rem);
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto 0.5rem;
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.12));
+}
+
+#app .ll-pass-name {
+  font-family: var(--font-support);
+  font-weight: 800;
+  font-size: clamp(1.1rem, 3.2vw, 1.4rem);
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  margin: 0.25rem 0 0.5rem;
+}
+
+#app .ll-pass-meta {
+  font-family: var(--font-support);
+  font-weight: 800;
+  font-size: clamp(0.85rem, 2.4vw, 0.95rem);
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  margin: 0 0 0.4rem;
+}
+
+#app .ll-pass-to-player .fb-orange-btn {
+  width: 100%;
+  max-width: 16rem;
+  margin-top: 0.35rem;
+  flex-shrink: 0;
+}
+
+/* Optional dark helper under the name (e.g. trivia in-game pass hint) */
+#app .ll-pass-note {
+  font-family: var(--font-support);
+  font-weight: 600;
+  font-size: clamp(0.72rem, 2vw, 0.85rem);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: #0a0a0a;
+  margin: 0.2rem 0 0.6rem;
+  max-width: 19rem;
+}
+
+#app .ll-pass-note:empty {
+  display: none;
+}
+
+/* Guess / extra controls below the pass block (e.g. Imposter final guess) */
+#app .ll-pass-form {
+  width: 100%;
+  max-width: 16rem;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+}
+
+#app .ll-pass-form .fb-label,
+#app .ll-pass-form-label {
+  font-family: var(--font-support);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  text-align: left;
+  margin: 0;
+}
+
+#app .ll-pass-form .fb-dark-field {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#app .ll-pass-eyebrow:empty {
+  display: none;
+}
+
