@@ -65,7 +65,7 @@ body {
   font-weight: 400;
   font-style: normal;
   color: var(--ink);
-  background: var(--bg-sky);
+  background: #98cfe9;
   -webkit-tap-highlight-color: transparent;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -101,15 +101,11 @@ optgroup {
   position: relative;
   background: var(--bg-sky);
   font-family: var(--font-support);
-  /* Edge-to-edge: status bar / home indicator use env() on inner .screen / .fb-screen instead,
-     so #app’s background and cover images read continuous under the notch. */
-  padding: 0;
+  padding-top: env(safe-area-inset-top, 0);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  padding-left: env(safe-area-inset-left, 0);
+  padding-right: env(safe-area-inset-right, 0);
   box-sizing: border-box;
-}
-
-/* Index + choose-game: plain #app, same art as splash under status bar / safe areas */
-#app:not([class]) {
-  background: var(--bg-sky) url("assets/home/home.jpg") center / cover no-repeat;
 }
 
 /* Wider / taller viewports: optional “device frame” for desktop preview (not for real handsets). */
@@ -140,11 +136,8 @@ optgroup {
   display: none;
   flex-direction: column;
   flex: 1;
-  min-height: 0;
+  min-height: 100%;
   padding: 1.5rem 1.25rem;
-  padding-top: max(1.5rem, env(safe-area-inset-top, 0));
-  padding-left: max(1.25rem, env(safe-area-inset-left, 0));
-  padding-right: max(1.25rem, env(safe-area-inset-right, 0));
   padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0));
 }
 
@@ -564,11 +557,8 @@ a.game-tile {
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 0;
+  min-height: 100%;
   padding: 1.5rem 1.25rem;
-  padding-top: max(1.5rem, env(safe-area-inset-top, 0));
-  padding-left: max(1.25rem, env(safe-area-inset-left, 0));
-  padding-right: max(1.25rem, env(safe-area-inset-right, 0));
   padding-bottom: calc(var(--bottom-nav-bar-height) + env(safe-area-inset-bottom, 0));
 }
 
@@ -946,8 +936,8 @@ a.game-tile {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 1;
-  min-height: 0;
+  min-height: 100%;
+  min-height: 100dvh;
   width: 100%;
   max-width: 100%;
   align-self: stretch;
@@ -985,11 +975,8 @@ body:has(#game-brand-splash.game-splash-full.active) .bottom-nav {
   display: none;
   flex-direction: column;
   flex: 1;
-  min-height: 0;
+  min-height: 100%;
   padding: 1rem 1rem 1.25rem;
-  padding-top: max(1rem, env(safe-area-inset-top, 0));
-  padding-left: max(1rem, env(safe-area-inset-left, 0));
-  padding-right: max(1rem, env(safe-area-inset-right, 0));
   padding-bottom: calc(var(--bottom-nav-bar-height) + env(safe-area-inset-bottom, 0));
 }
 

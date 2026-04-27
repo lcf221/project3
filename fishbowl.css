@@ -1,8 +1,7 @@
 /* Fishbowl-only layout (redesign) */
 
 #app.fishbowl-app {
-  /* Single full-viewport layer; .fb-screen--water is transparent so this shows through */
-  background: url("assets/fishbowl/fishbowl%20background.svg") center / cover no-repeat, #7fd6ff;
+  background: #7fd6ff;
 }
 
 #app.fishbowl-app::before {
@@ -25,8 +24,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 1;
-  min-height: 0;
+  min-height: 100%;
+  min-height: 100dvh;
   width: 100%;
   max-width: 100%;
   align-self: stretch;
@@ -45,13 +44,11 @@
 
 /* ---- Water background screens ---- */
 #app.fishbowl-app .fb-screen--water {
-  background: transparent;
+  background: url("assets/fishbowl/fishbowl%20background.svg") center top / cover no-repeat;
+  background-color: #7fd6ff;
   justify-content: flex-start;
   align-items: center;
   padding: 0.9rem 1rem 0.5rem;
-  padding-top: max(0.9rem, env(safe-area-inset-top, 0));
-  padding-left: max(1rem, env(safe-area-inset-left, 0));
-  padding-right: max(1rem, env(safe-area-inset-right, 0));
 }
 
 .fb-fishbowl-ui {
