@@ -23,6 +23,8 @@
   --tile-conversation: #d9e87a;
   --tile-wild-words: #a8e6f4;
   --nav-bg: rgba(255, 255, 255, 0.92);
+  /* Clearance above the fixed bottom nav (updated when .bottom-nav is resized) */
+  --bottom-nav-bar-height: 4.35rem;
   /* Line Laughs title / coaster palette */
   --line-laughs-orange: #ffa500;
   --line-laughs-green: #b2d16d;
@@ -111,7 +113,7 @@ optgroup {
 }
 
 .screen.with-bottom-nav {
-  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0));
+  padding-bottom: calc(var(--bottom-nav-bar-height) + env(safe-area-inset-bottom, 0));
 }
 
 /* Splash */
@@ -277,11 +279,11 @@ optgroup {
 }
 
 body.has-coaster-mini .fb-screen {
-  padding-bottom: calc(5.75rem + 3rem + env(safe-area-inset-bottom, 0));
+  padding-bottom: calc(var(--bottom-nav-bar-height) + 3rem + env(safe-area-inset-bottom, 0));
 }
 
 body.has-coaster-mini .game-screen {
-  padding-bottom: calc(5.5rem + 3rem + env(safe-area-inset-bottom, 0));
+  padding-bottom: calc(var(--bottom-nav-bar-height) + 3rem + env(safe-area-inset-bottom, 0));
 }
 
 .line-time-prompt {
@@ -524,7 +526,7 @@ a.game-tile {
   flex: 1;
   min-height: 100%;
   padding: 1.5rem 1.25rem;
-  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0));
+  padding-bottom: calc(var(--bottom-nav-bar-height) + env(safe-area-inset-bottom, 0));
 }
 
 .game-screen h1 {
@@ -894,13 +896,55 @@ a.game-tile {
   outline-offset: 2px;
 }
 
+/* Full-bleed splash (assets/gamesplash/*.png) — tap or game-brand.js auto-advance */
+#app #game-brand-splash.game-splash-full {
+  position: relative;
+  padding: 0 !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: 100%;
+  align-self: stretch;
+  background: #000;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  outline: none;
+  cursor: pointer;
+}
+
+#app #game-brand-splash.game-splash-full .game-splash-full__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+#app #game-brand-splash.game-splash-full:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+body:has(#game-brand-splash.game-splash-full.active) .bottom-nav {
+  display: none !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .fb-screen {
   display: none;
   flex-direction: column;
   flex: 1;
   min-height: 100%;
   padding: 1rem 1rem 1.25rem;
-  padding-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0));
+  padding-bottom: calc(var(--bottom-nav-bar-height) + env(safe-area-inset-bottom, 0));
 }
 
 .fb-screen.active {
@@ -1553,8 +1597,8 @@ a.game-tile {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: center;
   justify-items: center;
-  gap: 0.2rem;
-  padding: 0.55rem 0.5rem calc(0.55rem + env(safe-area-inset-bottom, 0));
+  gap: 0.1rem;
+  padding: 0.32rem 0.4rem calc(0.32rem + env(safe-area-inset-bottom, 0));
   background: var(--nav-bg);
   border-top: 2px solid var(--ink);
   z-index: 50;
@@ -1569,8 +1613,8 @@ a.game-tile {
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 3.25rem;
-  padding: 0.28rem;
+  max-width: 2.85rem;
+  padding: 0.2rem;
   border: none;
   background: transparent;
   color: inherit;
@@ -1583,9 +1627,9 @@ a.game-tile {
 
 .bottom-nav-icon img {
   display: block;
-  height: 1.85rem;
+  height: 1.48rem;
   width: auto;
-  max-width: 2.35rem;
+  max-width: 1.95rem;
   object-fit: contain;
 }
 
@@ -1631,9 +1675,9 @@ a.game-tile {
 
 .nav-timer-block .nav-timer__icon {
   display: block;
-  height: 1.55rem;
+  height: 1.3rem;
   width: auto;
-  max-width: 1.95rem;
+  max-width: 1.65rem;
   object-fit: contain;
   flex-shrink: 0;
 }

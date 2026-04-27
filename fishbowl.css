@@ -14,16 +14,16 @@
   display: none !important;
 }
 
-/* ---- Full-screen game splash (gamesplash) ---- */
+/* ---- Full-screen game splash (image only) ---- */
+/* Do NOT set display: flex here. Two IDs beat .fb-screen { display: none } and the splash
+   would stay on-screen even after removing .active, blocking the next step. */
 #game-brand-splash.fb-splash,
 #app.fishbowl-app #game-brand-splash {
   position: relative;
-  /* Reserve space for fixed .bottom-nav so the CTA is not under it (nav is z-index 50, sibling of #app) */
-  padding: 0 0 calc(4.5rem + env(safe-area-inset-bottom, 0px)) 0;
-  display: flex;
+  padding: 0;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   min-height: 100%;
   min-height: 100dvh;
   width: 100%;
@@ -40,26 +40,6 @@
 #app.fishbowl-app #game-brand-splash:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 2px;
-}
-
-.fb-splash-hero {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  pointer-events: none;
-  user-select: none;
-}
-
-.fb-splash-cta {
-  position: relative;
-  z-index: 2;
-  width: min(18rem, 86%);
-  margin: 0 auto 0.5rem;
-  pointer-events: auto;
-  cursor: pointer;
 }
 
 /* ---- Water background screens ---- */
@@ -80,6 +60,11 @@
   align-items: center;
   flex: 1;
   min-height: 0;
+}
+
+/* Same vertical nudge as player-count after removing the FISHBOWL bar */
+.fb-fishbowl-ui.fb-fishbowl-ui--offset {
+  margin-top: clamp(5.25rem, 47vh, 12rem);
 }
 
 /* FISHBOWL wordmark — orange speech bubble */
@@ -147,11 +132,28 @@
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
 }
 
 .fb-dark-field::placeholder {
   color: rgba(255, 255, 255, 0.55);
   font-weight: 700;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fb-dark-field:hover {
+    border-color: #ff8c1a;
+    box-shadow: 0 0 0 2px color-mix(in srgb, #ff8c1a 45%, transparent);
+    transform: translateY(-1px);
+    background-color: #222;
+  }
+}
+
+.fb-dark-field:focus-visible {
+  outline: none;
+  border-color: #ff8c1a;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #ff8c1a 55%, transparent);
+  background-color: #222;
 }
 
 #fb-count .fb-fishbowl-ui input[type="number"] {
@@ -180,41 +182,100 @@
   cursor: pointer;
   border-radius: 2px;
   box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, background-color 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fb-orange-btn:hover {
+    filter: brightness(1.05);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.24);
+    transform: translateY(-2px);
+  }
+}
+
+.fb-orange-btn:focus-visible {
+  outline: 2px solid #0a0a0a;
+  outline-offset: 3px;
 }
 
 .fb-orange-btn:active {
   transform: translateY(1px);
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  filter: none;
 }
 
-a.fb-orange-btn {
+a.fb-orange-btn,
+button.fb-orange-btn {
   display: block;
   text-align: center;
   text-decoration: none;
   box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+}
+a.fb-orange-btn {
+  cursor: pointer;
+}
+button.fb-orange-btn {
+  text-decoration: none;
 }
 
-/* Player count: push fish grid to bottom of screen */
-#fb-count.fb-screen--water {
-  justify-content: space-between;
+@media (prefers-reduced-motion: reduce) {
+  .fb-dark-field,
+  .fb-orange-btn,
+  .fb-name-field-combo {
+    transition: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .fb-dark-field:hover,
+    .fb-orange-btn:hover,
+    .fb-name-field-combo:hover {
+      transform: none;
+    }
+  }
 }
-#fb-count .fb-fishbowl-ui {
+
+/* Player count: copy + form sit a little above center; fish sit higher above the nav, clear of the form */
+#fb-count.fb-screen--water {
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0;
+}
+#fb-count .fb-fishbowl-ui--count {
   flex: 0 0 auto;
+  width: 100%;
+  max-width: 22.5rem;
+  /* Whole block shifts down; spacing inside the block stays the same */
+  margin-top: clamp(5.25rem, 47vh, 12rem);
+  padding: 0 0.2rem;
+}
+#fb-count .fb-fishbowl-ui--count .fb-fb-sub {
+  margin-top: 0;
+}
+/* Same max width as .fb-orange-btn (20rem) */
+#fb-count .fb-fishbowl-ui--count #fb-player-count.fb-dark-field {
+  width: min(100%, 20rem);
+  max-width: 20rem;
+  box-sizing: border-box;
+  align-self: center;
 }
 #fb-count .fb-char-grid-9 {
-  margin-top: auto;
-  flex-shrink: 0;
-  padding-bottom: 0.25rem;
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 16.5rem;
+  margin-top: 1.9rem;
+  margin-bottom: 0.4rem;
+  padding: 0 0 0.15rem;
 }
 
 /* 3×3 character grid (player count) */
 .fb-char-grid-9 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.4rem 0.5rem;
+  gap: 0.32rem 0.42rem;
   width: 100%;
   max-width: 18rem;
-  margin-top: auto;
+  margin-top: 0.5rem;
   padding: 0.5rem 0 0.25rem;
 }
 
@@ -236,24 +297,113 @@ a.fb-orange-btn {
 
 .fb-name-row {
   display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: 0.45rem;
+  justify-content: center;
   width: 100%;
 }
 
-.fb-name-row .fb-dark-field {
-  flex: 1;
-  min-width: 0;
+/* One “type box” with the fish on the right inside the border */
+.fb-name-field-combo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  max-width: 20rem;
+  box-sizing: border-box;
+  background: #1a1a1a;
+  border: 2px solid #0a0a0a;
+  border-radius: 3px;
+  min-height: 2.75rem;
+  padding: 0.2rem 0.45rem 0.2rem 0.65rem;
+  gap: 0.4rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
 }
 
-.fb-name-fish {
-  width: 2.5rem;
-  min-width: 2.5rem;
-  height: 2.5rem;
+.fb-name-field-combo .fb-dark-field {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0.4rem 0.15rem 0.4rem 0;
+  margin: 0;
+  min-height: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fb-name-field-combo .fb-dark-field:hover {
+    transform: none;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+  .fb-name-field-combo:hover {
+    border-color: #ff8c1a;
+    box-shadow: 0 0 0 2px color-mix(in srgb, #ff8c1a 45%, transparent);
+    transform: translateY(-1px);
+    background-color: #222;
+  }
+}
+
+.fb-name-field-combo:focus-within {
+  outline: none;
+  border-color: #ff8c1a;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #ff8c1a 55%, transparent);
+  background-color: #222;
+}
+
+.fb-name-field-combo .fb-name-fish {
+  width: 2.2rem;
+  min-width: 2.2rem;
+  height: 2.2rem;
   object-fit: contain;
+  display: block;
+  flex-shrink: 0;
   align-self: center;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.2));
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Team panels — buildTeams() sets --fb-team-* on #fb-teams from player count */
+#fb-teams {
+  --fb-team-fish: 3rem;
+  --fb-team-name: 0.74rem;
+  --fb-team-pair-w: 4.9rem;
+  --fb-team-gap: 0.4rem 0.55rem;
+  --fb-team-slab-pad: 0.35rem 0.4rem 0.45rem;
+}
+#fb-teams.fb-screen--water {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Extra clearance above the fixed .bottom-nav so CONTINUE is never covered */
+  padding-bottom: calc(var(--bottom-nav-bar-height) + 1.15rem + env(safe-area-inset-bottom, 0px));
+}
+#fb-teams .fb-fishbowl-ui--offset {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 0.55rem;
+  /* Keeps the button visually tucked under the slabs, not riding the home indicator */
+  padding-bottom: 0.15rem;
+}
+#fb-teams .fb-teams-two {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#fb-teams #fb-teams-next {
+  flex-shrink: 0;
+  margin-top: 0;
+  margin-bottom: 0.15rem;
 }
 
 /* Team panels (stacked) */
@@ -261,7 +411,7 @@ a.fb-orange-btn {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.45rem;
   flex: 1;
   min-height: 0;
   overflow: auto;
@@ -271,20 +421,28 @@ a.fb-orange-btn {
   background: #1a1a1a;
   border: 2px solid #0a0a0a;
   border-radius: 4px;
-  padding: 0.5rem 0.5rem 0.65rem;
-  flex: 1;
-  min-height: 6rem;
+  padding: var(--fb-team-slab-pad, 0.35rem 0.4rem 0.45rem);
+  flex: 0 0 auto;
+  min-height: 0;
+}
+
+#fb-teams .fb-team-slab {
+  padding: var(--fb-team-slab-pad, 0.35rem 0.4rem 0.45rem);
 }
 
 .fb-team-slab h3 {
-  margin: 0 0 0.45rem;
+  margin: 0 0 0.3rem;
   text-align: center;
   color: #fff;
   font-family: var(--font-support);
-  font-size: 0.95rem;
+  font-size: clamp(0.82rem, 2.8vw, 0.9rem);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+#fb-teams .fb-team-slab h3 {
+  margin: 0 0 0.25rem;
 }
 
 .fb-team-fish-grid {
@@ -292,7 +450,11 @@ a.fb-orange-btn {
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-end;
-  gap: 0.45rem 0.6rem;
+  gap: var(--fb-team-gap, 0.4rem 0.55rem);
+}
+
+#fb-teams .fb-team-fish-grid {
+  gap: var(--fb-team-gap, 0.4rem 0.55rem);
 }
 
 .fb-team-pair {
@@ -302,11 +464,19 @@ a.fb-orange-btn {
   gap: 0.15rem;
   width: 4.5rem;
 }
+#fb-teams .fb-team-pair {
+  width: var(--fb-team-pair-w, 4.9rem);
+  gap: 0.2rem;
+}
 
 .fb-team-pair img {
   width: 2.6rem;
   height: 2.6rem;
   object-fit: contain;
+}
+#fb-teams .fb-team-pair img {
+  width: var(--fb-team-fish, 3rem);
+  height: var(--fb-team-fish, 3rem);
 }
 
 .fb-team-pair span {
@@ -319,6 +489,10 @@ a.fb-orange-btn {
   text-transform: uppercase;
   word-break: break-word;
   max-width: 100%;
+}
+#fb-teams .fb-team-pair span {
+  font-size: var(--fb-team-name, 0.74rem);
+  line-height: 1.15;
 }
 
 /* Fill the bowl - subtitle stack */

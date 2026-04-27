@@ -11,17 +11,23 @@
   </head>
   <body class="conversation-body">
     <div id="app" class="conversation-app">
-      <section id="game-brand-splash" class="fb-screen game-brand active" data-next="conv-main" tabindex="0" aria-label="Spill the Beans, tap to continue">
-        <div class="game-brand__inner">
-          <div class="game-brand__frame" aria-hidden="true">
-            <img class="game-brand__icon" src="assets/game_icons/beans.jpg" alt="" width="512" height="512" decoding="async" />
-          </div>
-          <p class="game-brand__name">Spill the Beans</p>
-          <p class="game-brand__tag">Line Laughs</p>
-          <button type="button" class="btn-primary fb-btn-pill game-brand__btn" id="game-brand-continue" data-next="conv-main">
-            Continue
-          </button>
-        </div>
+      <section
+        id="game-brand-splash"
+        class="fb-screen game-splash-full active"
+        data-next="conv-main"
+        data-splash-autoadvance="3000"
+        role="button"
+        aria-label="Spill the Beans, tap or wait a few seconds to start"
+        tabindex="0"
+      >
+        <img
+          class="game-splash-full__img"
+          src="assets/gamesplash/spillthebeans.png"
+          alt=""
+          width="1170"
+          height="2532"
+          decoding="async"
+        />
       </section>
 
       <section id="conv-main" class="fb-screen" aria-label="Conversation topics">

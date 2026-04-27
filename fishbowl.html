@@ -15,26 +15,26 @@
       <!-- 0. Full-bleed game splash -->
       <section
         id="game-brand-splash"
-        class="fb-screen fb-splash active"
+        class="fb-screen fb-splash game-splash-full active"
         data-next="fb-count"
+        data-splash-autoadvance="3000"
+        role="button"
+        aria-label="Fishbowl, tap or press Enter to start, or wait a few seconds"
         tabindex="0"
-        aria-label="Fishbowl, tap to continue"
       >
         <img
-          class="fb-splash-hero"
+          class="fb-splash-hero game-splash-full__img"
           src="assets/gamesplash/fishbowl.png"
           alt=""
           width="1170"
           height="2532"
           decoding="async"
         />
-        <span class="fb-orange-btn fb-splash-cta" id="game-brand-continue" data-next="fb-count" aria-hidden="true">CONTINUE</span>
       </section>
 
       <!-- 1. Player count -->
       <section id="fb-count" class="fb-screen fb-screen--water" aria-label="Player count">
-        <div class="fb-fishbowl-ui">
-          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--count">
           <p class="fb-fb-sub">4+ PLAYERS</p>
           <h2 class="fb-fb-h1">HOW MANY PLAYERS?</h2>
           <input
@@ -44,9 +44,9 @@
             inputmode="numeric"
             min="4"
             max="24"
-            value="6"
             placeholder="TYPE HERE"
             aria-label="How many players"
+            autocomplete="off"
           />
           <button type="button" class="fb-orange-btn" id="fb-count-next">SUBMIT</button>
         </div>
@@ -65,8 +65,7 @@
 
       <!-- 2. Names -->
       <section id="fb-names" class="fb-screen fb-screen--water" aria-label="Player names">
-        <div class="fb-fishbowl-ui">
-          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--offset">
           <h2 class="fb-fb-h1">PLAYERS: PUT IN CIRCLE ORDER</h2>
           <div id="fb-names-fields" class="fb-names-fields"></div>
           <button type="button" class="fb-orange-btn" id="fb-names-next">SUBMIT</button>
@@ -75,8 +74,7 @@
 
       <!-- 3. Teams -->
       <section id="fb-teams" class="fb-screen fb-screen--water" aria-label="Teams">
-        <div class="fb-fishbowl-ui">
-          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--offset">
           <div class="fb-teams-two">
             <div class="fb-team-slab">
               <h3>TEAM A</h3>
@@ -93,8 +91,7 @@
 
       <!-- 4. Nouns per player -->
       <section id="fb-nouns" class="fb-screen fb-screen--water" aria-label="Enter nouns">
-        <div class="fb-fishbowl-ui">
-          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--offset">
           <p class="fb-fill-head fb-fill-line1">FILL THE BOWL</p>
           <p class="fb-fill-head fb-fill-line2">PASS THE PHONE TO:</p>
           <div class="fb-pass-hero">
@@ -113,8 +110,7 @@
 
       <!-- 5. Round intro (ready) -->
       <section id="fb-ready" class="fb-screen fb-screen--water" aria-label="Ready to play">
-        <div class="fb-fishbowl-ui fb-ready-wrap">
-          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+        <div class="fb-fishbowl-ui fb-ready-wrap fb-fishbowl-ui--offset">
           <div class="fb-ready-titles" id="fb-ready-titles">
             <p class="a" id="fb-ready-t1">ROUND ONE:</p>
             <p class="b" id="fb-ready-t2">DESCRIBE</p>
@@ -127,8 +123,7 @@
 
       <!-- 6. Pass phone before turn -->
       <section id="fb-pass" class="fb-screen fb-screen--water" aria-label="Pass phone">
-        <div class="fb-fishbowl-ui">
-          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--offset">
           <div class="fb-pass-lines" id="fb-pass-lines">
             <p class="a" id="fb-pass-line1">ROUND ONE:</p>
             <p class="b" id="fb-pass-line2">DESCRIBE</p>
@@ -166,8 +161,7 @@
 
       <!-- 8. Round over -->
       <section id="fb-round-end" class="fb-screen fb-screen--water" aria-label="Round over">
-        <div class="fb-fishbowl-ui">
-          <span class="fb-bubble-wordmark" aria-hidden="true">FISHBOWL</span>
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--offset">
           <p class="fb-fb-h1" id="fb-re-kicker">ROUND RECAP</p>
           <h2 class="fb-fb-h1 fb-fb-h1--2" id="fb-re-end-title">ROUND DONE</h2>
           <p class="fb-scores-dark" id="fb-re-scores">TEAM A: 0 · TEAM B: 0</p>
@@ -178,7 +172,7 @@
 
       <!-- 9. Game over -->
       <section id="fb-game-over" class="fb-screen fb-screen--water" aria-label="Game over">
-        <div class="fb-fishbowl-ui">
+        <div class="fb-fishbowl-ui fb-fishbowl-ui--offset">
           <span class="fb-bubble-wordmark fb-bubble-wordmark--win" aria-hidden="true">WINNERS</span>
           <p class="fb-go-klaxon" id="fb-go-winner">TEAM A WINS!</p>
           <p class="fb-scores-dark fb-scores-orange" id="fb-go-scores">TEAM A: 0 · TEAM B: 0</p>
@@ -313,6 +307,34 @@
             pair.appendChild(sp);
             if (players[i].team === "A") listA.appendChild(pair);
             else listB.appendChild(pair);
+          }
+          var n = players.length;
+          var sec = $("fb-teams");
+          sec.setAttribute("data-player-count", String(n));
+          if (n <= 6) {
+            sec.style.setProperty("--fb-team-fish", "3.5rem");
+            sec.style.setProperty("--fb-team-name", "0.8rem");
+            sec.style.setProperty("--fb-team-pair-w", "5.4rem");
+            sec.style.setProperty("--fb-team-gap", "0.5rem 0.65rem");
+            sec.style.setProperty("--fb-team-slab-pad", "0.4rem 0.45rem 0.5rem");
+          } else if (n <= 10) {
+            sec.style.setProperty("--fb-team-fish", "3rem");
+            sec.style.setProperty("--fb-team-name", "0.74rem");
+            sec.style.setProperty("--fb-team-pair-w", "4.9rem");
+            sec.style.setProperty("--fb-team-gap", "0.4rem 0.55rem");
+            sec.style.setProperty("--fb-team-slab-pad", "0.35rem 0.4rem 0.45rem");
+          } else if (n <= 14) {
+            sec.style.setProperty("--fb-team-fish", "2.5rem");
+            sec.style.setProperty("--fb-team-name", "0.66rem");
+            sec.style.setProperty("--fb-team-pair-w", "4.2rem");
+            sec.style.setProperty("--fb-team-gap", "0.32rem 0.45rem");
+            sec.style.setProperty("--fb-team-slab-pad", "0.3rem 0.35rem 0.4rem");
+          } else {
+            sec.style.setProperty("--fb-team-fish", "2.1rem");
+            sec.style.setProperty("--fb-team-name", "0.58rem");
+            sec.style.setProperty("--fb-team-pair-w", "3.6rem");
+            sec.style.setProperty("--fb-team-gap", "0.25rem 0.4rem");
+            sec.style.setProperty("--fb-team-slab-pad", "0.28rem 0.3rem 0.35rem");
           }
         }
         function setReadyScreen(ri) {
@@ -514,6 +536,8 @@
           for (i = 0; i < n; i++) {
             var row = document.createElement("div");
             row.className = "fb-name-row";
+            var combo = document.createElement("div");
+            combo.className = "fb-name-field-combo";
             var inp = document.createElement("input");
             inp.id = "fb-name-" + i;
             inp.className = "fb-dark-field fb-name-field";
@@ -526,8 +550,9 @@
             img.alt = "";
             img.width = 200;
             img.height = 200;
-            row.appendChild(inp);
-            row.appendChild(img);
+            combo.appendChild(inp);
+            combo.appendChild(img);
+            row.appendChild(combo);
             wrap.appendChild(row);
           }
           showScreen("fb-names");
