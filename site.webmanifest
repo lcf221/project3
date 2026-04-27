@@ -1,0 +1,19 @@
+{
+  "name": "Line Laughs",
+  "short_name": "Line Laughs",
+  "description": "Party games for the line and the living room",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#98cfe9",
+  "theme_color": "#98cfe9",
+  "icons": [
+    {
+      "src": "assets/game_icons/fishbowl.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}
