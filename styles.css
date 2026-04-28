@@ -109,7 +109,7 @@ optgroup {
   box-sizing: border-box;
 }
 
-/* Wider / taller viewports: optional “device frame” for desktop preview (not for real handsets). */
+/* Wider viewports: centered column mockup (square corners; real phones use hardware rounding). */
 @media (min-width: 481px) and (min-height: 501px) {
   #app {
     max-width: var(--iphone-width);
@@ -117,7 +117,6 @@ optgroup {
     height: min(100dvh, var(--iphone-height));
     min-height: min(100dvh, var(--iphone-height));
     max-height: var(--iphone-height);
-    border-radius: 44px;
     overflow: hidden;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
   }
