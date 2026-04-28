@@ -537,8 +537,8 @@
           list.innerHTML = "";
           var i;
           for (i = 0; i < players.length; i++) {
+            if (i === voterIndex) continue;
             var nm = players[i].name;
-            if (nm === me) continue;
             var btn = document.createElement("button");
             btn.type = "button";
             btn.className = "imp-vote-target-btn";

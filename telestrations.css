@@ -89,14 +89,24 @@
   gap: 0.75rem;
 }
 
+/* Pass screen — larger “PASS THE PHONE TO:” (shared pass-to-player default is smaller) */
+#app.telestrations-app #ts-pass .ll-pass-line {
+  font-size: clamp(1.1rem, 4vw, 1.45rem);
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  margin: 0.45rem 0 0.75rem;
+}
+
 /* —— Play: draw & guess (timer on top, prompt, canvas / guess, UNDO + DONE) —— */
 #app.telestrations-app .ts-play-screen {
   justify-content: flex-start;
-  align-items: stretch;
-  padding: 0.65rem 1rem 0;
-  padding-bottom: calc(var(--bottom-nav-bar-height) + 0.6rem + env(safe-area-inset-bottom, 0px));
+  align-items: center;
+  padding: max(0.4rem, env(safe-area-inset-top, 0px)) 1rem 0;
+  padding-bottom: calc(var(--bottom-nav-bar-height) + 0.75rem + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
 }
 
+/* Match pass / count vertical rhythm: same max-width and top offset as .ll-pass-inner + water padding */
 #app.telestrations-app .ts-play-inner {
   display: flex;
   flex-direction: column;
@@ -104,24 +114,31 @@
   width: 100%;
   max-width: 22.5rem;
   margin: 0 auto;
+  margin-top: clamp(8.5rem, 45vh, 16.5rem);
+  padding: 0.25rem 0.2rem 0;
+  gap: 0.65rem;
+  box-sizing: border-box;
+  flex: 0 0 auto;
 }
 
 #app.telestrations-app .ts-timer-circle {
-  width: 3.4rem;
-  height: 3.4rem;
+  width: min(3.75rem, 16vw);
+  height: min(3.75rem, 16vw);
+  min-width: 3.15rem;
+  min-height: 3.15rem;
   border-radius: 50%;
   border: 3px solid #0a0a0a;
-  background: #fff;
+  background: linear-gradient(165deg, #fff 0%, #f3f0fa 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-support);
   font-weight: 800;
-  font-size: 1.2rem;
+  font-size: clamp(1.1rem, 4.2vw, 1.35rem);
   line-height: 1;
   color: #0a0a0a;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12);
-  margin: 0.35rem 0 0.5rem;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  margin: 0;
   flex-shrink: 0;
 }
 
@@ -129,77 +146,112 @@
   font-family: var(--font-support);
   font-weight: 800;
   text-align: center;
-  font-size: clamp(1.05rem, 4vw, 1.35rem);
-  letter-spacing: 0.05em;
+  font-size: clamp(1.1rem, 4.1vw, 1.4rem);
+  letter-spacing: 0.04em;
   line-height: 1.3;
-  margin: 0 0 0.5rem;
+  margin: 0;
+  padding: 0 0.2rem;
   color: #0a0a0a;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  max-width: 20rem;
+}
+
+#app.telestrations-app .ts-draw-prompt strong {
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
 
 #app.telestrations-app .ts-play-screen .ts-canvas-wrap {
-  margin: 0.4rem 0 0.25rem;
+  margin: 0;
   width: 100%;
+  max-width: 20.5rem;
+  border: 3px solid #0a0a0a;
+  border-radius: 10px;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.08), 0 8px 20px rgba(15, 23, 41, 0.08);
+  background: #fff;
 }
 
 #app.telestrations-app .ts-guess-heading {
   font-family: var(--font-support);
   font-weight: 800;
-  font-size: clamp(1.1rem, 3.6vw, 1.3rem);
-  letter-spacing: 0.1em;
+  font-size: clamp(1.2rem, 4vw, 1.45rem);
+  letter-spacing: 0.12em;
   text-align: center;
   color: #0a0a0a;
-  margin: 0 0 0.45rem;
+  margin: 0;
+  padding: 0.1rem 0.2rem 0;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 #app.telestrations-app .ts-guess-input {
   width: 100%;
   max-width: 20rem;
+  min-height: 2.9rem;
   box-sizing: border-box;
-  margin: 0.2rem 0 0.15rem;
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  line-height: 1.2;
+  font-size: 0.88rem;
 }
 
 #app.telestrations-app .ts-dual-btns {
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  gap: 0.55rem;
+  justify-content: center;
+  gap: 0.6rem;
   width: 100%;
   max-width: 20rem;
-  margin-top: 0.6rem;
+  margin: 0.2rem 0 0;
+  padding-top: 0.1rem;
 }
 
 #app.telestrations-app .ts-dual-btns .fb-orange-btn.ts-btn-half {
   flex: 1 1 0;
   min-width: 0;
+  min-height: 2.85rem;
   margin-top: 0;
   max-width: none;
+  font-size: 0.9rem;
+  padding: 0.7rem 0.5rem;
+  letter-spacing: 0.1em;
 }
 
 #app.telestrations-app .ts-play-screen .ts-guess-preview {
-  margin: 0.1rem 0 0.35rem;
-  max-height: min(12rem, 32vh);
+  margin: 0;
+  max-height: min(13rem, 36vh);
   width: 100%;
+  max-width: 20.5rem;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 3px solid #0a0a0a;
+  background: #fff;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.08), 0 8px 20px rgba(15, 23, 41, 0.08);
 }
 
-/* —— The Telephone (results): scrollable chain —— */
+/* —— Summary (solid lilac): whole screen scrolls for long chains —— */
 /* Must include .active: otherwise #id rules override .fb-screen { display: none } and this screen
    stays visible (stacking / wrong “after rules” view). */
-#app.telestrations-app #ts-reveal.fb-screen.active {
+#app.telestrations-app #ts-reveal.fb-screen.ts-reveal-screen.active {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  min-height: 100%;
-  min-height: 100dvh;
-  padding: 0.75rem 0.9rem 0;
-  padding-bottom: calc(var(--bottom-nav-bar-height) + 0.35rem);
+  align-items: stretch;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: max(0.75rem, env(safe-area-inset-top, 0px)) 1rem calc(var(--bottom-nav-bar-height) + 0.75rem + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
+  background: #e6bfff;
+  background-image: none;
 }
 
 #app.telestrations-app .ts-telephone-wrap {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 0 auto;
   width: 100%;
   max-width: 22.5rem;
   margin: 0 auto;
@@ -208,46 +260,40 @@
 #app.telestrations-app .ts-telephone-title {
   font-family: var(--font-support);
   font-weight: 800;
-  font-size: clamp(1.15rem, 4vw, 1.5rem);
+  font-size: clamp(1.25rem, 4.2vw, 1.65rem);
   text-align: center;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #0a0a0a;
-  margin: 0.5rem 0 0.25rem;
-}
-
-#app.telestrations-app .ts-telephone-sub {
-  font-family: var(--font-support);
-  font-size: 0.82rem;
-  line-height: 1.35;
-  text-align: center;
-  color: color-mix(in srgb, #0a0a0a 70%, #fff);
-  margin: 0 0 0.6rem;
+  margin: 0.35rem 0 0.85rem;
+  flex-shrink: 0;
 }
 
 #app.telestrations-app .ts-telephone-scroll {
-  flex: 1 1 auto;
-  min-height: 0;
-  max-height: calc(100dvh - 7.5rem - var(--bottom-nav-bar-height, 0px));
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 0 0.1rem 0.75rem;
+  flex: 0 0 auto;
+  overflow: visible;
+  padding: 0 0.1rem;
   margin: 0 -0.1rem;
 }
 
-#app.telestrations-app .ts-telephone-block-label {
+#app.telestrations-app #ts-reveal .ts-telephone-block-label {
   font-family: var(--font-support);
   font-weight: 800;
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #0a0a0a;
-  margin: 0 0 0.4rem;
+  margin: 0 auto 0.4rem;
+  max-width: 20rem;
 }
 
 #app.telestrations-app .ts-telephone-pill {
   display: block;
+  width: 100%;
+  max-width: 20rem;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
   background: #ff8c1a;
   border: 2px solid #0a0a0a;
   border-radius: 4px;
@@ -260,7 +306,7 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #0a0a0a;
-  margin: 0 0 1.1rem;
+  margin: 0 auto 1.1rem;
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
   word-wrap: break-word;
 }
@@ -270,7 +316,11 @@
 }
 
 #app.telestrations-app .ts-telephone-drawing {
-  margin: 0 0 1.1rem;
+  width: 100%;
+  max-width: 20rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.1rem;
   background: #fff;
   border: 2px solid rgba(15, 23, 41, 0.15);
   border-radius: 8px;
@@ -297,7 +347,7 @@
 #app.telestrations-app .ts-telephone-again {
   display: block;
   width: 100%;
-  max-width: 16rem;
+  max-width: 20rem;
   margin: 0.5rem auto 0;
   text-align: center;
   text-decoration: none;

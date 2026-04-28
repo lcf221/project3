@@ -219,7 +219,7 @@
 
 #app.trivia-app .tr-play-inner .fb-orange-btn#tr-play-next {
   width: 100%;
-  max-width: 16rem;
+  max-width: 20rem;
   margin: 0.35rem auto 0;
   align-self: center;
 }
@@ -295,7 +295,7 @@
 
 #app.trivia-app .tr-score-inner .fb-orange-btn#tr-score-continue {
   width: 100%;
-  max-width: 16rem;
+  max-width: 20rem;
   margin-top: 0.35rem;
 }
 

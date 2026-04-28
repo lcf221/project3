@@ -19,7 +19,7 @@
       return;
     }
     var rem = Math.max(0, Math.ceil((end - Date.now()) / 1000));
-    navTimer.textContent = formatTime(rem) + " left";
+    navTimer.textContent = formatTime(rem);
   }
 
   tick();

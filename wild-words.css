@@ -155,26 +155,6 @@
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45), 0 0 1px rgba(0, 0, 0, 0.5);
 }
 
-#app.wild-words-app #ww-play.ww-play-screen .ww-skull-under {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 2.5%;
-  z-index: 1;
-  margin: 0;
-  text-align: center;
-  font-family: var(--font-support);
-  font-weight: 800;
-  font-size: clamp(0.72rem, 2.4vw, 0.88rem);
-  line-height: 1.1;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #7f1d1d;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
-  pointer-events: none;
-  user-select: none;
-}
-
 #app.wild-words-app #ww-play.ww-play-screen .ww-play-controls {
   display: flex;
   flex-direction: column;
@@ -196,7 +176,7 @@
 
 #app.wild-words-app #ww-play.ww-play-screen .ww-play-input {
   width: 100%;
-  max-width: 16rem;
+  max-width: 20rem;
   min-height: 0;
   padding: 0.85rem 1rem;
   line-height: 1.2;
@@ -206,7 +186,7 @@
 
 #app.wild-words-app #ww-play.ww-play-screen .fb-orange-btn {
   width: 100%;
-  max-width: 16rem;
+  max-width: 20rem;
   margin-top: 0.1rem;
 }
 
@@ -227,7 +207,7 @@
 #app.wild-words-app #ww-over.ww-winner-screen .ww-winner-name {
   position: absolute;
   left: 50%;
-  bottom: 10%;
+  bottom: 11%;
   transform: translateX(-50%);
   width: 86%;
   max-width: 19rem;

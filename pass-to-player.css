@@ -109,7 +109,7 @@
 
 #app .ll-pass-to-player .fb-orange-btn {
   width: 100%;
-  max-width: 16rem;
+  max-width: 20rem;
   margin-top: 0.35rem;
   flex-shrink: 0;
 }
@@ -133,7 +133,7 @@
 /* Guess / extra controls below the pass block (e.g. Imposter final guess) */
 #app .ll-pass-form {
   width: 100%;
-  max-width: 16rem;
+  max-width: 20rem;
   margin-top: 0.5rem;
   display: flex;
   flex-direction: column;

@@ -22,9 +22,10 @@
   --tile-telestrations: #d9d2e9;
   --tile-conversation: #d9e87a;
   --tile-wild-words: #a8e6f4;
-  --nav-bg: rgba(255, 255, 255, 0.92);
+  /* Fixed bottom bar — charcoal, slightly softer than pure --ink */
+  --nav-bg: #1f1f1f;
   /* Clearance above the fixed bottom nav (updated when .bottom-nav is resized) */
-  --bottom-nav-bar-height: 4.35rem;
+  --bottom-nav-bar-height: 4.75rem;
   /* Line Laughs title / coaster palette */
   --line-laughs-orange: #ffa500;
   --line-laughs-green: #b2d16d;
@@ -149,14 +150,15 @@ optgroup {
   padding-bottom: calc(var(--bottom-nav-bar-height) + env(safe-area-inset-bottom, 0));
 }
 
-/* Splash */
+/* Splash — full-bleed art inside #app safe area */
 #splash {
   justify-content: center;
   align-items: center;
   text-align: center;
   cursor: pointer;
+  padding: 0;
   background-color: var(--bg-sky);
-  background-image: url("assets/home/home.jpg");
+  background-image: url("assets/home/home.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -167,52 +169,71 @@ optgroup {
   outline-offset: 4px;
 }
 
-.splash-title {
-  font-family: var(--font-support);
-  font-weight: 400;
-  font-style: normal;
-  font-size: clamp(2.15rem, 8.5vw, 3rem);
-  letter-spacing: 0.04em;
-  line-height: 1.15;
-  text-transform: uppercase;
-  margin: 0;
-  user-select: none;
-  transform: translateY(-6.65rem);
-}
-
-/* Deeper hues so letters read on the photo without a panel */
-.splash-title__c1 {
-  color: color-mix(in srgb, var(--line-laughs-orange) 70%, var(--ink) 30%);
-}
-
-.splash-title__c2 {
-  color: color-mix(in srgb, var(--line-laughs-green) 62%, var(--ink) 38%);
-}
-
-.splash-title__c3 {
-  color: color-mix(in srgb, var(--line-laughs-purple) 72%, var(--ink) 28%);
-}
-
-.splash-title__c4 {
-  color: color-mix(in srgb, var(--line-laughs-coral) 68%, var(--ink) 32%);
-}
-
-/* Line time */
-#line-time {
-  justify-content: center;
-  align-items: center;
+/* Line time — match splash/home background framing; minutes centered; Continue just below */
+#line-time.line-time-screen {
+  justify-content: stretch;
+  align-items: stretch;
   text-align: center;
+  padding: 0;
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  width: 100%;
+  min-height: 0;
   background-color: var(--bg-sky);
-  background-image: url("assets/home/time.png");
+  background-image: url("assets/home/time.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  /* Vertical anchor for minutes (% of line-time-stack height — stack fills this section) */
+  --lt-field-top-pct: 76.85%;
+  --lt-field-nudge-y: -10px;
+  --lt-input-max: min(46vw, 11rem);
+  --lt-btn-width: min(54vw, 12.75rem);
+  --lt-input-tilt: 1.25deg;
 }
 
 #line-time .line-time-stack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   width: 100%;
-  max-width: 26.5rem;
-  margin: 0 auto;
+  margin: 0;
+  pointer-events: none;
+}
+
+#line-time .line-time-stack > * {
+  pointer-events: auto;
+}
+
+#line-time .line-time-input-wrap {
+  position: absolute;
+  left: 50%;
+  top: var(--lt-field-top-pct);
+  transform: translate(-50%, calc(-50% + var(--lt-field-nudge-y, 0px))) rotate(var(--lt-input-tilt));
+  transform-origin: center center;
+  width: var(--lt-input-max);
+  max-width: calc(100% - 2rem);
+  margin: 0;
+  padding: 0.2rem 0.35rem;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+}
+
+/* Below centered minutes field — slightly wider than the black box strip */
+#line-time .line-time-actions {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--lt-field-top-pct) + clamp(2.85rem, 7vh, 3.35rem));
+  transform: translate(-50%, 0);
+  width: var(--lt-btn-width);
+  max-width: calc(100% - 2rem);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .coaster-wrap {
@@ -223,29 +244,18 @@ optgroup {
   pointer-events: none;
 }
 
-/* Solid colors — pink main track, purple car, vertical supports alternate green / orange */
 .coaster-root .coaster-ground-line {
   stroke: color-mix(in srgb, var(--bg-sky) 70%, var(--line-laughs-purple) 30%);
   stroke-opacity: 0.52;
 }
 
 .coaster-root .coaster-supports line {
-  stroke-width: 5;
   stroke-linecap: round;
+  stroke-width: 8;
 }
 
 .coaster-mini .coaster-supports line {
-  stroke-width: 3.35;
-}
-
-.coaster-root .coaster-supports line:nth-child(odd) {
-  stroke: var(--line-laughs-green);
-  stroke-opacity: 0.88;
-}
-
-.coaster-root .coaster-supports line:nth-child(even) {
-  stroke: var(--line-laughs-orange);
-  stroke-opacity: 0.88;
+  stroke-width: 5;
 }
 
 .coaster-root .coaster-rail-path {
@@ -319,29 +329,7 @@ body.has-coaster-mini .game-screen {
   padding-bottom: calc(var(--bottom-nav-bar-height) + 3rem + env(safe-area-inset-bottom, 0));
 }
 
-.line-time-prompt {
-  background: var(--box-dark);
-  color: var(--box-text);
-  font-family: var(--font-support);
-  font-weight: 400;
-  font-style: normal;
-  text-align: center;
-  text-transform: uppercase;
-  font-size: clamp(0.95rem, 3.8vw, 1.12rem);
-  letter-spacing: 0.04em;
-  padding: 1.25rem 1.5rem;
-  margin: 0 auto;
-  max-width: 100%;
-  line-height: 1.4;
-}
-
-.line-time-input-wrap {
-  background: var(--box-dark);
-  margin-top: 0.85rem;
-  padding: 1.05rem 1.35rem;
-}
-
-.line-time-input {
+#line-time .line-time-input {
   width: 100%;
   border: none;
   background: transparent;
@@ -349,22 +337,40 @@ body.has-coaster-mini .game-screen {
   font-family: var(--font-support);
   font-weight: 400;
   font-style: normal;
-  font-size: 1.2rem;
+  font-size: clamp(1.1rem, 3.8vw, 1.35rem);
+  text-align: center;
   outline: none;
+  /* Avoid default rounded “plate” / ring so digits sit inside your drawn black bar only */
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  margin: 0;
 }
 
-.line-time-input::placeholder {
-  color: rgba(255, 255, 255, 0.45);
+#line-time .line-time-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
   font-weight: 400;
 }
 
-.line-time-actions {
-  margin-top: 1.65rem;
+#line-time .line-time-input:focus,
+#line-time .line-time-input:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 #line-time .btn-primary {
-  padding: 1.15rem 1.35rem;
+  padding: 0.95rem 1rem;
   font-size: 1.02rem;
+  margin: 0;
+}
+
+#line-time .btn-primary:not(:disabled) {
+  color: #fff;
+}
+
+#line-time .btn-primary:disabled {
+  opacity: 0.45;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .btn-primary {
@@ -393,9 +399,10 @@ a.btn-primary {
   text-decoration: none;
 }
 
-/* Games */
+/* Games — choose-your-game grid */
 #games {
-  padding-top: 1rem;
+  padding-top: clamp(2rem, 6vw, 3rem);
+  background-color: #ffffcb;
 }
 
 .games-heading {
@@ -415,6 +422,36 @@ a.btn-primary {
   gap: 0.75rem;
   flex: 1;
   align-content: start;
+}
+
+#games .games-heading {
+  margin: 0 0 1.35rem;
+  font-size: clamp(1.55rem, 6.2vw, 2.15rem);
+  line-height: 1.12;
+}
+
+#games .games-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Roller coaster: shift toward nav without changing heading/grid padding (fixed .bottom-nav paints above). */
+#games .coaster-wrap {
+  margin-top: auto;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  transform: translateY(calc(2rem + 3px));
+}
+
+#games .coaster-svg {
+  width: 100%;
+  height: auto;
+  max-height: min(30vh, 200px);
+  display: block;
 }
 
 .game-tile {
@@ -912,7 +949,7 @@ a.game-tile {
 
 .game-brand .btn-primary {
   margin-top: 0;
-  max-width: 16rem;
+  max-width: 20rem;
 }
 
 /* Tap anywhere on the splash to continue (see game-brand.js) */
@@ -1618,7 +1655,7 @@ body:has(#game-brand-splash.game-splash-full.active) .bottom-nav {
   box-shadow: 0 8px 28px rgba(197, 48, 48, 0.2), inset 0 -3px 0 rgba(116, 42, 42, 0.08);
 }
 
-/* Bottom navigation — four even columns: home, new game, restart, timer */
+/* Bottom navigation — flex row: even spacing between icon groups; tighter gap clock → time */
 .bottom-nav {
   position: fixed;
   left: 50%;
@@ -1627,27 +1664,28 @@ body:has(#game-brand-splash.game-splash-full.active) .bottom-nav {
   width: 100%;
   max-width: var(--iphone-width);
   display: none;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  flex-direction: row;
   align-items: center;
-  justify-items: center;
-  gap: 0.1rem;
-  padding: 0.32rem 0.4rem calc(0.32rem + env(safe-area-inset-bottom, 0));
+  justify-content: space-evenly;
+  gap: 0;
+  padding: 0.34rem 0.55rem calc(0.34rem + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
   background: var(--nav-bg);
-  border-top: 2px solid var(--ink);
   z-index: 50;
 }
 
 .bottom-nav.visible {
-  display: grid;
+  display: flex;
 }
 
 .bottom-nav-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  max-width: 2.85rem;
-  padding: 0.2rem;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
+  padding: 0.1rem 0.02rem;
   border: none;
   background: transparent;
   color: inherit;
@@ -1655,28 +1693,30 @@ body:has(#game-brand-splash.game-splash-full.active) .bottom-nav {
   border-radius: 10px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
 .bottom-nav-icon img {
   display: block;
-  height: 1.48rem;
+  height: 2.1rem;
   width: auto;
-  max-width: 1.95rem;
+  max-width: 2.6rem;
   object-fit: contain;
+  transition: filter 0.2s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .bottom-nav-icon:hover {
-    background: rgba(15, 23, 41, 0.08);
-    box-shadow: 0 3px 10px rgba(15, 23, 41, 0.12);
-    transform: scale(1.08);
+    transform: scale(1.06);
+  }
+
+  .bottom-nav-icon:hover img {
+    filter: brightness(1.12);
   }
 }
 
 .bottom-nav-icon:active {
   transform: scale(0.96);
-  background: rgba(15, 23, 41, 0.06);
   transition-duration: 0.1s;
 }
 
@@ -1685,14 +1725,22 @@ body:has(#game-brand-splash.game-splash-full.active) .bottom-nav {
     transition: none;
   }
 
+  .bottom-nav-icon img {
+    transition: none;
+  }
+
   .bottom-nav-icon:hover,
   .bottom-nav-icon:active {
     transform: none;
   }
+
+  .bottom-nav-icon:hover img {
+    filter: none;
+  }
 }
 
 .bottom-nav-icon:focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid #fff;
   outline-offset: 3px;
 }
 
@@ -1700,17 +1748,19 @@ body:has(#game-brand-splash.game-splash-full.active) .bottom-nav {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.3rem;
-  width: 100%;
+  flex: 0 0 auto;
+  /* More air between clock glyph and digits than icon-to-icon rhythm */
+  gap: 0.38rem;
+  width: auto;
   min-width: 0;
-  padding: 0 0.1rem;
+  padding: 0;
 }
 
 .nav-timer-block .nav-timer__icon {
   display: block;
-  height: 1.3rem;
+  height: 2.1rem;
   width: auto;
-  max-width: 1.65rem;
+  max-width: 2.6rem;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -1719,9 +1769,10 @@ body:has(#game-brand-splash.game-splash-full.active) .bottom-nav {
   font-family: var(--font-support);
   font-weight: 700;
   font-style: normal;
-  font-size: clamp(0.6rem, 2.9vw, 0.75rem);
+  font-size: clamp(0.74rem, 3.2vw, 0.92rem);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
+  color: #fff;
   cursor: default;
   flex: 0 0 auto;
   white-space: nowrap;

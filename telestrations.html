@@ -96,7 +96,6 @@
           <p class="ll-pass-line">PASS THE PHONE TO:</p>
           <img id="ts-pass-char" class="ll-pass-hero" src="assets/silly_sketch/Silly_Sketch%201.svg" alt="" width="200" height="200" decoding="async" />
           <p id="ts-pass-name" class="ll-pass-name"></p>
-          <p id="ts-pass-hint" class="ll-pass-note" aria-live="polite"></p>
           <button type="button" class="fb-orange-btn" id="ts-pass-go">START</button>
         </div>
       </section>
@@ -136,11 +135,10 @@
         </div>
       </section>
 
-      <section id="ts-reveal" class="fb-screen fb-screen--water" aria-label="The telephone">
+      <section id="ts-reveal" class="fb-screen ts-reveal-screen" aria-label="Silly Sketch summary">
         <div class="ts-telephone-wrap">
-          <h2 class="ts-telephone-title" id="ts-telephone-heading">THE TELEPHONE</h2>
-          <p class="ts-telephone-sub">The full chain from the original word to the end.</p>
-          <div class="ts-telephone-scroll" id="ts-telephone-scroll" tabindex="0">
+          <h2 class="ts-telephone-title" id="ts-telephone-heading">SILLY SKETCH</h2>
+          <div class="ts-telephone-scroll" id="ts-telephone-scroll">
             <div class="ts-telephone-origin" id="ts-reveal-origin"></div>
             <div id="ts-reveal-chain" class="ts-reveal-chain ts-reveal-chain--inner"></div>
             <a href="telestrations.html" class="fb-orange-btn ts-telephone-again">PLAY AGAIN</a>
@@ -421,14 +419,6 @@
           $("ts-pass-kicker").hidden = true;
           $("ts-pass-char").src = sillySketchCharSrc(stepIndex);
           $("ts-pass-name").textContent = String(players[stepIndex]).toUpperCase();
-          if (isDrawStep()) {
-            $("ts-pass-hint").textContent =
-              stepIndex === 0
-                ? "YOU’LL GET A RANDOM PROMPT, THEN DRAW IT IN 60 SECONDS."
-                : "DRAW WHAT THE PREVIOUS PLAYER WROTE—DON’T PEEK AT EARLIER STEPS.";
-          } else {
-            $("ts-pass-hint").textContent = "LOOK AT THE LAST DRAWING ONLY— THEN WRITE WHAT YOU THINK IT IS.";
-          }
           $("ts-pass-go").textContent = "START";
           showScreen("ts-pass");
         }
@@ -522,8 +512,8 @@
             }
             wrap.appendChild(b);
           }
-          var scrollEl = $("ts-telephone-scroll");
-          if (scrollEl) scrollEl.scrollTop = 0;
+          var revealSection = $("ts-reveal");
+          if (revealSection) revealSection.scrollTop = 0;
           showScreen("ts-reveal");
         }
 
@@ -550,7 +540,6 @@
           $("ts-pass-kicker").textContent = "";
           $("ts-pass-char").src = sillySketchCharSrc(0);
           $("ts-pass-name").textContent = String(players[0]).toUpperCase();
-          $("ts-pass-hint").textContent = "";
           $("ts-pass-go").textContent = "START";
           showScreen("ts-pass");
         }

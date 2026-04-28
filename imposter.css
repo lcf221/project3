@@ -128,15 +128,18 @@
 
 /* ---- Round turn pass: same art scale, two-line header ---- */
 #app.imposter-app #imp-pass-round .imp-round-kicker {
-  font-size: clamp(1.1rem, 3.1vw, 1.5rem);
-  line-height: 1.2;
-  margin: 0.2rem 0 0.2rem;
+  font-size: clamp(1.45rem, 4.4vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: 0.08em;
+  margin: 0.15rem 0 0.25rem;
 }
 
+/* Match “PASS THE PHONE TO:” scale but larger for turn headline */
 #app.imposter-app #imp-pass-round .imp-round-subline {
-  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  font-size: clamp(1.2rem, 3.8vw, 1.65rem);
   line-height: 1.2;
-  margin: 0 0 0.5rem;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.55rem;
 }
 
 #app.imposter-app #imp-pass-round .ll-pass-eyebrow + .ll-pass-line {
@@ -149,8 +152,16 @@
   margin: 0.15rem auto 0.1rem;
 }
 
+/* Same width cap as primary orange CTAs (20rem) */
 #app.imposter-app #imp-pass-round .ll-pass-line#imp-round-say-prompt {
-  margin: 0.4rem 0 0.45rem;
+  display: block;
+  width: min(100%, 20rem);
+  max-width: 20rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0.45rem;
+  margin-bottom: 0.5rem;
+  box-sizing: border-box;
 }
 
 /* ---- Role card (after pass / REVEAL) — single header + plain black box ---- */
@@ -174,7 +185,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #0a0a0a;
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.55rem;
 }
 
 #app.imposter-app .imp-card-reveal-label {
@@ -184,7 +195,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #0a0a0a;
-  margin: 0 0 0.4rem;
+  margin: 0 0 1rem;
 }
 
 #app.imposter-app .imp-card-reveal-label:empty {
@@ -198,12 +209,15 @@
   box-shadow: none !important;
   min-height: 6.5rem;
   margin-bottom: 0;
+  margin-top: 0;
   padding: 1.15rem 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  max-width: 22rem;
+  width: min(100%, 20rem);
+  max-width: 20rem;
+  box-sizing: border-box;
+  align-self: center;
 }
 
 #app.imposter-app #imp-card-reveal .imp-card-wordbox .fishbowl-word-card__shine {
@@ -232,13 +246,16 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #0a0a0a;
-  margin: 0.65rem 0 0;
+  /* Same vertical gap as label → word box */
+  margin: 1rem 0 0;
 }
 
 #app.imposter-app .imp-card-reveal-wrap .fb-orange-btn#imp-reveal-done {
-  width: 100%;
-  max-width: 16rem;
-  margin-top: 1.65rem;
+  width: min(100%, 20rem);
+  max-width: 20rem;
+  align-self: center;
+  box-sizing: border-box;
+  margin-top: 1rem;
 }
 
 /* ---- Round interstitial: large title + BEGIN — sit higher (align with other water steps, not vertically centered) ---- */
@@ -247,24 +264,30 @@
 }
 
 #app.imposter-app .imp-round-intro-ui {
-  margin-top: clamp(8rem, 42vh, 14.5rem);
+  margin-top: clamp(10rem, 48vh, 17rem);
   width: 100%;
-  max-width: 22.5rem;
+  max-width: 20rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
+  align-items: stretch;
+  gap: 1.35rem;
 }
 
 #app.imposter-app #imp-round-intro .fb-fb-h1#imp-round-intro-title {
   font-size: clamp(2.5rem, 9vw, 3.5rem) !important;
   line-height: 1.05;
   margin: 0;
+  width: 100%;
+  max-width: 20rem;
+  align-self: center;
+  box-sizing: border-box;
 }
 
 #app.imposter-app #imp-round-intro .fb-orange-btn#imp-round-intro-btn {
-  max-width: 11.25rem;
-  width: 100%;
+  width: min(100%, 20rem);
+  max-width: 20rem;
+  align-self: center;
+  box-sizing: border-box;
 }
 
 /* ---- Discuss + timer: titles stay high; timer + button sit tighter together below ---- */
@@ -322,21 +345,37 @@
 
 #app.imposter-app .imp-discuss-inner .fb-orange-btn {
   width: 100%;
-  max-width: 16rem;
+  max-width: 20rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   flex: 0 0 auto;
 }
 
-/* ---- Voting (black option buttons) ---- */
+/* Voting step: scroll inside the screen so targets aren’t clipped (#app can overflow:hidden in desktop frame; tall hero + margin otherwise sits below the fold). Mirrors fishbowl #fb-teams.fb-screen--water.active. */
+#app.imposter-app #imp-vote.fb-screen--water.active {
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(var(--bottom-nav-bar-height) + 1rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* ---- Voting — container must not shrink (fishbowl .fb-fishbowl-ui uses flex:1 min-height:0) ---- */
+#app.imposter-app #imp-vote .fb-fishbowl-ui.imp-vote-ui {
+  flex: 0 0 auto;
+  min-height: auto;
+  overflow: visible;
+}
+
+/* ---- Voting (boxed targets, full-width like CTAs) ---- */
 #app.imposter-app .imp-vote-ui {
-  margin-top: clamp(8.25rem, 45vh, 16rem);
+  margin-top: clamp(6rem, 32vh, 12rem);
   width: 100%;
-  max-width: 20rem;
+  max-width: 22.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.55rem;
 }
 
 #app.imposter-app #imp-vote .ll-pass-eyebrow#imp-vote-title {
@@ -354,32 +393,59 @@
 #app.imposter-app .imp-vote-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
   width: 100%;
-  max-width: 18rem;
-  margin-top: 0.5rem;
+  max-width: 20rem;
+  margin-top: 0.55rem;
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  min-height: auto;
+  overflow: visible;
 }
 
 #app.imposter-app .imp-vote-target-btn {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  padding: 0.85rem 1rem;
+  min-height: 3rem;
+  padding: 0.95rem 1rem;
   font-family: var(--font-support);
   font-weight: 800;
-  font-size: clamp(0.82rem, 2.2vw, 0.95rem);
+  font-size: clamp(0.88rem, 2.4vw, 1rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: center;
   color: #fff;
   background: #0a0a0a;
-  border: 2px solid #0a0a0a;
+  border: 3px solid #0a0a0a;
   border-radius: 4px;
   cursor: pointer;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+  flex-shrink: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
 }
 
-#app.imposter-app .imp-vote-target-btn:hover {
-  background: #1a1a1a;
+@media (hover: hover) and (pointer: fine) {
+  #app.imposter-app .imp-vote-target-btn:hover {
+    border-color: #ff8c1a;
+    box-shadow: 0 0 0 2px color-mix(in srgb, #ff8c1a 45%, transparent), 0 2px 0 rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
+    background-color: #1a1a1a;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #app.imposter-app .imp-vote-target-btn {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (hover: hover) and (pointer: fine) {
+  #app.imposter-app .imp-vote-target-btn:hover {
+    transform: none;
+  }
 }
 
 #app.imposter-app .imp-vote-target-btn:focus-visible {
@@ -388,6 +454,7 @@
 }
 
 /* ---- Win screens (full-bleed SVG) — .active only, or display:flex wins over .fb-screen { display:none } and stacks every step */
+/* PLAY AGAIN sits with position:absolute so it reliably clears the fixed nav (flex + .fb-screen padding was fighting this). */
 #app.imposter-app .imp-win-screen.active {
   min-height: 100%;
   min-height: 100dvh;
@@ -396,27 +463,33 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: flex-end;
+  justify-content: flex-start;
   background-color: #f0c14a;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  padding-bottom: calc(var(--bottom-nav-bar-height) + 0.75rem + env(safe-area-inset-bottom, 0px));
+  padding: 1rem 1rem env(safe-area-inset-bottom, 0px);
   box-sizing: border-box;
 }
 
 #app.imposter-app #imp-win-civilians.imp-win-screen {
-  background-image: url("assets/imposter/civilians%20win.svg");
+  background-image: url("assets/imposter/civilians%20win.png");
 }
 
 #app.imposter-app #imp-win-imposter.imp-win-screen {
-  background-image: url("assets/imposter/imposter%20wins.svg");
+  background-image: url("assets/imposter/imposter%20wins.png");
 }
 
 #app.imposter-app .imp-win-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--bottom-nav-bar-height) + 0.35rem + env(safe-area-inset-bottom, 0px));
   display: flex;
   justify-content: center;
-  padding: 0 1rem 0.5rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  pointer-events: auto;
 }
 
 #app.imposter-app a.imp-win-again {
@@ -424,5 +497,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 12rem;
+  width: min(100%, 20rem);
+  max-width: 20rem;
+  box-sizing: border-box;
+  margin-top: 0;
 }

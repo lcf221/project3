@@ -19,7 +19,7 @@
   <body>
     <div id="app">
       <section id="games" class="game-screen screen active" aria-label="Choose a game">
-        <h2 class="games-heading">Choose your game</h2>
+        <h2 class="games-heading">Line Laughs</h2>
         <div class="games-grid" role="group" aria-label="Games">
           <a href="fishbowl.html" class="game-tile" data-game="fishbowl" aria-label="Fishbowl">
             <img class="game-tile__icon" src="assets/game_icons/fishbowl.jpg" alt="" width="512" height="512" decoding="async" />
@@ -39,6 +39,26 @@
           <a href="wild-words.html" class="game-tile" data-game="wild-words" aria-label="Wild Words">
             <img class="game-tile__icon" src="assets/game_icons/words.jpg" alt="" width="512" height="512" decoding="async" />
           </a>
+        </div>
+        <div class="coaster-wrap coaster-root" aria-hidden="true" data-coaster-mode="timer">
+          <svg class="coaster-svg" viewBox="0 0 400 112" xmlns="http://www.w3.org/2000/svg">
+            <g class="coaster-supports" fill="none" stroke-linecap="round"></g>
+            <path
+              class="coaster-rail-path"
+              fill="none"
+              stroke-width="8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M 6 99 C 28 99 38 76 55 70 C 72 64 88 92 108 100 C 128 108 145 78 168 54 C 192 32 208 44 228 78 C 246 100 260 92 278 50 C 298 18 318 16 342 52 C 364 82 382 88 395 90"
+            />
+            <g class="coaster-car" transform="translate(6,99)">
+              <g class="coaster-car-body">
+                <rect x="-11" y="-12" width="22" height="11" rx="2" fill="currentColor" />
+                <circle cx="-4.5" cy="2" r="3.25" fill="currentColor" />
+                <circle cx="5.5" cy="2" r="3.25" fill="currentColor" />
+              </g>
+            </g>
+          </svg>
         </div>
       </section>
     </div>
@@ -67,6 +87,7 @@
       </div>
     </nav>
 
+    <script src="coaster-picker.js"></script>
     <script src="timer-nav.js"></script>
   </body>
 </html>

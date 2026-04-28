@@ -1,7 +1,5 @@
 (function () {
-  var STORAGE_END = "line-laughs-line-end";
-  var STORAGE_TOTAL = "line-laughs-total-sec";
-  var roots = document.querySelectorAll(".coaster-mini.coaster-root");
+  var roots = document.querySelectorAll("#games .coaster-root:not(.coaster-mini)");
   if (!roots.length) return;
 
   function pointOnRailAtX(rail, targetX) {
@@ -48,8 +46,8 @@
   }
 
   function readState() {
-    var end = parseInt(sessionStorage.getItem(STORAGE_END) || "0", 10);
-    var total = parseInt(sessionStorage.getItem(STORAGE_TOTAL) || "0", 10);
+    var end = parseInt(sessionStorage.getItem("line-laughs-line-end") || "0", 10);
+    var total = parseInt(sessionStorage.getItem("line-laughs-total-sec") || "0", 10);
     var now = Date.now();
     var rem = end > 0 && total > 0 ? Math.max(0, Math.ceil((end - now) / 1000)) : 0;
     var lineComplete = end > 0 && total > 0 && rem <= 0;

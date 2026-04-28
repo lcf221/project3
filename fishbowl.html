@@ -149,7 +149,6 @@
       <section id="fb-turn" class="fb-screen fb-screen--turn" aria-label="Your turn">
         <p id="fb-turn-mode">DESCRIBE</p>
         <div class="fb-turn-bowl-wrap">
-          <img src="assets/fishbowl/fishbowl%20timer.svg" alt="" class="fb-bowl-svg" width="270" height="585" />
           <div id="fb-timer" class="fb-timer-in-bowl" role="timer" aria-live="polite">60</div>
         </div>
         <div id="fb-word-card" class="fb-word-dank fishbowl-word-card">
@@ -158,33 +157,21 @@
         </div>
         <p class="fb-round-hint" id="fb-turn-rule" hidden>Rule</p>
         <div class="fb-turn-btns">
-          <button type="button" class="fb-orange-btn fb-orange-btn--half" id="fb-skip">SKIP</button>
           <button type="button" class="fb-orange-btn fb-orange-btn--half" id="fb-got-it">GOT IT</button>
+          <button type="button" class="fb-orange-btn fb-orange-btn--half" id="fb-skip">SKIP</button>
         </div>
         <p id="fb-turn-meta" class="fb-deck" hidden></p>
         <p id="fb-turn-round-kicker" class="fb-deck" hidden></p>
         <h2 class="fb-title-level" id="fb-turn-round-label" hidden></h2>
       </section>
 
-      <!-- 8. Round over -->
-      <section id="fb-round-end" class="fb-screen fb-screen--water" aria-label="Round over">
-        <div class="fb-fishbowl-ui fb-fishbowl-ui--offset">
-          <p class="fb-fb-h1" id="fb-re-kicker">ROUND RECAP</p>
-          <h2 class="fb-fb-h1 fb-fb-h1--2" id="fb-re-end-title">ROUND DONE</h2>
-          <p class="fb-scores-dark" id="fb-re-scores">TEAM A: 0 · TEAM B: 0</p>
-          <p class="fb-fb-h1" id="fb-re-next">Next round</p>
-          <button type="button" class="fb-orange-btn" id="fb-round-next">CONTINUE</button>
-        </div>
-      </section>
-
-      <!-- 9. Game over -->
-      <section id="fb-game-over" class="fb-screen fb-screen--water" aria-label="Game over">
-        <div class="fb-fishbowl-ui fb-fishbowl-ui--offset">
-          <span class="fb-bubble-wordmark fb-bubble-wordmark--win" aria-hidden="true">WINNERS</span>
-          <p class="fb-go-klaxon" id="fb-go-winner">TEAM A WINS!</p>
-          <p class="fb-scores-dark fb-scores-orange" id="fb-go-scores">TEAM A: 0 · TEAM B: 0</p>
-          <img class="fb-winner-carp" id="fb-go-illu" src="assets/fishbowl/WINNER.svg" alt="" width="500" height="500" />
-          <a href="fishbowl.html" class="fb-orange-btn" id="fb-play-again">PLAY AGAIN</a>
+      <!-- 8. Game over -->
+      <section id="fb-game-over" class="fb-screen fb-screen--winner" aria-label="Game over">
+        <div class="fb-winner-layout">
+          <div class="fb-winner-stack">
+            <p class="fb-go-winner-text" id="fb-go-winner">TEAM A WINS!</p>
+            <a href="fishbowl.html" class="fb-orange-btn fb-winner-cta" id="fb-play-again">PLAY AGAIN</a>
+          </div>
         </div>
       </section>
     </div>
@@ -319,29 +306,29 @@
           var sec = $("fb-teams");
           sec.setAttribute("data-player-count", String(n));
           if (n <= 6) {
-            sec.style.setProperty("--fb-team-fish", "3.5rem");
-            sec.style.setProperty("--fb-team-name", "0.8rem");
-            sec.style.setProperty("--fb-team-pair-w", "5.4rem");
-            sec.style.setProperty("--fb-team-gap", "0.5rem 0.65rem");
-            sec.style.setProperty("--fb-team-slab-pad", "0.4rem 0.45rem 0.5rem");
+            sec.style.setProperty("--fb-team-fish", "3.85rem");
+            sec.style.setProperty("--fb-team-name", "0.82rem");
+            sec.style.setProperty("--fb-team-pair-w", "5.6rem");
+            sec.style.setProperty("--fb-team-gap", "0.45rem 0.65rem");
+            sec.style.setProperty("--fb-team-slab-pad", "0.55rem 0.5rem 0.6rem");
           } else if (n <= 10) {
-            sec.style.setProperty("--fb-team-fish", "3rem");
-            sec.style.setProperty("--fb-team-name", "0.74rem");
-            sec.style.setProperty("--fb-team-pair-w", "4.9rem");
+            sec.style.setProperty("--fb-team-fish", "3.35rem");
+            sec.style.setProperty("--fb-team-name", "0.76rem");
+            sec.style.setProperty("--fb-team-pair-w", "5.1rem");
             sec.style.setProperty("--fb-team-gap", "0.4rem 0.55rem");
-            sec.style.setProperty("--fb-team-slab-pad", "0.35rem 0.4rem 0.45rem");
+            sec.style.setProperty("--fb-team-slab-pad", "0.48rem 0.45rem 0.52rem");
           } else if (n <= 14) {
-            sec.style.setProperty("--fb-team-fish", "2.5rem");
-            sec.style.setProperty("--fb-team-name", "0.66rem");
-            sec.style.setProperty("--fb-team-pair-w", "4.2rem");
-            sec.style.setProperty("--fb-team-gap", "0.32rem 0.45rem");
-            sec.style.setProperty("--fb-team-slab-pad", "0.3rem 0.35rem 0.4rem");
+            sec.style.setProperty("--fb-team-fish", "2.9rem");
+            sec.style.setProperty("--fb-team-name", "0.68rem");
+            sec.style.setProperty("--fb-team-pair-w", "4.5rem");
+            sec.style.setProperty("--fb-team-gap", "0.35rem 0.48rem");
+            sec.style.setProperty("--fb-team-slab-pad", "0.42rem 0.4rem 0.45rem");
           } else {
-            sec.style.setProperty("--fb-team-fish", "2.1rem");
-            sec.style.setProperty("--fb-team-name", "0.58rem");
-            sec.style.setProperty("--fb-team-pair-w", "3.6rem");
-            sec.style.setProperty("--fb-team-gap", "0.25rem 0.4rem");
-            sec.style.setProperty("--fb-team-slab-pad", "0.28rem 0.3rem 0.35rem");
+            sec.style.setProperty("--fb-team-fish", "2.4rem");
+            sec.style.setProperty("--fb-team-name", "0.6rem");
+            sec.style.setProperty("--fb-team-pair-w", "3.9rem");
+            sec.style.setProperty("--fb-team-gap", "0.3rem 0.4rem");
+            sec.style.setProperty("--fb-team-slab-pad", "0.36rem 0.34rem 0.4rem");
           }
         }
         function setReadyScreen(ri) {
@@ -495,20 +482,7 @@
         function endRound() {
           clearTimer();
           activeWord = null;
-          var r = ROUNDS[roundIndex];
-          $("fb-re-kicker").textContent = "ROUND " + r.round + " · " + r.title;
-          $("fb-re-end-title").textContent = "ROUND " + r.round + " — DONE";
-          $("fb-re-scores").textContent = "TEAM A: " + scores.A + " · TEAM B: " + scores.B;
-          if (roundIndex >= 2) {
-            $("fb-re-next").textContent = "ALL SLIPS PLAYED—SEE THE WINNER";
-            $("fb-round-next").textContent = "RESULTS";
-          } else {
-            $("fb-re-next").textContent = "SAME WORDS, NEXT ROUND: " + ROUNDS[roundIndex + 1].key;
-            $("fb-round-next").textContent = "CONTINUE";
-          }
-          showScreen("fb-round-end");
-        }
-        function roundNextClick() {
+          /* Skip round recap — go straight to next round rules (scores already on fb-ready for R2/R3) or winner after R3 */
           if (roundIndex >= 2) {
             showGameOver();
             return;
@@ -518,8 +492,6 @@
           showScreen("fb-ready");
         }
         function showGameOver() {
-          var sc = "TEAM A: " + scores.A + "  TEAM B: " + scores.B;
-          $("fb-go-scores").textContent = sc;
           var win;
           if (scores.A === scores.B) {
             win = "IT’S A TIE!";
@@ -579,7 +551,6 @@
         $("fb-pass-ok").addEventListener("click", beginTurnTimer);
         $("fb-got-it").addEventListener("click", onGotIt);
         $("fb-skip").addEventListener("click", onSkip);
-        $("fb-round-next").addEventListener("click", roundNextClick);
       })();
     </script>
   </body>
